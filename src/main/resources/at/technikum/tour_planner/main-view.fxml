@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.tour_planner.HelloController">
+
+  <top>
+    <VBox>
+      <fx:include fx:id="menuBarInclude" source="menu-bar.fxml" />
+      <HBox alignment="CENTER_LEFT" >
+        <padding>
+          <Insets bottom="10" left="10" right="10" top="10" />
+        </padding>
+        <TextField fx:id="searchBar" minWidth="700" promptText="Search..." />
+        <Button text="Search" />
+      </HBox>
+    </VBox>
+  </top>
+
+  <left>
+    <SplitPane>
+      <fx:include source="tours-tab.fxml"/>
+    </SplitPane>
+  </left>
+
+</BorderPane>
