@@ -38,6 +38,8 @@
             </Tab>
             <Tab text="Tour Logs">
               <HBox>
+
+                <fx:include source="tour-log-details.fxml" />
               </HBox>
             </Tab>
           </tabs>

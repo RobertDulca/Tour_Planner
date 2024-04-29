@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+
+<?import org.controlsfx.control.Rating?>
+<?import javafx.scene.control.Slider?>
+<GridPane layoutX="1.0" layoutY="1.0" prefHeight="300.0" prefWidth="500.0" vgap="5.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.tour_planner.view.TourLogDetailsView">
+   <columnConstraints>
+      <ColumnConstraints />
+      <ColumnConstraints maxWidth="223.20003662109374" minWidth="83.20003204345704" prefWidth="83.20003204345704" />
+      <ColumnConstraints maxWidth="377.59996795654297" minWidth="236.79996337890626" prefWidth="377.59996795654297" />
+   </columnConstraints>
+   <children>
+      <DatePicker fx:id="tourLogDate" prefHeight="53.0" prefWidth="230.0" promptText="Date" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+      <TextField fx:id="tourLogTime" prefHeight="39.0" prefWidth="348.0" promptText="Total Time" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+      <Label text="Date" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Label text="Comment" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+      <Label text="Difficulty" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <Slider fx:id="difficulty" blockIncrement="1.0" majorTickUnit="2.0" max="10.0" minorTickCount="1"
+              showTickLabels="true" showTickMarks="true" snapToTicks="true" prefWidth="231.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+      <Label text="TotalTime" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+      <TextArea fx:id="tourLogComment" prefHeight="89.0" prefWidth="309.0" promptText="Comment" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+      <Label text="Rating" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+      <Rating fx:id="tourLogRating" prefWidth="231.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+      <Button mnemonicParsing="false" prefHeight="36.0" prefWidth="166.0" text="SaveTourlog" GridPane.columnIndex="2" GridPane.rowIndex="8">
+         <GridPane.margin>
+            <Insets bottom="10.0" top="10.0" />
+         </GridPane.margin>
+      </Button>
+   </children>
+   <padding>
+      <Insets left="20.0" right="10.0" top="10.0" />
+   </padding>
+</GridPane>
