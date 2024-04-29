@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 
 public class TourDetailsView implements Initializable {
 
-    private final ObservableList<String> transList = FXCollections.observableArrayList("AUTO", "WALKING", "BICYCLE");
+    private final ObservableList<String> transList = FXCollections.observableArrayList("Car", "Walk", "Bicycle");
     private final TourDetailsViewModel tourDetailsViewModel;
     @FXML
     private TextField tourName;

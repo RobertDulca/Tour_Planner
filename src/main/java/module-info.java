@@ -4,5 +4,6 @@ module at.technikum.tour_planner {
 
 
     opens at.technikum.tour_planner to javafx.fxml;
+    opens at.technikum.tour_planner.view to javafx.fxml;
     exports at.technikum.tour_planner;
 }
