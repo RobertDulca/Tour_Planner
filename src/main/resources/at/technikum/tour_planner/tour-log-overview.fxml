@@ -9,12 +9,12 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.fancylynx.application.view.TourLogOverviewController">
+<VBox prefWidth="500" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.tour_planner.view.TourLogOverviewView">
     <ToolBar>
         <Label text="MediaOverview_Items" />
         <Pane HBox.hgrow="ALWAYS" />
-        <Button onAction="#handleCreateTourLog" text="+" />
-        <Button fx:id="deleteButton" onAction="#deleteTourLog" text="-" />
+        <Button text="+" />
+        <Button fx:id="deleteButton" text="-" />
     </ToolBar>
     <ListView fx:id="tourLogList" VBox.vgrow="ALWAYS" />
    <padding>
