@@ -2,10 +2,14 @@ package at.technikum.tour_planner.view;
 
 import at.technikum.tour_planner.viewmodel.ToursTabViewModel;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 
-public class ToursTabView {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class ToursTabView implements Initializable {
 
     private final ToursTabViewModel viewModel;
     public ToursTabView(){
@@ -37,7 +41,7 @@ public class ToursTabView {
         //Edit Logic
     }
     @FXML
-    public void initialize() {
+    public void initialize(URL location, ResourceBundle resources) {
         toursList.setItems(viewModel.getTours());
     }
 }

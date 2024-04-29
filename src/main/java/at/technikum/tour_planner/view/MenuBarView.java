@@ -2,11 +2,12 @@ package at.technikum.tour_planner.view;
 
 import at.technikum.tour_planner.viewmodel.MenuBarViewModel;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MenuBarView {
+public class MenuBarView implements Initializable {
 
     private final MenuBarViewModel viewModel;
     public MenuBarView() {

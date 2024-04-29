@@ -10,10 +10,8 @@ public class SearchBarViewModel {
     private BooleanProperty disabledSearchButton = new SimpleBooleanProperty(true);
 
     public SearchBarViewModel() {
-        searchText.addListener((obs, oldVal, newVal) -> {
-            boolean isDisabled = newVal == null || newVal.trim().isEmpty();
-            disabledSearchButton.set(isDisabled);
-        });
+        // set disabledSearchButton true whenever searchText is empty or null.
+        disabledSearchButton.bind(searchText.isEmpty().or(searchText.isNull()));
     }
     public StringProperty searchTextProperty() {
         return searchText;
