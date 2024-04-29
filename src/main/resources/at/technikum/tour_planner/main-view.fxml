@@ -4,18 +4,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.tour_planner.HelloController">
+<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.tour_planner.MainController">
 
   <top>
     <VBox>
-      <fx:include fx:id="menuBarInclude" source="menu-bar.fxml" />
-      <HBox alignment="CENTER_LEFT" >
-        <padding>
-          <Insets bottom="10" left="10" right="10" top="10" />
-        </padding>
-        <TextField fx:id="searchBar" minWidth="700" promptText="Search..." />
-        <Button text="Search" />
-      </HBox>
+      <fx:include source="menu-bar.fxml" />
+      <fx:include source="search-bar.fxml"/>
     </VBox>
   </top>
 
