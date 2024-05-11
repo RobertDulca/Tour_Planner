@@ -1,6 +1,6 @@
 package at.technikum.tour_planner.view;
 
-import at.technikum.tour_planner.TourLogModel;
+import at.technikum.tour_planner.entity.TourLogModel;
 import at.technikum.tour_planner.viewmodel.TourLogOverviewViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

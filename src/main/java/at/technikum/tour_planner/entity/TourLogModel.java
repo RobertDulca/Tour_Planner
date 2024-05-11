@@ -1,4 +1,4 @@
-package at.technikum.tour_planner;
+package at.technikum.tour_planner.entity;
 
 import java.time.LocalDate;
 
