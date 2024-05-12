@@ -8,18 +8,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.util.StringConverter;
-
 import java.net.URL;
 import java.util.ResourceBundle;
+
 public class ToursTabView implements Initializable {
-    private final ToursTabViewModel viewModel;
+    private final ToursTabViewModel viewModel = ToursTabViewModel.getInstance();
 
-    public ToursTabView() {
-        this.viewModel = ToursTabViewModel.getInstance(); // Use Singleton instance
-    }
-
-    @FXML
-    private ListView<Tour> toursList;
+    @FXML private ListView<Tour> toursList;
 
     private void setupListView() {
         toursList.setCellFactory(lv -> new TextFieldListCell<>(new StringConverter<Tour>() {
@@ -27,7 +22,6 @@ public class ToursTabView implements Initializable {
             public String toString(Tour tour) {
                 return tour.getName(); // Display the name of the tour
             }
-
             @Override
             public Tour fromString(String string) {
                 return null; // Conversion back not required for display purposes
@@ -36,9 +30,10 @@ public class ToursTabView implements Initializable {
     }
 
     private void setupSelectionModel() {
-        // Updates the selected tour in the TourDetailsViewModel
         toursList.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            TourDetailsViewModel.getInstance().setSelectedTour(newSelection);
+            if (newSelection != null) {
+                TourDetailsViewModel.getInstance().setSelectedTour(newSelection);
+            }
         });
     }
 
@@ -47,10 +42,5 @@ public class ToursTabView implements Initializable {
         toursList.setItems(viewModel.getTours());
         setupListView();
         setupSelectionModel();
-
-        // Initially select the first item if available
-        if (!viewModel.getTours().isEmpty()) {
-            toursList.getSelectionModel().selectFirst();
-        }
     }
 }

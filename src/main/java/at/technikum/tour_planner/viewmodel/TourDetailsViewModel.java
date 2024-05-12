@@ -7,56 +7,74 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class TourDetailsViewModel {
+    private static TourDetailsViewModel instance;
     private Tour selectedTour;
-    private static TourDetailsViewModel instance; // Singleton instance
+
     private final StringProperty name = new SimpleStringProperty();
     private final StringProperty description = new SimpleStringProperty();
     private final StringProperty origin = new SimpleStringProperty();
     private final StringProperty destination = new SimpleStringProperty();
-    private final BooleanProperty isAddButtonDisabled = new SimpleBooleanProperty(true);
+    private final BooleanProperty isAddButtonDisabled = new SimpleBooleanProperty();
     private final BooleanProperty isTourSelected = new SimpleBooleanProperty(false);
 
-    public Tour getSelectedTour() {
-        return this.selectedTour;
+    // Private constructor to ensure singleton pattern
+    private TourDetailsViewModel() {
+        isAddButtonDisabled.bind(name.isEmpty());
     }
+
+    // Public static method to create/get the singleton instance
+    public static synchronized TourDetailsViewModel getInstance() {
+        if (instance == null) {
+            instance = new TourDetailsViewModel();
+        }
+        return instance;
+    }
+
+    // Public methods to access and modify properties
     public void setSelectedTour(Tour tour) {
         selectedTour = tour;
-        isTourSelected.set(tour != null);  // This should correctly reflect the state
+        isTourSelected.set(tour != null);
         if (tour != null) {
-            setTourDetails(tour);  // Update the tour details
-        }
-    }
-    public void deleteSelectedTour() {
-        if (selectedTour != null) {
-            ToursTabViewModel.getInstance().removeTour(selectedTour);
-            setSelectedTour(null);  // Clear the selected tour
+            setTourDetails(tour);
+        } else {
+            clearTourDetails();
         }
     }
 
-    public void setTourDetails(Tour tour) {
+    private void setTourDetails(Tour tour) {
         name.set(tour.getName());
         description.set(tour.getDescription());
         origin.set(tour.getOrigin());
         destination.set(tour.getDestination());
     }
 
+    private void clearTourDetails() {
+        name.set("");
+        description.set("");
+        origin.set("");
+        destination.set("");
+    }
+
+    public void deleteSelectedTour() {
+        if (selectedTour != null) {
+            ToursTabViewModel.getInstance().removeTour(selectedTour);
+            setSelectedTour(null);
+        }
+    }
+
+    public Tour createTour() {
+        return new Tour(name.get(), description.get(), origin.get(), destination.get());
+    }
+
+    // Accessors for JavaFX properties
+    public BooleanProperty addButtonDisabledProperty() {
+        return isAddButtonDisabled;
+    }
+
     public BooleanProperty isTourSelectedProperty() {
         return isTourSelected;
     }
 
-    public TourDetailsViewModel() {
-        // Bind the BooleanProperty to whether the name property is empty
-        isAddButtonDisabled.bind(name.isEmpty());
-    }
-    public static TourDetailsViewModel getInstance() {
-        if (instance == null) {
-            instance = new TourDetailsViewModel();
-        }
-        return instance;
-    }
-    public BooleanProperty addButtonDisabledProperty() {
-        return isAddButtonDisabled;
-    }
     public StringProperty tourNameProperty() {
         return name;
     }
@@ -73,7 +91,7 @@ public class TourDetailsViewModel {
         return destination;
     }
 
-    public Tour createTour() {
-        return new Tour(name.get(), description.get(), origin.get(), destination.get());
+    public Tour getSelectedTour() {
+        return selectedTour;
     }
 }

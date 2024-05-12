@@ -19,9 +19,9 @@ public class TourDetailsView implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        bindProperties();
         transportType.getItems().setAll("Car", "Walk", "Bicycle");
         transportType.getSelectionModel().selectFirst();
+        bindProperties();
         addButton.disableProperty().bind(tourDetailsViewModel.addButtonDisabledProperty());
         deleteButton.disableProperty().bind(tourDetailsViewModel.isTourSelectedProperty().not());
     }
