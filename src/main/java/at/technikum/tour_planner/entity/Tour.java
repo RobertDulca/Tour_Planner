@@ -33,6 +33,22 @@ public class Tour {
     }
     public String getTransportType() { return transportType.get(); }
 
+    //Setters
+    public void setName(String name) {
+        this.name.set(name);
+    }
+    public void setDescription(String description) {
+        this.description.set(description);
+    }
+    public void setOrigin(String origin) {
+        this.from.set(origin);
+    }
+    public void setDestination(String destination) {
+        this.to.set(destination);
+    }
+    public void setTransportType(String transportType) { this.transportType.set(transportType); }
+
+
 
     //property methods
     public StringProperty nameProperty() {

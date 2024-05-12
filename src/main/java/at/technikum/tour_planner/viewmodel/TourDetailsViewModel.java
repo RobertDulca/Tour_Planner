@@ -31,6 +31,20 @@ public class TourDetailsViewModel {
         return instance;
     }
 
+    public void saveTourChanges() {
+        if (selectedTour != null) {
+            selectedTour.setName(name.get());
+            selectedTour.setDescription(description.get());
+            selectedTour.setOrigin(origin.get());
+            selectedTour.setDestination(destination.get());
+            selectedTour.setTransportType(transportType.get());
+            // Update the list or database entry here as needed
+            ToursTabViewModel.getInstance().updateTour(selectedTour);
+        }
+    }
+
+
+
     // Set the currently selected tour and update properties
     public void setSelectedTour(Tour tour) {
         selectedTour = tour;

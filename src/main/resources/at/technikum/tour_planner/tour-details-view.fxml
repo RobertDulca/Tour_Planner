@@ -14,8 +14,9 @@
             <ColumnConstraints maxWidth="377.59996795654297" minWidth="236.79996337890626" prefWidth="266.0"/>
         </columnConstraints>
         <Button fx:id="addButton" text="Add Tour" onAction="#onAddTour" GridPane.columnIndex="2" GridPane.rowIndex="9"/>
-        <Button fx:id="deleteButton" text="Delete Tour" onAction="#onDeleteTour" GridPane.columnIndex="2"
-                GridPane.rowIndex="10"/>
+        <Button fx:id="deleteButton" text="Delete Tour" onAction="#onDeleteTour" GridPane.columnIndex="2" GridPane.rowIndex="10"/>
+        <Button fx:id="editButton" text="Save Changes" onAction="#onEditTour" GridPane.columnIndex="2" GridPane.rowIndex="11"/>
+
         <Label text="Tour Name" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
         <Label text="Description" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
         <Label text="Origin" GridPane.columnIndex="1" GridPane.rowIndex="3"/>

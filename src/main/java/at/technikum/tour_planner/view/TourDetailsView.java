@@ -14,7 +14,12 @@ import java.util.ResourceBundle;
 public class TourDetailsView implements Initializable {
     @FXML private TextField tourName, tourDesc, from, to;
     @FXML private ChoiceBox<String> transportType;
-    @FXML private Button addButton, deleteButton;
+    @FXML private Button addButton, deleteButton, editButton;
+    @FXML
+    protected void onEditTour() {
+        tourDetailsViewModel.saveTourChanges();
+        clearFormFields();
+    }
     private final TourDetailsViewModel tourDetailsViewModel = TourDetailsViewModel.getInstance();
 
     @Override

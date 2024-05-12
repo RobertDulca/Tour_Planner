@@ -22,6 +22,15 @@ public class ToursTabViewModel {
         tours.add(tour);
     }
 
+    public void updateTour(Tour tour) {
+        // This might be more complex if you need to sync with a database
+        int index = tours.indexOf(tour);
+        if (index != -1) {
+            tours.set(index, tour);
+        }
+    }
+
+
     public void removeTour(Tour tour) {
         tours.remove(tour);
         // Adjust the selected tour based on remaining tours in the list
