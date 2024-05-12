@@ -29,7 +29,6 @@
         <TextField fx:id="tourDesc" promptText="Description" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
         <TextField fx:id="from" promptText="From" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
         <TextField fx:id="to" promptText="To" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
-        <ChoiceBox fx:id="transportType" prefHeight="26.0" prefWidth="325.0" GridPane.columnIndex="2"
-                   GridPane.rowIndex="5"/>
+        <ChoiceBox fx:id="transportType" prefHeight="26.0" prefWidth="325.0" GridPane.columnIndex="2" GridPane.rowIndex="5"/>
     </GridPane>
 </AnchorPane>

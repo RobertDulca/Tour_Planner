@@ -17,11 +17,12 @@ public class ToursTabView implements Initializable {
     @FXML private ListView<Tour> toursList;
 
     private void setupListView() {
-        toursList.setCellFactory(lv -> new TextFieldListCell<>(new StringConverter<Tour>() {
+        toursList.setCellFactory(lv -> new TextFieldListCell<>(new StringConverter<>() {
             @Override
             public String toString(Tour tour) {
                 return tour.getName(); // Display the name of the tour
             }
+
             @Override
             public Tour fromString(String string) {
                 return null; // Conversion back not required for display purposes

@@ -19,18 +19,30 @@ public class TourDetailsView implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        transportType.getItems().setAll("Car", "Walk", "Bicycle");
+        // Populate the choice box items
+        transportType.getItems().addAll("Car", "Walk", "Bicycle");
+
+        // Set initial selection to the first item to avoid null values
         transportType.getSelectionModel().selectFirst();
+
+        // Bind properties after initializing components to avoid initial state conflicts
         bindProperties();
+
+        // Additional UI setup not involving direct data binding
         addButton.disableProperty().bind(tourDetailsViewModel.addButtonDisabledProperty());
         deleteButton.disableProperty().bind(tourDetailsViewModel.isTourSelectedProperty().not());
     }
 
     private void bindProperties() {
+        // Bind text properties bidirectionally
         tourName.textProperty().bindBidirectional(tourDetailsViewModel.tourNameProperty());
         tourDesc.textProperty().bindBidirectional(tourDetailsViewModel.tourDescriptionProperty());
         from.textProperty().bindBidirectional(tourDetailsViewModel.fromProperty());
         to.textProperty().bindBidirectional(tourDetailsViewModel.toProperty());
+
+        // Handle transportType with care to prevent binding issues
+        transportType.valueProperty().unbind(); // Unbind any previous bindings to avoid conflicts
+        transportType.valueProperty().bindBidirectional(tourDetailsViewModel.transportTypeProperty());
     }
 
     @FXML
@@ -51,6 +63,6 @@ public class TourDetailsView implements Initializable {
         tourDesc.clear();
         from.clear();
         to.clear();
-        transportType.getSelectionModel().selectFirst();
+        transportType.getSelectionModel().selectFirst(); // Ensure reset to default after clearing
     }
 }
