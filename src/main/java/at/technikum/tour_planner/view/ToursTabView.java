@@ -1,5 +1,6 @@
 package at.technikum.tour_planner.view;
 
+import at.technikum.tour_planner.viewmodel.TourDetailsViewModel;
 import at.technikum.tour_planner.viewmodel.ToursTabViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,9 +14,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ToursTabView implements Initializable {
-
     private final ToursTabViewModel viewModel;
-
     public ToursTabView() {
         this.viewModel = ToursTabViewModel.getInstance(); // Use Singleton instance
     }
@@ -47,6 +46,14 @@ public class ToursTabView implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         toursList.setItems(viewModel.getTours());
         setupListView();
+        setupSelectionModel();
+    }
+    private void setupSelectionModel() {
+        toursList.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                TourDetailsViewModel.getInstance().setTourDetails(newSelection);
+            }
+        });
     }
 
     private void setupListView() {
@@ -55,7 +62,6 @@ public class ToursTabView implements Initializable {
             public String toString(Tour tour) {
                 return tour.getName(); // Assuming Tour class has a getName method
             }
-
             @Override
             public Tour fromString(String string) {
                 // Implementation not needed for this example

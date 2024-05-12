@@ -46,8 +46,9 @@ public class TourDetailsView implements Initializable {
     }
 
     public TourDetailsView() {
-        this.tourDetailsViewModel = new TourDetailsViewModel();
+        this.tourDetailsViewModel = TourDetailsViewModel.getInstance();
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -64,4 +65,5 @@ public class TourDetailsView implements Initializable {
         to.textProperty().bindBidirectional(tourDetailsViewModel.toProperty());
         tourDesc.textProperty().bindBidirectional(tourDetailsViewModel.tourDescriptionProperty());
     }
+
 }

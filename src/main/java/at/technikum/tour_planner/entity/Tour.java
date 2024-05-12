@@ -18,6 +18,15 @@ public class Tour {
     public String getName() {
         return name.get();
     }
+    public String getDescription() {
+        return description.get();
+    }
+    public String getOrigin() {
+        return from.get();
+    }
+    public String getDestination() {
+        return to.get();
+    }
 
     public StringProperty nameProperty() {
         return name;
