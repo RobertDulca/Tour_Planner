@@ -46,29 +46,22 @@ public class Tour {
     public void setOrigin(String origin) {
         this.from.set(origin);
     }
-    public void setDestination(String destination) {
-        this.to.set(destination);
-    }
+    public void setDestination(String destination) { this.to.set(destination); }
     public void setTransportType(String transportType) { this.transportType.set(transportType); }
     public void setImageUrl(String imageUrl) { this.imageUrl.set(imageUrl); }
 
+    /*
+    public StringProperty nameProperty() { return name; }
 
+    public StringProperty descriptionProperty() { return description; }
 
-    //property methods
-    public StringProperty nameProperty() {
-        return name;
-    }
-
-    public StringProperty descriptionProperty() {
-        return description;
-    }
-
-    public StringProperty originProperty() {
-        return from;
-    }
+    public StringProperty originProperty() { return from; }
 
     public StringProperty destinationProperty() { return to; }
 
     public StringProperty transportTypeProperty() { return transportType; }
+
     public StringProperty imageUrlProperty() { return imageUrl; }
+
+     */
 }
