@@ -33,6 +33,8 @@ public class TourDetailsView implements Initializable {
 
         addButton.disableProperty().bind(tourDetailsViewModel.addButtonDisabledProperty());
         deleteButton.disableProperty().bind(tourDetailsViewModel.isTourSelectedProperty().not());
+        editButton.disableProperty().bind(tourDetailsViewModel.isTourSelectedProperty().not());  // Disable edit button when no tour is selected
+
     }
 
     private void bindProperties() {

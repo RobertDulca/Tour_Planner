@@ -43,8 +43,6 @@ public class TourDetailsViewModel {
         }
     }
 
-
-
     // Set the currently selected tour and update properties
     public void setSelectedTour(Tour tour) {
         selectedTour = tour;
