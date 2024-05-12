@@ -1,15 +1,26 @@
 package at.technikum.tour_planner.viewmodel;
 
+import at.technikum.tour_planner.entity.Tour;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class TourDetailsViewModel {
     private final StringProperty name = new SimpleStringProperty();
     private final StringProperty description = new SimpleStringProperty();
-    private final StringProperty from = new SimpleStringProperty();
-    private final StringProperty to = new SimpleStringProperty();
-    private final StringProperty transportType = new SimpleStringProperty();
+    private final StringProperty origin = new SimpleStringProperty();
+    private final StringProperty destination = new SimpleStringProperty();
+    private final BooleanProperty isAddButtonDisabled = new SimpleBooleanProperty(true);
 
+
+    public TourDetailsViewModel() {
+        // Bind the BooleanProperty to whether the name property is empty
+        isAddButtonDisabled.bind(name.isEmpty());
+    }
+    public BooleanProperty addButtonDisabledProperty() {
+        return isAddButtonDisabled;
+    }
     public StringProperty tourNameProperty() {
         return name;
     }
@@ -19,14 +30,14 @@ public class TourDetailsViewModel {
     }
 
     public StringProperty fromProperty() {
-        return from;
+        return origin;
     }
 
     public StringProperty toProperty() {
-        return to;
+        return destination;
     }
 
-    public StringProperty transportTypeProperty() {
-        return transportType;
+    public Tour createTour() {
+        return new Tour(name.get(), description.get(), origin.get(), destination.get());
     }
 }

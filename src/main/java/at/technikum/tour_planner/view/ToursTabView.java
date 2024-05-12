@@ -5,6 +5,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.cell.TextFieldListCell;
+import javafx.util.StringConverter;
+import at.technikum.tour_planner.entity.Tour;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -12,36 +15,52 @@ import java.util.ResourceBundle;
 public class ToursTabView implements Initializable {
 
     private final ToursTabViewModel viewModel;
-    public ToursTabView(){
-        viewModel = new ToursTabViewModel();
+
+    public ToursTabView() {
+        this.viewModel = ToursTabViewModel.getInstance(); // Use Singleton instance
     }
 
     @FXML
-    public Button addTourButton;
+    private Button addTourButton;
     @FXML
-    public Button removeTourButton;
+    private Button removeTourButton;
     @FXML
-    public Button editTourButton;
+    private Button editTourButton;
     @FXML
-    private ListView <String> toursList;
+    private ListView<Tour> toursList;
 
     @FXML
     public void onAddTour() {
-        viewModel.addTour("New Tour");
+        // Removed the addTour functionality for now
     }
 
     @FXML
     public void onRemoveTour() {
-        String selectedTour = toursList.getSelectionModel().getSelectedItem();
-        viewModel.removeTour(selectedTour);
+        // Removed the removeTour functionality for now
     }
 
     @FXML
     public void onEditTour() {
         //Edit Logic
     }
-    @FXML
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
         toursList.setItems(viewModel.getTours());
+        setupListView();
+    }
+
+    private void setupListView() {
+        toursList.setCellFactory(lv -> new TextFieldListCell<>(new StringConverter<Tour>() {
+            @Override
+            public String toString(Tour tour) {
+                return tour.getName(); // Assuming Tour class has a getName method
+            }
+
+            @Override
+            public Tour fromString(String string) {
+                // Implementation not needed for this example
+                return null;
+            }
+        }));
     }
 }

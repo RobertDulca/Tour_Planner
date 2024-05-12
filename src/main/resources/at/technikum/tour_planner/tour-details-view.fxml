@@ -32,5 +32,9 @@
             <TextField fx:id="to" promptText="To" GridPane.columnIndex="2" GridPane.rowIndex="4" />
             <ChoiceBox fx:id="transportType" prefHeight="26.0" prefWidth="325.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
         </children>
+        <!-- Add this button within the existing GridPane or appropriate layout section -->
+        <Button fx:id="addButton" text="Add Tour" onAction="#onAddTour" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+
+
     </GridPane>
 </AnchorPane>
