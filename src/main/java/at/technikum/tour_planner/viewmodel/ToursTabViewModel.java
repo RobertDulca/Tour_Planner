@@ -5,8 +5,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class ToursTabViewModel {
-    private static ToursTabViewModel instance = new ToursTabViewModel();
-    private ObservableList<Tour> tours = FXCollections.observableArrayList();
+    private static final ToursTabViewModel instance = new ToursTabViewModel();
+    private final ObservableList<Tour> tours = FXCollections.observableArrayList();
 
     private ToursTabViewModel() {}
 
@@ -20,5 +20,10 @@ public class ToursTabViewModel {
 
     public void addTour(Tour tour) {
         tours.add(tour);
+    }
+
+    public void removeTour(Tour tour) {
+        tours.remove(tour);
+        TourDetailsViewModel.getInstance().setSelectedTour(tours.isEmpty() ? null : tours.get(0));
     }
 }

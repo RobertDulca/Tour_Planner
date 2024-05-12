@@ -7,24 +7,32 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class TourDetailsViewModel {
+    private Tour selectedTour;
     private static TourDetailsViewModel instance; // Singleton instance
     private final StringProperty name = new SimpleStringProperty();
     private final StringProperty description = new SimpleStringProperty();
     private final StringProperty origin = new SimpleStringProperty();
     private final StringProperty destination = new SimpleStringProperty();
     private final BooleanProperty isAddButtonDisabled = new SimpleBooleanProperty(true);
+    private final BooleanProperty isTourSelected = new SimpleBooleanProperty(false);
 
-    public TourDetailsViewModel() {
-        // Bind the BooleanProperty to whether the name property is empty
-        isAddButtonDisabled.bind(name.isEmpty());
+    public Tour getSelectedTour() {
+        return this.selectedTour;
     }
-
-    public static TourDetailsViewModel getInstance() {
-        if (instance == null) {
-            instance = new TourDetailsViewModel();
+    public void setSelectedTour(Tour tour) {
+        selectedTour = tour;
+        isTourSelected.set(tour != null);  // This should correctly reflect the state
+        if (tour != null) {
+            setTourDetails(tour);  // Update the tour details
         }
-        return instance;
     }
+    public void deleteSelectedTour() {
+        if (selectedTour != null) {
+            ToursTabViewModel.getInstance().removeTour(selectedTour);
+            setSelectedTour(null);  // Clear the selected tour
+        }
+    }
+
     public void setTourDetails(Tour tour) {
         name.set(tour.getName());
         description.set(tour.getDescription());
@@ -32,6 +40,20 @@ public class TourDetailsViewModel {
         destination.set(tour.getDestination());
     }
 
+    public BooleanProperty isTourSelectedProperty() {
+        return isTourSelected;
+    }
+
+    public TourDetailsViewModel() {
+        // Bind the BooleanProperty to whether the name property is empty
+        isAddButtonDisabled.bind(name.isEmpty());
+    }
+    public static TourDetailsViewModel getInstance() {
+        if (instance == null) {
+            instance = new TourDetailsViewModel();
+        }
+        return instance;
+    }
     public BooleanProperty addButtonDisabledProperty() {
         return isAddButtonDisabled;
     }
