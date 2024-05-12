@@ -18,8 +18,7 @@ public class TourDetailsView implements Initializable {
     @FXML private TextField tourName, tourDesc, from, to;
     @FXML private ChoiceBox<String> transportType;
     @FXML private Button addButton, deleteButton, editButton;
-    @FXML private ImageView routeImageView;
-
+    @FXML private ImageView mapImageView;
     @FXML
     protected void onEditTour() {
         tourDetailsViewModel.saveTourChanges();
@@ -49,11 +48,22 @@ public class TourDetailsView implements Initializable {
         from.textProperty().bindBidirectional(tourDetailsViewModel.fromProperty());
         to.textProperty().bindBidirectional(tourDetailsViewModel.toProperty());
 
-        // Bind and ensure "Select Transport" is treated as null for the transport type
+        // Bind transport type and handle placeholder logic
         transportType.valueProperty().bindBidirectional(tourDetailsViewModel.transportTypeProperty());
         tourDetailsViewModel.transportTypeProperty().addListener((obs, oldVal, newVal) -> {
             if ("Select Transport".equals(newVal)) {
                 tourDetailsViewModel.transportTypeProperty().set(null);  // Reset to null if placeholder is selected
+            }
+        });
+
+        // Bind the image URL property to update the ImageView
+        tourDetailsViewModel.imageUrlProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null && !newVal.isEmpty()) {
+                // Update the image view with the new image URL
+                mapImageView.setImage(new Image(newVal));
+            } else {
+                // Set to a placeholder image if the URL is empty or null
+                mapImageView.setImage(new Image("src/main/resources/img.png"));
             }
         });
     }

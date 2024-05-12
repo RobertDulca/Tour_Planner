@@ -17,6 +17,11 @@ public class TourDetailsViewModel {
     private final StringProperty transportType = new SimpleStringProperty();
     private final BooleanProperty isAddButtonDisabled = new SimpleBooleanProperty();
     private final BooleanProperty isTourSelected = new SimpleBooleanProperty(false);
+    private final StringProperty imageUrl = new SimpleStringProperty();
+
+    public StringProperty imageUrlProperty() {
+        return imageUrl;
+    }
 
     // Private constructor to enforce singleton pattern
     private TourDetailsViewModel() {
@@ -61,6 +66,7 @@ public class TourDetailsViewModel {
         origin.set(tour.getOrigin());
         destination.set(tour.getDestination());
         transportType.set(tour.getTransportType());
+        imageUrl.set(tour.getImageUrl());
     }
 
     // Clear all properties when no tour is selected
@@ -83,7 +89,7 @@ public class TourDetailsViewModel {
 
     // Create a new tour based on the current properties
     public Tour createTour() {
-        return new Tour(name.get(), description.get(), origin.get(), destination.get(), transportType.get());
+        return new Tour(name.get(), description.get(), origin.get(), destination.get(), transportType.get(), imageUrl.get());
     }
 
     // Accessor methods for JavaFX properties

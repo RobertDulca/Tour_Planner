@@ -43,7 +43,7 @@
         <Label text="Estimated Time" GridPane.columnIndex="0" GridPane.rowIndex="7" />
         <Label text="Route Information" GridPane.columnIndex="0" GridPane.rowIndex="8" />
 
-        <ImageView fx:id="routeImageView" fitHeight="200" fitWidth="400" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowSpan="8">
+        <ImageView fx:id="mapImageView" fitHeight="200" fitWidth="400" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowSpan="8">
             <image>
                 <Image url="@/img.png" />
             </image>
