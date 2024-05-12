@@ -20,7 +20,7 @@ public class TourDetailsViewModel {
 
     // Private constructor to enforce singleton pattern
     private TourDetailsViewModel() {
-        isAddButtonDisabled.bind(name.isEmpty().or(origin.isEmpty()).or(destination.isEmpty()));  // Improved condition
+        isAddButtonDisabled.bind(name.isEmpty().or(origin.isEmpty()).or(destination.isEmpty()).or(transportType.isEmpty()));  // Improved condition
     }
 
     // Get the singleton instance of TourDetailsViewModel
@@ -52,12 +52,13 @@ public class TourDetailsViewModel {
     }
 
     // Clear all properties when no tour is selected
-    private void clearTourDetails() {
+    public void clearTourDetails() {
         name.set("");
         description.set("");
         origin.set("");
         destination.set("");
         transportType.set("");
+        isTourSelected.set(false);  // Update to indicate no tour is selected
     }
 
     // Remove the selected tour from the list and clear selection

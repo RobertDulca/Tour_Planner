@@ -24,6 +24,12 @@ public class ToursTabViewModel {
 
     public void removeTour(Tour tour) {
         tours.remove(tour);
-        TourDetailsViewModel.getInstance().setSelectedTour(tours.isEmpty() ? null : tours.get(0));
+        // Adjust the selected tour based on remaining tours in the list
+        if (!tours.isEmpty()) {
+            TourDetailsViewModel.getInstance().setSelectedTour(tours.get(0));
+        } else {
+            // When no tours remain, explicitly clear tour details
+            TourDetailsViewModel.getInstance().clearTourDetails();
+        }
     }
 }

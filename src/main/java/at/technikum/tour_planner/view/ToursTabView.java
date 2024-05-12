@@ -25,7 +25,7 @@ public class ToursTabView implements Initializable {
 
             @Override
             public Tour fromString(String string) {
-                return null; // Conversion back not required for display purposes
+                return null; // Not required here
             }
         }));
     }
@@ -34,6 +34,9 @@ public class ToursTabView implements Initializable {
         toursList.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 TourDetailsViewModel.getInstance().setSelectedTour(newSelection);
+            } else {
+                // Clear tour details explicitly when there is no selection
+                TourDetailsViewModel.getInstance().clearTourDetails();
             }
         });
     }

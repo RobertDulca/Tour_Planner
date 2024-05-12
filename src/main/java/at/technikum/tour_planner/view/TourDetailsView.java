@@ -19,37 +19,39 @@ public class TourDetailsView implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Populate the choice box items
-        transportType.getItems().addAll("Car", "Walk", "Bicycle");
+        // Initialize ChoiceBox with a placeholder for no selection
+        transportType.getItems().addAll("Select Transport", "Car", "Walk", "Bicycle");
+        // Explicitly set the initial selection to the placeholder
+        transportType.getSelectionModel().select("Select Transport");  // Selects "Select Transport" explicitly
 
-        // Set initial selection to the first item to avoid null values
-        transportType.getSelectionModel().selectFirst();
-
-        // Bind properties after initializing components to avoid initial state conflicts
         bindProperties();
 
-        // Additional UI setup not involving direct data binding
         addButton.disableProperty().bind(tourDetailsViewModel.addButtonDisabledProperty());
         deleteButton.disableProperty().bind(tourDetailsViewModel.isTourSelectedProperty().not());
     }
 
     private void bindProperties() {
-        // Bind text properties bidirectionally
         tourName.textProperty().bindBidirectional(tourDetailsViewModel.tourNameProperty());
         tourDesc.textProperty().bindBidirectional(tourDetailsViewModel.tourDescriptionProperty());
         from.textProperty().bindBidirectional(tourDetailsViewModel.fromProperty());
         to.textProperty().bindBidirectional(tourDetailsViewModel.toProperty());
 
-        // Handle transportType with care to prevent binding issues
-        transportType.valueProperty().unbind(); // Unbind any previous bindings to avoid conflicts
+        // Bind and ensure "Select Transport" is treated as null for the transport type
         transportType.valueProperty().bindBidirectional(tourDetailsViewModel.transportTypeProperty());
+        tourDetailsViewModel.transportTypeProperty().addListener((obs, oldVal, newVal) -> {
+            if ("Select Transport".equals(newVal)) {
+                tourDetailsViewModel.transportTypeProperty().set(null);  // Reset to null if placeholder is selected
+            }
+        });
     }
 
     @FXML
     protected void onAddTour() {
-        Tour newTour = tourDetailsViewModel.createTour();
-        ToursTabViewModel.getInstance().addTour(newTour);
-        clearFormFields();
+        if (!"Select Transport".equals(transportType.getValue())) {
+            Tour newTour = tourDetailsViewModel.createTour();
+            ToursTabViewModel.getInstance().addTour(newTour);
+            clearFormFields();
+        }
     }
 
     @FXML
@@ -63,6 +65,6 @@ public class TourDetailsView implements Initializable {
         tourDesc.clear();
         from.clear();
         to.clear();
-        transportType.getSelectionModel().selectFirst(); // Ensure reset to default after clearing
+        transportType.getSelectionModel().select("Select Transport"); // Reset to "Select Transport" after operations
     }
 }
