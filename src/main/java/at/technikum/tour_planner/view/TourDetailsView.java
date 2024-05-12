@@ -8,6 +8,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -15,6 +18,8 @@ public class TourDetailsView implements Initializable {
     @FXML private TextField tourName, tourDesc, from, to;
     @FXML private ChoiceBox<String> transportType;
     @FXML private Button addButton, deleteButton, editButton;
+    @FXML private ImageView routeImageView;
+
     @FXML
     protected void onEditTour() {
         tourDetailsViewModel.saveTourChanges();
@@ -24,6 +29,7 @@ public class TourDetailsView implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         // Initialize ChoiceBox with a placeholder for no selection
         transportType.getItems().addAll("Select Transport", "Car", "Walk", "Bicycle");
         // Explicitly set the initial selection to the placeholder
