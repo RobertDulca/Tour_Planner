@@ -24,8 +24,6 @@ public class TourLogOverviewViewModel {
         this.tourLogOverviewService = tourLogOverviewService;
 
         this.selectedTourLogIndex.addListener(observable -> selectTourLog());
-
-        this.publisher.subscribe(Event.TOUR_LOG_SELECTED, this::updateTourLogs);
     }
 
     public void selectTourLog() {

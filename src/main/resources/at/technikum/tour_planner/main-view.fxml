@@ -32,8 +32,8 @@
             </Tab>
             <Tab text="Tour Logs">
               <HBox>
-                <fx:include fx:id="tourLogOverview" source="tour-log-overview.fxml" />
-                <fx:include fx:id="tourLogDetails" source="tour-log-details.fxml" />
+                <fx:include  source="tour-log-overview.fxml" />
+                <fx:include  source="tour-log-details.fxml" />
               </HBox>
             </Tab>
           </tabs>

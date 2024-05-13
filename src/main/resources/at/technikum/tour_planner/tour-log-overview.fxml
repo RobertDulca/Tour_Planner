@@ -14,7 +14,7 @@
         <Label text="MediaOverview_Items" />
         <Pane HBox.hgrow="ALWAYS" />
         <Button text="+" />
-        <Button fx:id="deleteButton" text="-" />
+        <Button text="-" />
     </ToolBar>
     <ListView fx:id="tourLogList" VBox.vgrow="ALWAYS" />
    <padding>

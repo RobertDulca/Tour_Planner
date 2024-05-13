@@ -26,20 +26,6 @@ public class Publisher {
         subscriberMap.put(event, subscribers);
     }
 
-    // publish(event, message)
-    public void publish(Event event, String message) {
-        List<Subscriber> subscribers = subscriberMap.get(event);
-
-        if (null == subscribers) {
-            // TODO: Log this event
-            return;
-        }
-
-        for (Subscriber subscriber: subscribers) {
-            subscriber.notify(message);
-        }
-    }
-
     public void publish(Event event, Object object) {
         List<Subscriber> subscribers = subscriberMap.get(event);
 

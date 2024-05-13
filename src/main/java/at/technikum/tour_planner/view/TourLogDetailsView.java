@@ -1,5 +1,6 @@
 package at.technikum.tour_planner.view;
 
+import at.technikum.tour_planner.entity.TourLogModel;
 import at.technikum.tour_planner.viewmodel.TourLogDetailsViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,6 +16,7 @@ import java.util.ResourceBundle;
 
 public class TourLogDetailsView implements Initializable {
     private final TourLogDetailsViewModel tourLogDetailsViewModel;
+
     @FXML
     private DatePicker tourLogDate;
     @FXML
@@ -26,8 +28,8 @@ public class TourLogDetailsView implements Initializable {
     @FXML
     private TextArea tourLogComment;
 
-    public TourLogDetailsView() {
-        this.tourLogDetailsViewModel = new TourLogDetailsViewModel();
+    public TourLogDetailsView(TourLogDetailsViewModel tourLogModel) {
+        this.tourLogDetailsViewModel = tourLogModel;
     }
 
 
@@ -42,5 +44,10 @@ public class TourLogDetailsView implements Initializable {
         tourLogTime.textProperty().bindBidirectional(tourLogDetailsViewModel.totalTimeProperty(), new NumberStringConverter());
         tourLogRating.ratingProperty().bindBidirectional(tourLogDetailsViewModel.ratingProperty());
         tourLogComment.textProperty().bindBidirectional(tourLogDetailsViewModel.commentProperty());
+    }
+
+    @FXML
+    public void saveTourLog() {
+        this.tourLogDetailsViewModel.saveTourLog();
     }
 }

@@ -14,12 +14,13 @@ public class TourLogOverviewView implements Initializable {
     @FXML
     public ListView<TourLogModel> tourLogList;
 
-    public TourLogOverviewView() {
-        this.tourLogOverviewViewModel = new TourLogOverviewViewModel();
+    public TourLogOverviewView(TourLogOverviewViewModel tourLogOverviewViewModel) {
+        this.tourLogOverviewViewModel = tourLogOverviewViewModel;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.tourLogList.setItems(tourLogOverviewViewModel.getTourLogs());
+        this.tourLogOverviewViewModel.selectedTourLogIndexProperty().bind(tourLogList.getSelectionModel().selectedIndexProperty());
     }
 }
