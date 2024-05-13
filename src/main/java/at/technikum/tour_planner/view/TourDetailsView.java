@@ -28,11 +28,8 @@ public class TourDetailsView implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-        // Initialize ChoiceBox with a placeholder for no selection
         transportType.getItems().addAll("Select Transport", "Car", "Walk", "Bicycle");
-        // Explicitly set the initial selection to the placeholder
-        transportType.getSelectionModel().select("Select Transport");  // Selects "Select Transport" explicitly
+        transportType.getSelectionModel().select("Select Transport");
 
         bindProperties();
 
@@ -41,28 +38,27 @@ public class TourDetailsView implements Initializable {
         editButton.disableProperty().bind(tourDetailsViewModel.isTourSelectedProperty().not());  // Disable edit button when no tour is selected
 
     }
-
     private void bindProperties() {
         tourName.textProperty().bindBidirectional(tourDetailsViewModel.tourNameProperty());
         tourDesc.textProperty().bindBidirectional(tourDetailsViewModel.tourDescriptionProperty());
         from.textProperty().bindBidirectional(tourDetailsViewModel.fromProperty());
         to.textProperty().bindBidirectional(tourDetailsViewModel.toProperty());
 
-        // Bind transport type and handle placeholder logic
         transportType.valueProperty().bindBidirectional(tourDetailsViewModel.transportTypeProperty());
+        // Reset transport type to null if placeholder is selected
         tourDetailsViewModel.transportTypeProperty().addListener((obs, oldVal, newVal) -> {
             if ("Select Transport".equals(newVal)) {
-                tourDetailsViewModel.transportTypeProperty().set(null);  // Reset to null if placeholder is selected
+                tourDetailsViewModel.transportTypeProperty().set(null);
             }
         });
 
-        // Bind the image URL property to update the ImageView
+        // Bind image property to update the ImageView
         tourDetailsViewModel.imageUrlProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null && !newVal.isEmpty()) {
-                // Update the image view with the new image URL
+                // Update image with new URL
                 mapImageView.setImage(new Image(newVal));
             } else {
-                // Set to a placeholder image if the URL is empty or null
+                // Set to placeholder image if the URL is empty or null
                 mapImageView.setImage(new Image("src/main/resources/img.png"));
             }
         });
@@ -83,11 +79,12 @@ public class TourDetailsView implements Initializable {
         clearFormFields();
     }
 
+    // Clear form fields after operations
     private void clearFormFields() {
         tourName.clear();
         tourDesc.clear();
         from.clear();
         to.clear();
-        transportType.getSelectionModel().select("Select Transport"); // Reset to "Select Transport" after operations
+        transportType.getSelectionModel().select("Select Transport");
     }
 }

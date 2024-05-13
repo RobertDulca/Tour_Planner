@@ -7,9 +7,10 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class TourDetailsViewModel {
+
+    // Singleton instance
     private static TourDetailsViewModel instance;
     private Tour selectedTour;
-
     private final StringProperty name = new SimpleStringProperty();
     private final StringProperty description = new SimpleStringProperty();
     private final StringProperty origin = new SimpleStringProperty();
@@ -23,12 +24,11 @@ public class TourDetailsViewModel {
         return imageUrl;
     }
 
-    // Private constructor to enforce singleton pattern
     private TourDetailsViewModel() {
         isAddButtonDisabled.bind(name.isEmpty().or(origin.isEmpty()).or(destination.isEmpty()).or(transportType.isEmpty()));  // Improved condition
     }
 
-    // Get the singleton instance of TourDetailsViewModel
+    // Get singleton instance of TourDetailsViewModel
     public static synchronized TourDetailsViewModel getInstance() {
         if (instance == null) {
             instance = new TourDetailsViewModel();
@@ -43,7 +43,6 @@ public class TourDetailsViewModel {
             selectedTour.setOrigin(origin.get());
             selectedTour.setDestination(destination.get());
             selectedTour.setTransportType(transportType.get());
-            // Update the list or database entry here as needed
             ToursTabViewModel.getInstance().updateTour(selectedTour);
         }
     }
@@ -76,10 +75,10 @@ public class TourDetailsViewModel {
         origin.set("");
         destination.set("");
         transportType.set("");
-        isTourSelected.set(false);  // Update to indicate no tour is selected
+        isTourSelected.set(false);  // indicate no tour selected
     }
 
-    // Remove the selected tour from the list and clear selection
+    // Remove the selected tour from list & clear selection
     public void deleteSelectedTour() {
         if (selectedTour != null) {
             ToursTabViewModel.getInstance().removeTour(selectedTour);
@@ -87,7 +86,6 @@ public class TourDetailsViewModel {
         }
     }
 
-    // Create a new tour based on the current properties
     public Tour createTour() {
         return new Tour(name.get(), description.get(), origin.get(), destination.get(), transportType.get(), imageUrl.get());
     }
