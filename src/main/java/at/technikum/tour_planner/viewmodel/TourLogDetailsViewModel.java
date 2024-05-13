@@ -3,12 +3,18 @@ package at.technikum.tour_planner.viewmodel;
 import at.technikum.tour_planner.entity.TourLogModel;
 import at.technikum.tour_planner.event.Event;
 import at.technikum.tour_planner.event.Publisher;
+import at.technikum.tour_planner.repository.TourLogOverviewRepository;
 import at.technikum.tour_planner.service.TourLogOverviewService;
 import javafx.beans.property.*;
 
 import java.time.LocalDate;
 
 public class TourLogDetailsViewModel {
+    private static final TourLogDetailsViewModel instance = new TourLogDetailsViewModel(new Publisher(), new TourLogOverviewService(new TourLogOverviewRepository()));
+
+    public static TourLogDetailsViewModel getInstance() {
+        return instance;
+    }
 
     private final LongProperty tourLogID = new SimpleLongProperty();
 
@@ -29,7 +35,6 @@ public class TourLogDetailsViewModel {
         if (tourLogDetails instanceof TourLogModel) {
             TourLogModel log = (TourLogModel) tourLogDetails;
             tourLogModel = log;
-            tourLogID.set(log.getTourLogId());
             date.set(log.getDate());
             comment.set(log.getComment());
             difficulty.set(log.getDifficulty());

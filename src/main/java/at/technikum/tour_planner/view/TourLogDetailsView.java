@@ -15,7 +15,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class TourLogDetailsView implements Initializable {
-    private final TourLogDetailsViewModel tourLogDetailsViewModel;
+    private final TourLogDetailsViewModel tourLogDetailsViewModel = TourLogDetailsViewModel.getInstance();
 
     @FXML
     private DatePicker tourLogDate;
@@ -28,9 +28,9 @@ public class TourLogDetailsView implements Initializable {
     @FXML
     private TextArea tourLogComment;
 
-    public TourLogDetailsView(TourLogDetailsViewModel tourLogModel) {
+    /*public TourLogDetailsView(TourLogDetailsViewModel tourLogModel) {
         this.tourLogDetailsViewModel = tourLogModel;
-    }
+    }*/
 
 
     @Override

@@ -3,6 +3,7 @@ package at.technikum.tour_planner.viewmodel;
 import at.technikum.tour_planner.entity.TourLogModel;
 import at.technikum.tour_planner.event.Event;
 import at.technikum.tour_planner.event.Publisher;
+import at.technikum.tour_planner.repository.TourLogOverviewRepository;
 import at.technikum.tour_planner.service.TourLogOverviewService;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -14,6 +15,12 @@ public class TourLogOverviewViewModel {
     private final Publisher publisher;
 
     private final TourLogOverviewService tourLogOverviewService;
+
+    public static TourLogOverviewViewModel getInstance() {
+        return instance;
+    }
+
+    private static final TourLogOverviewViewModel instance = new TourLogOverviewViewModel(new Publisher(), new TourLogOverviewService(new TourLogOverviewRepository()));
 
     private final ObservableList<TourLogModel> tourLogs = FXCollections.observableArrayList();
 

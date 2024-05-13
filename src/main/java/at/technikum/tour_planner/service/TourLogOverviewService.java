@@ -16,9 +16,9 @@ public class TourLogOverviewService {
         tourLogOverviewRepository.save(new TourLogModel(term));
     }
 
-    public List<Long> findAll() {
+    public List<Integer> findAll() {
         return tourLogOverviewRepository.findAll().stream()
-                .map(TourLogModel::getTourLogId)
+                .map(TourLogModel::getRating)
                 .toList();
     }
 }

@@ -3,7 +3,6 @@ package at.technikum.tour_planner.entity;
 import java.time.LocalDate;
 
 public class TourLogModel {
-    private long tourLogId;
     private LocalDate date;
     private String comment;
     private int difficulty;
@@ -12,20 +11,11 @@ public class TourLogModel {
     private int rating;
 
     public TourLogModel(TourLogModel term) {
-        this.tourLogId = term.tourLogId;
         this.date = term.date;
         this.comment = term.comment;
         this.difficulty = term.difficulty;
         this.totalTime = term.totalTime;
         this.rating = term.rating;
-    }
-
-    public long getTourLogId() {
-        return tourLogId;
-    }
-
-    public void setTourLogId(long tourLogId) {
-        this.tourLogId = tourLogId;
     }
 
     public LocalDate getDate() {
