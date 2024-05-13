@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <?import javafx.geometry.Insets?>
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="at.technikum.tour_planner.view.SearchBarView">
 
-    <HBox alignment="CENTER_LEFT" >
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="at.technikum.tour_planner.view.SearchBarView">
+    <HBox alignment="CENTER_LEFT" spacing="10.0" AnchorPane.topAnchor="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
         <padding>
-            <Insets bottom="10" left="10" right="10" top="10" />
+            <Insets top="10.0" right="10.0" bottom="10.0" left="10.0"/>
         </padding>
-        <TextField fx:id="searchBar" minWidth="600" promptText="Search..." />
-        <Button fx:id="searchButton" text="Search" />
+        <children>
+            <TextField fx:id="searchBar" HBox.hgrow="ALWAYS" minWidth="600.0" promptText="Search..." />
+            <Button fx:id="searchButton" text="Search" minWidth="100.0" />
+        </children>
     </HBox>
 </AnchorPane>
