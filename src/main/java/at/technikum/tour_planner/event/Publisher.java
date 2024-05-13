@@ -39,4 +39,16 @@ public class Publisher {
             subscriber.notify(message);
         }
     }
+
+    public void publish(Event event, Object object) {
+        List<Subscriber> subscribers = subscriberMap.get(event);
+
+        if (null == subscribers) {
+            return;
+        }
+
+        for (Subscriber subscriber : subscribers) {
+            subscriber.notify(object);
+        }
+    }
 }

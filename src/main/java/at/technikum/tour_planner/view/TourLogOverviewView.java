@@ -20,6 +20,6 @@ public class TourLogOverviewView implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        this.tourLogList.setItems(tourLogOverviewViewModel.getTourLogs());
     }
 }
