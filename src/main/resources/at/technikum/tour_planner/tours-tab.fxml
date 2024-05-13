@@ -9,9 +9,9 @@
             <HBox alignment="CENTER_LEFT" spacing="5">
                 <Label prefWidth="250.0" text="Tours" />
                 <HBox alignment="CENTER_RIGHT">
-                    <Button fx:id="addTourButton" onAction="#onAddTour" text="+"/>
-                    <Button fx:id="removeTourButton" onAction="#onRemoveTour" text="-"/>
-                    <Button fx:id="editTourButton" onAction="#onEditTour" text="..."/>
+                    <Button text="+"/>
+                    <Button text="-"/>
+                    <Button text="..."/>
                 </HBox>
             </HBox>
         </graphic>

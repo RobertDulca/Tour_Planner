@@ -1,23 +1,44 @@
 package at.technikum.tour_planner.viewmodel;
 
+import at.technikum.tour_planner.entity.Tour;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class ToursTabViewModel {
+    private static final ToursTabViewModel instance = new ToursTabViewModel();
+    private final ObservableList<Tour> tours = FXCollections.observableArrayList();
 
-    private ObservableList<String> tours = FXCollections.observableArrayList();
+    private ToursTabViewModel() {}
 
-    public ObservableList<String> getTours() {
+    public static ToursTabViewModel getInstance() {
+        return instance;
+    }
+
+    public ObservableList<Tour> getTours() {
         return tours;
     }
 
-    public void addTour(String tour){
+    public void addTour(Tour tour) {
         tours.add(tour);
     }
-    public void removeTour(String tour){
-        tours.remove(tour);
+
+    public void updateTour(Tour tour) {
+        // This might be more complex if you need to sync with a database
+        int index = tours.indexOf(tour);
+        if (index != -1) {
+            tours.set(index, tour);
+        }
     }
-    public void editTour(String tour){
-        //Edit Logic
+
+
+    public void removeTour(Tour tour) {
+        tours.remove(tour);
+        // Adjust the selected tour based on remaining tours in the list
+        if (!tours.isEmpty()) {
+            TourDetailsViewModel.getInstance().setSelectedTour(tours.get(0));
+        } else {
+            // When no tours remain, explicitly clear tour details
+            TourDetailsViewModel.getInstance().clearTourDetails();
+        }
     }
 }
