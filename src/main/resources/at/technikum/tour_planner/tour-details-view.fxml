@@ -6,11 +6,11 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.tour_planner.view.TourDetailsView">
-    <GridPane hgap="10" vgap="10" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+    <GridPane hgap="10" vgap="10" AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" percentWidth="33.3" />
             <ColumnConstraints hgrow="SOMETIMES" percentWidth="33.3" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="236.0" percentWidth="33.3" /> <!-- New column for the image -->
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="236.0" percentWidth="33.3" />
         </columnConstraints>
         <rowConstraints>
             <RowConstraints vgrow="SOMETIMES" />
@@ -24,16 +24,13 @@
             <RowConstraints vgrow="SOMETIMES" />
             <RowConstraints vgrow="SOMETIMES" />
             <RowConstraints vgrow="SOMETIMES" />
-            <RowConstraints vgrow="SOMETIMES" />
-         <RowConstraints />
+            <RowConstraints vgrow="SOMETIMES" minHeight="40" /> <!-- Ensure adequate minimum height -->
         </rowConstraints>
 
-        <!-- Relocating all interactive buttons to the middle column -->
         <Button fx:id="addButton" onAction="#onAddTour" text="Add Tour" GridPane.columnIndex="1" GridPane.rowIndex="10" />
         <Button fx:id="deleteButton" onAction="#onDeleteTour" text="Delete Tour" GridPane.columnIndex="1" GridPane.rowIndex="11" />
         <Button fx:id="editButton" onAction="#onEditTour" text="Save Changes" GridPane.columnIndex="1" GridPane.rowIndex="12" />
 
-        <!-- Labels and TextFields stay in the first column -->
         <Label text="Tour Name" GridPane.columnIndex="0" GridPane.rowIndex="1" />
         <Label text="Description" GridPane.columnIndex="0" GridPane.rowIndex="2" />
         <Label text="Origin" GridPane.columnIndex="0" GridPane.rowIndex="3" />
@@ -47,9 +44,9 @@
             <image>
                 <Image url="@/img.png" />
             </image>
-         <GridPane.margin>
-            <Insets left="40.0" />
-         </GridPane.margin>
+            <GridPane.margin>
+                <Insets left="40.0" />
+            </GridPane.margin>
         </ImageView>
 
         <TextField fx:id="tourName" promptText="Name" GridPane.columnIndex="1" GridPane.rowIndex="1" />

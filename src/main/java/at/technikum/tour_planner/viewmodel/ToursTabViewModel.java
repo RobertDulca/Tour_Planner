@@ -5,6 +5,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class ToursTabViewModel {
+
+    // Singleton instance
     private static final ToursTabViewModel instance = new ToursTabViewModel();
     private final ObservableList<Tour> tours = FXCollections.observableArrayList();
 
@@ -22,22 +24,22 @@ public class ToursTabViewModel {
         tours.add(tour);
     }
 
+    // replacing old tour with new
     public void updateTour(Tour tour) {
-        // This might be more complex if you need to sync with a database
         int index = tours.indexOf(tour);
         if (index != -1) {
             tours.set(index, tour);
         }
     }
 
-
     public void removeTour(Tour tour) {
         tours.remove(tour);
-        // Adjust the selected tour based on remaining tours in the list
+        // Adjust selected tour based on remaining tours
         if (!tours.isEmpty()) {
+            // Select the first tour in the list
             TourDetailsViewModel.getInstance().setSelectedTour(tours.get(0));
         } else {
-            // When no tours remain, explicitly clear tour details
+            // When no tours remain, clear tour details
             TourDetailsViewModel.getInstance().clearTourDetails();
         }
     }

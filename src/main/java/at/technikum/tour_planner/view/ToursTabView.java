@@ -12,30 +12,38 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ToursTabView implements Initializable {
+
+    // Singleton instance
     private final ToursTabViewModel viewModel = ToursTabViewModel.getInstance();
 
     @FXML private ListView<Tour> toursList;
 
     private void setupListView() {
+        // Set cell factory that uses TextFieldListCell to display the tour names
         toursList.setCellFactory(lv -> new TextFieldListCell<>(new StringConverter<>() {
             @Override
             public String toString(Tour tour) {
-                return tour.getName(); // Display the name of the tour
+                return tour.getName(); // Display tour name
             }
 
+            // convert back to Tour object
             @Override
             public Tour fromString(String string) {
-                return null; // Not required here
+                return null;
             }
         }));
     }
 
+    // behavior when a tour is selected/deselected
     private void setupSelectionModel() {
+        // listener to selectedItemProperty
         toursList.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            // when new tour is selected:
             if (newSelection != null) {
+                // Tell TourDetailsViewModel which tour is selected
                 TourDetailsViewModel.getInstance().setSelectedTour(newSelection);
             } else {
-                // Clear tour details explicitly when there is no selection
+                // Clear view if no tour selected
                 TourDetailsViewModel.getInstance().clearTourDetails();
             }
         });
@@ -48,3 +56,4 @@ public class ToursTabView implements Initializable {
         setupSelectionModel();
     }
 }
+
