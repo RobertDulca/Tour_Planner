@@ -11,7 +11,7 @@ class ToursTabViewModelTest {
 
     @BeforeEach
     public void setUp() {
-        viewModel = ToursTabViewModel.getInstance();
+        //viewModel = ToursTabViewModel.getInstance();
         viewModel.getTours().clear(); // Clear the list before each test
     }
     @Test

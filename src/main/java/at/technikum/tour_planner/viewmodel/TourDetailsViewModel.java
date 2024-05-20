@@ -1,6 +1,8 @@
 package at.technikum.tour_planner.viewmodel;
 
 import at.technikum.tour_planner.entity.Tour;
+import at.technikum.tour_planner.event.Event;
+import at.technikum.tour_planner.event.Publisher;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -8,8 +10,7 @@ import javafx.beans.property.StringProperty;
 
 public class TourDetailsViewModel {
 
-    // Singleton instance
-    private static TourDetailsViewModel instance;
+    private final Publisher publisher;
     private Tour selectedTour;
     private final StringProperty name = new SimpleStringProperty();
     private final StringProperty description = new SimpleStringProperty();
@@ -20,20 +21,20 @@ public class TourDetailsViewModel {
     private final BooleanProperty isTourSelected = new SimpleBooleanProperty(false);
     private final StringProperty imageUrl = new SimpleStringProperty();
 
+    public TourDetailsViewModel(Publisher publisher) {
+        this.publisher = publisher;
+        isAddButtonDisabled.bind(name.isEmpty().or(origin.isEmpty()).or(destination.isEmpty()).or(transportType.isEmpty()));
+
+        // Subscribe to events
+        publisher.subscribe(Event.TOUR_SELECTED, this::onTourSelected);
+    }
+
+    private void onTourSelected(String message) {
+        // Handle the tour selection
+    }
+
     public StringProperty imageUrlProperty() {
         return imageUrl;
-    }
-
-    private TourDetailsViewModel() {
-        isAddButtonDisabled.bind(name.isEmpty().or(origin.isEmpty()).or(destination.isEmpty()).or(transportType.isEmpty()));  // Improved condition
-    }
-
-    // Get singleton instance of TourDetailsViewModel
-    public static synchronized TourDetailsViewModel getInstance() {
-        if (instance == null) {
-            instance = new TourDetailsViewModel();
-        }
-        return instance;
     }
 
     public void saveTourChanges() {
@@ -43,11 +44,10 @@ public class TourDetailsViewModel {
             selectedTour.setOrigin(origin.get());
             selectedTour.setDestination(destination.get());
             selectedTour.setTransportType(transportType.get());
-            ToursTabViewModel.getInstance().updateTour(selectedTour);
+            publisher.publish(Event.TOUR_UPDATED, selectedTour.getName());
         }
     }
 
-    // Set the currently selected tour and update properties
     public void setSelectedTour(Tour tour) {
         selectedTour = tour;
         isTourSelected.set(tour != null);
@@ -58,7 +58,6 @@ public class TourDetailsViewModel {
         }
     }
 
-    // Update the ViewModel properties based on the selected tour
     private void setTourDetails(Tour tour) {
         name.set(tour.getName());
         description.set(tour.getDescription());
@@ -68,20 +67,18 @@ public class TourDetailsViewModel {
         imageUrl.set(tour.getImageUrl());
     }
 
-    // Clear all properties when no tour is selected
     public void clearTourDetails() {
         name.set("");
         description.set("");
         origin.set("");
         destination.set("");
         transportType.set("");
-        isTourSelected.set(false);  // indicate no tour selected
+        isTourSelected.set(false);
     }
 
-    // Remove the selected tour from list & clear selection
     public void deleteSelectedTour() {
         if (selectedTour != null) {
-            ToursTabViewModel.getInstance().removeTour(selectedTour);
+            publisher.publish(Event.TOUR_DELETED, selectedTour.getName());
             setSelectedTour(null);
         }
     }
@@ -90,7 +87,6 @@ public class TourDetailsViewModel {
         return new Tour(name.get(), description.get(), origin.get(), destination.get(), transportType.get(), imageUrl.get());
     }
 
-    // Accessor methods for JavaFX properties
     public StringProperty transportTypeProperty() {
         return transportType;
     }
