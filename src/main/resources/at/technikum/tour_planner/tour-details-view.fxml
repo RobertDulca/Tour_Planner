@@ -24,7 +24,8 @@
             <RowConstraints vgrow="SOMETIMES" />
             <RowConstraints vgrow="SOMETIMES" />
             <RowConstraints vgrow="SOMETIMES" />
-            <RowConstraints vgrow="SOMETIMES" minHeight="40" /> <!-- Ensure adequate minimum height -->
+            <RowConstraints minHeight="40.0" vgrow="SOMETIMES" />
+         <RowConstraints />
         </rowConstraints>
 
         <Button fx:id="addButton" onAction="#onAddTour" text="Add Tour" GridPane.columnIndex="1" GridPane.rowIndex="10" />
@@ -53,6 +54,6 @@
         <TextField fx:id="tourDesc" promptText="Description" GridPane.columnIndex="1" GridPane.rowIndex="2" />
         <TextField fx:id="from" promptText="From" GridPane.columnIndex="1" GridPane.rowIndex="3" />
         <TextField fx:id="to" promptText="To" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-        <ChoiceBox fx:id="transportType" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+        <ComboBox fx:id="transportType" promptText="Select Transport" GridPane.columnIndex="1" GridPane.rowIndex="5" />
     </GridPane>
 </AnchorPane>

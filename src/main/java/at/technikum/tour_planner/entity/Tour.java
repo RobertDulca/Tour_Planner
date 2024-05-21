@@ -20,7 +20,6 @@ public class Tour {
         this.imageUrl = new SimpleStringProperty(imageUrl);
     }
 
-    //Getters
     public String getName() {
         return name.get();
     }
@@ -36,7 +35,6 @@ public class Tour {
     public String getTransportType() { return transportType.get(); }
     public String getImageUrl() { return imageUrl.get();}
 
-    //Setters
     public void setName(String name) {
         this.name.set(name);
     }

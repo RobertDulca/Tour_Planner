@@ -10,6 +10,7 @@ import javafx.beans.property.StringProperty;
 
 public class TourDetailsViewModel {
 
+    // instance of Publisher class to publish & subscribe to events
     private final Publisher publisher;
     private Tour selectedTour;
     private final StringProperty name = new SimpleStringProperty();
@@ -18,19 +19,23 @@ public class TourDetailsViewModel {
     private final StringProperty destination = new SimpleStringProperty();
     private final StringProperty transportType = new SimpleStringProperty();
     private final BooleanProperty isAddButtonDisabled = new SimpleBooleanProperty();
+    private final BooleanProperty isEditButtonDisabled = new SimpleBooleanProperty();
     private final BooleanProperty isTourSelected = new SimpleBooleanProperty(false);
     private final StringProperty imageUrl = new SimpleStringProperty();
 
     public TourDetailsViewModel(Publisher publisher) {
         this.publisher = publisher;
         isAddButtonDisabled.bind(name.isEmpty().or(origin.isEmpty()).or(destination.isEmpty()).or(transportType.isEmpty()));
-
+        isEditButtonDisabled.bind(name.isEmpty().or(isTourSelected.not()));
+        // Subscribe to TOUR_SELECTED event because we need to know when a tour is selected, then call onTourSelected
         publisher.subscribe(Event.TOUR_SELECTED, this::onTourSelected);
     }
 
     private void onTourSelected(Object message) {
         if (message instanceof Tour) {
             setSelectedTour((Tour) message);
+        } else {
+            clearTourDetails();
         }
     }
 
@@ -45,10 +50,12 @@ public class TourDetailsViewModel {
             selectedTour.setOrigin(origin.get());
             selectedTour.setDestination(destination.get());
             selectedTour.setTransportType(transportType.get());
+            // Publish the TOUR_UPDATED event
             publisher.publish(Event.TOUR_UPDATED, selectedTour);
         }
     }
 
+    //Set selected tour and update properties accordingly, if no tour selected,  clear tour details
     public void setSelectedTour(Tour tour) {
         selectedTour = tour;
         isTourSelected.set(tour != null);
@@ -79,6 +86,7 @@ public class TourDetailsViewModel {
 
     public void deleteSelectedTour() {
         if (selectedTour != null) {
+            // Publish the TOUR_DELETED event
             publisher.publish(Event.TOUR_DELETED, selectedTour);
             setSelectedTour(null);
         }
@@ -94,6 +102,10 @@ public class TourDetailsViewModel {
 
     public BooleanProperty addButtonDisabledProperty() {
         return isAddButtonDisabled;
+    }
+
+    public BooleanProperty editButtonDisabledProperty() {
+        return isEditButtonDisabled;
     }
 
     public BooleanProperty isTourSelectedProperty() {

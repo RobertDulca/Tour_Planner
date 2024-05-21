@@ -5,14 +5,12 @@
 <?import javafx.scene.layout.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.tour_planner.MainController">
-
   <top>
     <VBox>
       <fx:include source="menu-bar.fxml" />
       <fx:include source="search-bar.fxml"/>
     </VBox>
   </top>
-
   <left>
     <SplitPane>
       <fx:include source="tours-tab.fxml"/>

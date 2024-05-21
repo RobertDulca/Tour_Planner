@@ -4,11 +4,10 @@ import at.technikum.tour_planner.entity.Tour;
 import at.technikum.tour_planner.event.Event;
 import at.technikum.tour_planner.event.Publisher;
 import at.technikum.tour_planner.viewmodel.TourDetailsViewModel;
-import at.technikum.tour_planner.viewmodel.ToursTabViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -20,26 +19,32 @@ public class TourDetailsView implements Initializable {
     private final TourDetailsViewModel tourDetailsViewModel;
 
     @FXML private TextField tourName, tourDesc, from, to;
-    @FXML private ChoiceBox<String> transportType;
+    @FXML private ComboBox<String> transportType;
     @FXML private Button addButton, deleteButton, editButton;
     @FXML private ImageView mapImageView;
 
+    // Constructor with Publisher instance as parameter
     public TourDetailsView(Publisher publisher) {
         this.tourDetailsViewModel = new TourDetailsViewModel(publisher);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        transportType.getItems().addAll("Select Transport", "Car", "Walk", "Bicycle");
-        transportType.getSelectionModel().select("Select Transport");
-
+        initializeTransportTypeComboBox();
         bindProperties();
 
         addButton.disableProperty().bind(tourDetailsViewModel.addButtonDisabledProperty());
         deleteButton.disableProperty().bind(tourDetailsViewModel.isTourSelectedProperty().not());
-        editButton.disableProperty().bind(tourDetailsViewModel.isTourSelectedProperty().not());
+        editButton.disableProperty().bind(tourDetailsViewModel.editButtonDisabledProperty());
     }
 
+    private void initializeTransportTypeComboBox() {
+        transportType.setPromptText("Select Transport");
+        transportType.getItems().addAll("Car", "Walk", "Bicycle");
+        transportType.getSelectionModel().select(null);
+    }
+
+    //bind UI components to ViewModel properties
     private void bindProperties() {
         tourName.textProperty().bindBidirectional(tourDetailsViewModel.tourNameProperty());
         tourDesc.textProperty().bindBidirectional(tourDetailsViewModel.tourDescriptionProperty());
@@ -47,11 +52,6 @@ public class TourDetailsView implements Initializable {
         to.textProperty().bindBidirectional(tourDetailsViewModel.toProperty());
 
         transportType.valueProperty().bindBidirectional(tourDetailsViewModel.transportTypeProperty());
-        tourDetailsViewModel.transportTypeProperty().addListener((obs, oldVal, newVal) -> {
-            if ("Select Transport".equals(newVal)) {
-                tourDetailsViewModel.transportTypeProperty().set(null);
-            }
-        });
 
         tourDetailsViewModel.imageUrlProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null && !newVal.isEmpty()) {
@@ -80,11 +80,12 @@ public class TourDetailsView implements Initializable {
         tourDetailsViewModel.getPublisher().publish(Event.TOUR_CREATED, newTour);
         clearFormFields();
     }
+
     private void clearFormFields() {
         tourName.clear();
         tourDesc.clear();
         from.clear();
         to.clear();
-        transportType.getSelectionModel().select("Select Transport");
+        transportType.getSelectionModel().select(null);
     }
 }

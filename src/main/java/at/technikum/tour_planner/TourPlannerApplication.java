@@ -9,33 +9,38 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import java.io.IOException;
 
+import java.io.IOException;
 
 public class TourPlannerApplication extends Application {
     private Publisher publisher;
-
     @Override
     public void start(Stage stage) throws IOException {
         publisher = new Publisher();
         FXMLLoader loader = new FXMLLoader(TourPlannerApplication.class.getResource("main-view.fxml"));
+        // controller factory responsible for creating controllers for the views
         loader.setControllerFactory(param -> {
-            if (param == MenuBarView.class) {
-                return new MenuBarView(publisher);
+            try {
+                if (param == MenuBarView.class) {
+                    return new MenuBarView(publisher);
+                }
+                if (param == SearchBarView.class) {
+                    return new SearchBarView(publisher);
+                }
+                if (param == TourDetailsView.class) {
+                    return new TourDetailsView(publisher);
+                }
+                if (param == ToursTabView.class) {
+                    return new ToursTabView(publisher);
+                }
+                if (param == MainController.class) {
+                    return new MainController();
+                }
+                throw new IllegalArgumentException("Unknown controller: " + param);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
             }
-            if (param == SearchBarView.class) {
-                return new SearchBarView(publisher);
-            }
-            if (param == TourDetailsView.class) {
-                return new TourDetailsView(publisher);
-            }
-            if (param == ToursTabView.class) {
-                return new ToursTabView(publisher);
-            }
-            if (param == MainController.class) {
-                return new MainController();
-            }
-            throw new IllegalArgumentException("Unknown controller: " + param);
         });
         Scene scene = new Scene(loader.load(), 900, 500);
         stage.setTitle("Tour Planner");
