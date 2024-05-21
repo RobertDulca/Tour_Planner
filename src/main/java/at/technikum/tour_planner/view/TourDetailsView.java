@@ -80,11 +80,6 @@ public class TourDetailsView implements Initializable {
         tourDetailsViewModel.getPublisher().publish(Event.TOUR_CREATED, newTour);
         clearFormFields();
     }
-
-
-
-
-
     private void clearFormFields() {
         tourName.clear();
         tourDesc.clear();

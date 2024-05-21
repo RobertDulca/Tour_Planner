@@ -34,7 +34,6 @@ public class TourDetailsViewModel {
         }
     }
 
-
     public StringProperty imageUrlProperty() {
         return imageUrl;
     }
@@ -88,7 +87,6 @@ public class TourDetailsViewModel {
     public Tour createTour() {
         return new Tour(name.get(), description.get(), origin.get(), destination.get(), transportType.get(), imageUrl.get());
     }
-
 
     public StringProperty transportTypeProperty() {
         return transportType;
