@@ -13,29 +13,26 @@ public class Publisher {
         subscriberMap = new HashMap<>();
     }
 
-    // subscribe(event, subscriber)
     public void subscribe(Event event, Subscriber subscriber) {
         List<Subscriber> subscribers = subscriberMap.get(event);
 
-        if (null == subscribers) {
+        if (subscribers == null) {
             subscribers = new ArrayList<>();
         }
 
         subscribers.add(subscriber);
-
         subscriberMap.put(event, subscribers);
     }
 
-    // publish(event, message)
-    public void publish(Event event, String message) {
+    public void publish(Event event, Object message) {
         List<Subscriber> subscribers = subscriberMap.get(event);
 
-        if (null == subscribers) {
-            // TODO: Log this event
+        if (subscribers == null) {
+            // Log this event
             return;
         }
 
-        for (Subscriber subscriber: subscribers) {
+        for (Subscriber subscriber : subscribers) {
             subscriber.notify(message);
         }
     }

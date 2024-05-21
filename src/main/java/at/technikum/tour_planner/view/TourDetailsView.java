@@ -1,6 +1,7 @@
 package at.technikum.tour_planner.view;
 
 import at.technikum.tour_planner.entity.Tour;
+import at.technikum.tour_planner.event.Event;
 import at.technikum.tour_planner.event.Publisher;
 import at.technikum.tour_planner.viewmodel.TourDetailsViewModel;
 import at.technikum.tour_planner.viewmodel.ToursTabViewModel;
@@ -72,6 +73,17 @@ public class TourDetailsView implements Initializable {
         tourDetailsViewModel.deleteSelectedTour();
         clearFormFields();
     }
+
+    @FXML
+    protected void onAddTour() {
+        Tour newTour = tourDetailsViewModel.createTour();
+        tourDetailsViewModel.getPublisher().publish(Event.TOUR_CREATED, newTour);
+        clearFormFields();
+    }
+
+
+
+
 
     private void clearFormFields() {
         tourName.clear();

@@ -32,6 +32,9 @@ public class TourPlannerApplication extends Application {
             if (param == ToursTabView.class) {
                 return new ToursTabView(publisher);
             }
+            if (param == MainController.class) {
+                return new MainController();
+            }
             throw new IllegalArgumentException("Unknown controller: " + param);
         });
         Scene scene = new Scene(loader.load(), 900, 500);

@@ -13,6 +13,9 @@ public class ToursTabViewModel {
 
     public ToursTabViewModel(Publisher publisher) {
         this.publisher = publisher;
+
+        // Subscribe to the TOUR_CREATED event
+        publisher.subscribe(Event.TOUR_CREATED, this::onTourCreated);
     }
 
     public ObservableList<Tour> getTours() {
@@ -21,7 +24,7 @@ public class ToursTabViewModel {
 
     public void addTour(Tour tour) {
         tours.add(tour);
-        publisher.publish(Event.TOUR_CREATED, tour.getName());
+        publisher.publish(Event.TOUR_CREATED, tour);
     }
 
     public void updateTour(Tour tour) {
@@ -33,6 +36,17 @@ public class ToursTabViewModel {
 
     public void removeTour(Tour tour) {
         tours.remove(tour);
-        publisher.publish(Event.TOUR_DELETED, tour.getName());
+        publisher.publish(Event.TOUR_DELETED, tour);
+    }
+
+    public void selectTour(Tour tour) {
+        publisher.publish(Event.TOUR_SELECTED, tour);
+    }
+
+    private void onTourCreated(Object message) {
+        if (message instanceof Tour) {
+            Tour newTour = (Tour) message;
+            tours.add(newTour);
+        }
     }
 }

@@ -25,13 +25,15 @@ public class TourDetailsViewModel {
         this.publisher = publisher;
         isAddButtonDisabled.bind(name.isEmpty().or(origin.isEmpty()).or(destination.isEmpty()).or(transportType.isEmpty()));
 
-        // Subscribe to events
         publisher.subscribe(Event.TOUR_SELECTED, this::onTourSelected);
     }
 
-    private void onTourSelected(String message) {
-        // Handle the tour selection
+    private void onTourSelected(Object message) {
+        if (message instanceof Tour) {
+            setSelectedTour((Tour) message);
+        }
     }
+
 
     public StringProperty imageUrlProperty() {
         return imageUrl;
@@ -44,7 +46,7 @@ public class TourDetailsViewModel {
             selectedTour.setOrigin(origin.get());
             selectedTour.setDestination(destination.get());
             selectedTour.setTransportType(transportType.get());
-            publisher.publish(Event.TOUR_UPDATED, selectedTour.getName());
+            publisher.publish(Event.TOUR_UPDATED, selectedTour);
         }
     }
 
@@ -78,7 +80,7 @@ public class TourDetailsViewModel {
 
     public void deleteSelectedTour() {
         if (selectedTour != null) {
-            publisher.publish(Event.TOUR_DELETED, selectedTour.getName());
+            publisher.publish(Event.TOUR_DELETED, selectedTour);
             setSelectedTour(null);
         }
     }
@@ -86,6 +88,7 @@ public class TourDetailsViewModel {
     public Tour createTour() {
         return new Tour(name.get(), description.get(), origin.get(), destination.get(), transportType.get(), imageUrl.get());
     }
+
 
     public StringProperty transportTypeProperty() {
         return transportType;
@@ -113,5 +116,9 @@ public class TourDetailsViewModel {
 
     public StringProperty toProperty() {
         return destination;
+    }
+
+    public Publisher getPublisher() {
+        return publisher;
     }
 }

@@ -33,6 +33,12 @@ public class ToursTabView implements Initializable {
                 return null;
             }
         }));
+
+        toursList.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                viewModel.selectTour(newSelection);
+            }
+        });
     }
 
     @Override
