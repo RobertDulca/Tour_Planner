@@ -1,7 +1,5 @@
 package at.technikum.tour_planner.view;
 
-import at.technikum.tour_planner.entity.Tour;
-import at.technikum.tour_planner.event.Event;
 import at.technikum.tour_planner.event.Publisher;
 import at.technikum.tour_planner.viewmodel.TourDetailsViewModel;
 import javafx.fxml.FXML;
@@ -23,7 +21,6 @@ public class TourDetailsView implements Initializable {
     @FXML private Button addButton, deleteButton, editButton;
     @FXML private ImageView mapImageView;
 
-    // Constructor with Publisher instance as parameter
     public TourDetailsView(Publisher publisher) {
         this.tourDetailsViewModel = new TourDetailsViewModel(publisher);
     }
@@ -32,34 +29,29 @@ public class TourDetailsView implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         initializeTransportTypeComboBox();
         bindProperties();
-
-        addButton.disableProperty().bind(tourDetailsViewModel.addButtonDisabledProperty());
-        deleteButton.disableProperty().bind(tourDetailsViewModel.isTourSelectedProperty().not());
-        editButton.disableProperty().bind(tourDetailsViewModel.editButtonDisabledProperty());
+        setupButtonBindings();
     }
 
     private void initializeTransportTypeComboBox() {
         transportType.setPromptText("Select Transport");
-        transportType.getItems().addAll("Select Transport", "Car", "Walk", "Bicycle");
-        transportType.getSelectionModel().select("Select Transport");
+        transportType.getItems().addAll("Select Type", "Car", "Bicycle", "Walk");
+        transportType.getSelectionModel().select("Select Type");
     }
 
-    //bind UI components to ViewModel properties
     private void bindProperties() {
         tourName.textProperty().bindBidirectional(tourDetailsViewModel.tourNameProperty());
         tourDesc.textProperty().bindBidirectional(tourDetailsViewModel.tourDescriptionProperty());
         from.textProperty().bindBidirectional(tourDetailsViewModel.fromProperty());
         to.textProperty().bindBidirectional(tourDetailsViewModel.toProperty());
-
         transportType.valueProperty().bindBidirectional(tourDetailsViewModel.transportTypeProperty());
 
-        tourDetailsViewModel.imageUrlProperty().addListener((obs, oldVal, newVal) -> {
-            if (newVal != null && !newVal.isEmpty()) {
-                mapImageView.setImage(new Image(newVal));
-            } else {
-                mapImageView.setImage(new Image("src/main/resources/img.png"));
-            }
-        });
+        tourDetailsViewModel.imageUrlProperty().addListener((obs, oldVal, newVal) -> mapImageView.setImage(newVal != null && !newVal.isEmpty() ? new Image(newVal) : new Image("src/main/resources/img.png")));
+    }
+
+    private void setupButtonBindings() {
+        addButton.disableProperty().bind(tourDetailsViewModel.addButtonDisabledProperty());
+        deleteButton.disableProperty().bind(tourDetailsViewModel.isTourSelectedProperty().not());
+        editButton.disableProperty().bind(tourDetailsViewModel.editButtonDisabledProperty());
     }
 
     @FXML
@@ -72,12 +64,12 @@ public class TourDetailsView implements Initializable {
     protected void onDeleteTour() {
         tourDetailsViewModel.deleteSelectedTour();
         clearFormFields();
+        tourDetailsViewModel.clearTourSelection();
     }
 
     @FXML
     protected void onAddTour() {
-        Tour newTour = tourDetailsViewModel.createTour();
-        tourDetailsViewModel.getPublisher().publish(Event.TOUR_CREATED, newTour);
+        tourDetailsViewModel.createAndPublishTour();
         clearFormFields();
     }
 
@@ -86,6 +78,6 @@ public class TourDetailsView implements Initializable {
         tourDesc.clear();
         from.clear();
         to.clear();
-        transportType.getSelectionModel().select("Select Transport");
+        transportType.getSelectionModel().select("Select Type");
     }
 }

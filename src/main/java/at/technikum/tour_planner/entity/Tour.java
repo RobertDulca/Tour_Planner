@@ -11,11 +11,11 @@ public class Tour {
     private final StringProperty transportType;
     private final StringProperty imageUrl;
 
-    public Tour(String name, String description, String origin, String destination, String transportType, String imageUrl){
+    public Tour(String name, String description, String from, String to, String transportType, String imageUrl) {
         this.name = new SimpleStringProperty(name);
         this.description = new SimpleStringProperty(description);
-        this.from = new SimpleStringProperty(origin);
-        this.to = new SimpleStringProperty(destination);
+        this.from = new SimpleStringProperty(from);
+        this.to = new SimpleStringProperty(to);
         this.transportType = new SimpleStringProperty(transportType);
         this.imageUrl = new SimpleStringProperty(imageUrl);
     }
@@ -32,8 +32,12 @@ public class Tour {
     public String getDestination() {
         return to.get();
     }
-    public String getTransportType() { return transportType.get(); }
-    public String getImageUrl() { return imageUrl.get();}
+    public String getTransportType() {
+        return transportType.get();
+    }
+    public String getImageUrl() {
+        return imageUrl.get();
+    }
 
     public void setName(String name) {
         this.name.set(name);
@@ -44,7 +48,14 @@ public class Tour {
     public void setOrigin(String origin) {
         this.from.set(origin);
     }
-    public void setDestination(String destination) { this.to.set(destination); }
-    public void setTransportType(String transportType) { this.transportType.set(transportType); }
-    public void setImageUrl(String imageUrl) { this.imageUrl.set(imageUrl); }
+    public void setDestination(String destination) {
+        this.to.set(destination);
+    }
+    public void setTransportType(String transportType) {
+        this.transportType.set(transportType);
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl.set(imageUrl);
+    }
 }

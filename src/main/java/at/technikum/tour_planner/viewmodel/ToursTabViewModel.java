@@ -7,7 +7,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class ToursTabViewModel {
-
     private final Publisher publisher;
     private final ObservableList<Tour> tours = FXCollections.observableArrayList();
 
@@ -22,16 +21,6 @@ public class ToursTabViewModel {
         return tours;
     }
 
-    public void addTour(Tour tour) {
-        tours.add(tour);
-        publisher.publish(Event.TOUR_CREATED, tour);
-    }
-
-    public void removeTour(Tour tour) {
-        tours.remove(tour);
-        publisher.publish(Event.TOUR_DELETED, tour);
-    }
-
     public void selectTour(Tour tour) {
         publisher.publish(Event.TOUR_SELECTED, tour);
     }
@@ -41,24 +30,24 @@ public class ToursTabViewModel {
     }
 
     private void onTourCreated(Object message) {
-        if (message instanceof Tour newTour) {
-            tours.add(newTour);
+        if (message instanceof Tour) {
+            tours.add((Tour) message);
         }
     }
 
     private void onTourUpdated(Object message) {
-        if (message instanceof Tour updatedTour) {
-            int index = tours.indexOf(updatedTour);
+        if (message instanceof Tour) {
+            int index = tours.indexOf((Tour) message);
             if (index != -1) {
-                tours.set(index, updatedTour);
+                tours.set(index, (Tour) message);
             }
         }
     }
 
     private void onTourDeleted(Object message) {
-        if (message instanceof Tour deletedTour) {
-            tours.remove(deletedTour);
-            publisher.publish(Event.TOUR_SELECTED, null);
+        if (message instanceof Tour) {
+            tours.remove((Tour) message);
+            clearSelectedTour();
         }
     }
 }
