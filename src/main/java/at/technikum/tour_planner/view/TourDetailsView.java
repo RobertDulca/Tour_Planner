@@ -40,8 +40,8 @@ public class TourDetailsView implements Initializable {
 
     private void initializeTransportTypeComboBox() {
         transportType.setPromptText("Select Transport");
-        transportType.getItems().addAll("Car", "Walk", "Bicycle");
-        transportType.getSelectionModel().select(null);
+        transportType.getItems().addAll("Select Transport", "Car", "Walk", "Bicycle");
+        transportType.getSelectionModel().select("Select Transport");
     }
 
     //bind UI components to ViewModel properties
@@ -86,6 +86,6 @@ public class TourDetailsView implements Initializable {
         tourDesc.clear();
         from.clear();
         to.clear();
-        transportType.getSelectionModel().select(null);
+        transportType.getSelectionModel().select("Select Transport");
     }
 }

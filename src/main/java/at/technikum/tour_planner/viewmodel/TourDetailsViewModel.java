@@ -25,8 +25,29 @@ public class TourDetailsViewModel {
 
     public TourDetailsViewModel(Publisher publisher) {
         this.publisher = publisher;
-        isAddButtonDisabled.bind(name.isEmpty().or(origin.isEmpty()).or(destination.isEmpty()).or(transportType.isEmpty()));
-        isEditButtonDisabled.bind(name.isEmpty().or(isTourSelected.not()));
+        isAddButtonDisabled.bind(
+                name.isEmpty()
+                        .or(origin.isEmpty())
+                        .or(destination.isEmpty())
+                        .or(transportType.isEmpty())
+                        .or(transportType.isNotEqualTo("Car")
+                                .and(transportType.isNotEqualTo("Walk"))
+                                .and(transportType.isNotEqualTo("Bicycle"))
+                        )
+        );
+
+        isEditButtonDisabled.bind(
+                name.isEmpty()
+                        .or(isTourSelected.not())
+                        .or(origin.isEmpty())
+                        .or(destination.isEmpty())
+                        .or(transportType.isEmpty())
+                        .or(transportType.isNotEqualTo("Car")
+                                .and(transportType.isNotEqualTo("Walk"))
+                                .and(transportType.isNotEqualTo("Bicycle"))
+                        )
+        );
+
         // Subscribe to TOUR_SELECTED event because we need to know when a tour is selected, then call onTourSelected
         publisher.subscribe(Event.TOUR_SELECTED, this::onTourSelected);
     }
