@@ -22,17 +22,14 @@ public class ToursTabView implements Initializable {
         this.viewModel = new ToursTabViewModel(publisher);
     }
 
-    //
     private void setupListView() {
         // cell factory to display the name of the tour in the list view
         toursList.setCellFactory(lv -> new TextFieldListCell<>(new StringConverter<>() {
-            // tour object to string
             @Override
             public String toString(Tour tour) {
                 return tour.getName();
             }
 
-            // string to tour object
             @Override
             public Tour fromString(String string) {
                 return null;
@@ -43,9 +40,7 @@ public class ToursTabView implements Initializable {
         toursList.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 viewModel.selectTour(newSelection);
-            }
-            // else clear the selected tour
-            else {
+            } else {
                 viewModel.clearSelectedTour();
             }
         });
@@ -57,4 +52,3 @@ public class ToursTabView implements Initializable {
         setupListView();
     }
 }
-
