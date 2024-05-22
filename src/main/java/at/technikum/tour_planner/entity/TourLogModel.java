@@ -10,14 +10,6 @@ public class TourLogModel {
 
     private int rating;
 
-    public TourLogModel(TourLogModel term) {
-        this.date = term.date;
-        this.comment = term.comment;
-        this.difficulty = term.difficulty;
-        this.totalTime = term.totalTime;
-        this.rating = term.rating;
-    }
-
     public LocalDate getDate() {
         return date;
     }

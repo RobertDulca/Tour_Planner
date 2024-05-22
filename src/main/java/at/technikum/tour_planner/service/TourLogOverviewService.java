@@ -13,12 +13,10 @@ public class TourLogOverviewService {
     }
 
     public void add(TourLogModel term) {
-        tourLogOverviewRepository.save(new TourLogModel(term));
+        tourLogOverviewRepository.save(term);
     }
 
-    public List<Integer> findAll() {
-        return tourLogOverviewRepository.findAll().stream()
-                .map(TourLogModel::getRating)
-                .toList();
+    public List<TourLogModel> findAll() {
+        return tourLogOverviewRepository.findAll();
     }
 }

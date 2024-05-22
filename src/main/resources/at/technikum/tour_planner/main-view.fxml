@@ -4,20 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.tour_planner.MainController">
-
-  <top>
-    <VBox>
-      <fx:include source="menu-bar.fxml" />
-      <fx:include source="search-bar.fxml"/>
-    </VBox>
-  </top>
-
-  <left>
-    <SplitPane>
-      <fx:include source="tours-tab.fxml"/>
-    </SplitPane>
-  </left>
+<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
 
   <center>
     <VBox BorderPane.alignment="CENTER">
@@ -26,9 +13,7 @@
         <TabPane id="tabPane" fx:id="tabPane" prefHeight="450.0" prefWidth="603.0" tabClosingPolicy="UNAVAILABLE">
           <tabs>
             <Tab text="Details">
-              <HBox>
-                <fx:include fx:id="tourDetails" source="tour-details-view.fxml" />
-              </HBox>
+
             </Tab>
             <Tab text="Tour Logs">
               <HBox>

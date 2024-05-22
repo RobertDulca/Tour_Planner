@@ -1,6 +1,5 @@
 package at.technikum.tour_planner.view;
 
-import at.technikum.tour_planner.entity.TourLogModel;
 import at.technikum.tour_planner.viewmodel.TourLogDetailsViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,7 +14,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class TourLogDetailsView implements Initializable {
-    private final TourLogDetailsViewModel tourLogDetailsViewModel = TourLogDetailsViewModel.getInstance();
+    private final TourLogDetailsViewModel tourLogDetailsViewModel;
 
     @FXML
     private DatePicker tourLogDate;
@@ -28,9 +27,9 @@ public class TourLogDetailsView implements Initializable {
     @FXML
     private TextArea tourLogComment;
 
-    /*public TourLogDetailsView(TourLogDetailsViewModel tourLogModel) {
+    public TourLogDetailsView(TourLogDetailsViewModel tourLogModel) {
         this.tourLogDetailsViewModel = tourLogModel;
-    }*/
+    }
 
 
     @Override
@@ -39,15 +38,15 @@ public class TourLogDetailsView implements Initializable {
     }
 
     private void bindProperties() {
-        tourLogDate.valueProperty().bindBidirectional(tourLogDetailsViewModel.dateProperty());
-        difficulty.valueProperty().bindBidirectional(tourLogDetailsViewModel.difficultyProperty());
-        tourLogTime.textProperty().bindBidirectional(tourLogDetailsViewModel.totalTimeProperty(), new NumberStringConverter());
-        tourLogRating.ratingProperty().bindBidirectional(tourLogDetailsViewModel.ratingProperty());
-        tourLogComment.textProperty().bindBidirectional(tourLogDetailsViewModel.commentProperty());
+        this.tourLogDate.valueProperty().bindBidirectional(tourLogDetailsViewModel.dateProperty());
+        this.difficulty.valueProperty().bindBidirectional(tourLogDetailsViewModel.difficultyProperty());
+        this.tourLogTime.textProperty().bindBidirectional(tourLogDetailsViewModel.totalTimeProperty(), new NumberStringConverter());
+        this.tourLogRating.ratingProperty().bindBidirectional(tourLogDetailsViewModel.ratingProperty());
+        this.tourLogComment.textProperty().bindBidirectional(tourLogDetailsViewModel.commentProperty());
     }
 
     @FXML
-    public void saveTourLog() {
-        this.tourLogDetailsViewModel.saveTourLog();
+    public void createTourLog() {
+        this.tourLogDetailsViewModel.createTourLog();
     }
 }

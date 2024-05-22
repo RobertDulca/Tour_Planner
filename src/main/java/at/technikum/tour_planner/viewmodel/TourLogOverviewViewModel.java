@@ -10,6 +10,8 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.List;
+
 
 public class TourLogOverviewViewModel {
     private final Publisher publisher;
@@ -31,6 +33,8 @@ public class TourLogOverviewViewModel {
         this.tourLogOverviewService = tourLogOverviewService;
 
         this.selectedTourLogIndex.addListener(observable -> selectTourLog());
+
+        publisher.subscribe(Event.TOUR_LOG_CREATED, this::updateTourLogs);
     }
 
     public void selectTourLog() {
@@ -42,7 +46,8 @@ public class TourLogOverviewViewModel {
     }
 
     private void updateTourLogs(TourLogModel tourLog) {
-        tourLogs.setAll((TourLogModel) tourLogOverviewService.findAll());
+        List<TourLogModel> allTourLogs = tourLogOverviewService.findAll();
+        tourLogs.setAll(allTourLogs);
     }
 
     public ObservableList<TourLogModel> getTourLogs() {
