@@ -14,4 +14,6 @@ module at.technikum.tour_planner {
     exports at.technikum.tour_planner.entity;
     exports at.technikum.tour_planner.event;
     exports at.technikum.tour_planner.viewmodel;
+    exports at.technikum.tour_planner.service;
+    exports at.technikum.tour_planner.repository;
 }

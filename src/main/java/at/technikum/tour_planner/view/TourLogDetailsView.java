@@ -15,6 +15,7 @@ import java.util.ResourceBundle;
 
 public class TourLogDetailsView implements Initializable {
     private final TourLogDetailsViewModel tourLogDetailsViewModel;
+
     @FXML
     private DatePicker tourLogDate;
     @FXML
@@ -26,8 +27,8 @@ public class TourLogDetailsView implements Initializable {
     @FXML
     private TextArea tourLogComment;
 
-    public TourLogDetailsView() {
-        this.tourLogDetailsViewModel = new TourLogDetailsViewModel();
+    public TourLogDetailsView(TourLogDetailsViewModel tourLogModel) {
+        this.tourLogDetailsViewModel = tourLogModel;
     }
 
 
@@ -37,10 +38,15 @@ public class TourLogDetailsView implements Initializable {
     }
 
     private void bindProperties() {
-        tourLogDate.valueProperty().bindBidirectional(tourLogDetailsViewModel.dateProperty());
-        difficulty.valueProperty().bindBidirectional(tourLogDetailsViewModel.difficultyProperty());
-        tourLogTime.textProperty().bindBidirectional(tourLogDetailsViewModel.totalTimeProperty(), new NumberStringConverter());
-        tourLogRating.ratingProperty().bindBidirectional(tourLogDetailsViewModel.ratingProperty());
-        tourLogComment.textProperty().bindBidirectional(tourLogDetailsViewModel.commentProperty());
+        this.tourLogDate.valueProperty().bindBidirectional(tourLogDetailsViewModel.dateProperty());
+        this.difficulty.valueProperty().bindBidirectional(tourLogDetailsViewModel.difficultyProperty());
+        this.tourLogTime.textProperty().bindBidirectional(tourLogDetailsViewModel.totalTimeProperty(), new NumberStringConverter());
+        this.tourLogRating.ratingProperty().bindBidirectional(tourLogDetailsViewModel.ratingProperty());
+        this.tourLogComment.textProperty().bindBidirectional(tourLogDetailsViewModel.commentProperty());
+    }
+
+    @FXML
+    public void createTourLog() {
+        this.tourLogDetailsViewModel.createTourLog();
     }
 }
