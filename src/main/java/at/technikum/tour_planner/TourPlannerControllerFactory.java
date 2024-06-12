@@ -21,6 +21,10 @@ public class TourPlannerControllerFactory implements javafx.util.Callback<Class<
                 return new TourDetailsView(publisher);
             } else if (param == ToursTabView.class) {
                 return new ToursTabView(publisher);
+            } else if (param == TourLogDetailsView.class) {
+                    return new ToursTabView(publisher);
+            } else if (param == TourLogOverviewView.class) {
+                return new ToursTabView(publisher);
             } else if (param == MainController.class) {
                 return new MainController();
             } else {

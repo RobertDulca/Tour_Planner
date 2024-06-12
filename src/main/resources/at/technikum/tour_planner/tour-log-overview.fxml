@@ -14,10 +14,10 @@
         <Label text="MediaOverview_Items" />
         <Pane HBox.hgrow="ALWAYS" />
         <Button text="+" />
-        <Button fx:id="deleteButton" text="-" />
+        <Button text="-" />
     </ToolBar>
     <ListView fx:id="tourLogList" VBox.vgrow="ALWAYS" />
-   <padding>
-      <Insets left="10.0" top="13.0" />
-   </padding>
+    <padding>
+        <Insets left="10.0" top="13.0" />
+    </padding>
 </VBox>
