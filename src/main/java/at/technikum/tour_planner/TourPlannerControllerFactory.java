@@ -1,13 +1,31 @@
 package at.technikum.tour_planner;
 
 import at.technikum.tour_planner.event.Publisher;
+import at.technikum.tour_planner.repository.TourLogOverviewRepository;
+import at.technikum.tour_planner.service.TourLogOverviewService;
 import at.technikum.tour_planner.view.*;
+import at.technikum.tour_planner.viewmodel.TourLogDetailsViewModel;
+import at.technikum.tour_planner.viewmodel.TourLogOverviewViewModel;
 
 public class TourPlannerControllerFactory implements javafx.util.Callback<Class<?>, Object> {
     private final Publisher publisher;
 
+    private final TourLogOverviewRepository tourLogOverviewRepository;
+    private final TourLogOverviewService tourLogOverviewService;
+    private final TourLogOverviewView tourLogOverviewView;
+    private final TourLogDetailsView tourLogDetailsView;
+    private final TourLogOverviewViewModel tourLogOverviewViewModel;
+    private final TourLogDetailsViewModel tourLogDetailsViewModel;
+
     public TourPlannerControllerFactory(Publisher publisher) {
         this.publisher = publisher;
+
+        tourLogOverviewRepository = new TourLogOverviewRepository();
+        tourLogOverviewService = new TourLogOverviewService(tourLogOverviewRepository);
+        tourLogOverviewViewModel = new TourLogOverviewViewModel(publisher, tourLogOverviewService);
+        tourLogDetailsViewModel = new TourLogDetailsViewModel(publisher, tourLogOverviewService);
+        tourLogOverviewView = new TourLogOverviewView(tourLogOverviewViewModel);
+        tourLogDetailsView = new TourLogDetailsView(tourLogDetailsViewModel);
     }
 
     @Override
@@ -22,9 +40,9 @@ public class TourPlannerControllerFactory implements javafx.util.Callback<Class<
             } else if (param == ToursTabView.class) {
                 return new ToursTabView(publisher);
             } else if (param == TourLogDetailsView.class) {
-                    return new ToursTabView(publisher);
+                    return new TourLogDetailsView(tourLogDetailsViewModel);
             } else if (param == TourLogOverviewView.class) {
-                return new ToursTabView(publisher);
+                return new TourLogOverviewView(tourLogOverviewViewModel);
             } else if (param == MainController.class) {
                 return new MainController();
             } else {

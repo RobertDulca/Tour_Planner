@@ -10,7 +10,9 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TourLogOverviewViewModel {
     private final Publisher publisher;
@@ -45,12 +47,25 @@ public class TourLogOverviewViewModel {
     }
 
     private void updateTourLogs(Object message) {
+        System.out.println("Updating tour logs...");
         List<TourLogModel> allTourLogs = tourLogOverviewService.findAll();
+        if(allTourLogs.isEmpty()) {
+            System.out.println("No tour logs found.");
+        } else {
+            System.out.println("Received tour logs: " + allTourLogs.size());
+            allTourLogs.forEach(log -> System.out.println("Log Date: " + log.getDate() + ", Details: " + log.getComment())); // Assuming getDetails() is a method in TourLogModel
+        }
         tourLogs.setAll(allTourLogs);
     }
 
-    public ObservableList<TourLogModel> getTourLogs() {
-        return tourLogs;
+    public ObservableList<LocalDate> getTourLogs() {
+        if (!tourLogs.isEmpty()) {
+            return FXCollections.observableArrayList(tourLogs.stream()
+                    .map(TourLogModel::getDate) // Extract the date from each TourLogModel
+                    .collect(Collectors.toList()));
+        } else {
+            return FXCollections.observableArrayList(); // Return an empty list if tourLogs is null
+        }
     }
 
     public IntegerProperty selectedTourLogIndexProperty() {

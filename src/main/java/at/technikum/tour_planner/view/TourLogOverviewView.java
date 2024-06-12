@@ -7,12 +7,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class TourLogOverviewView implements Initializable {
     private final TourLogOverviewViewModel tourLogOverviewViewModel;
     @FXML
-    public ListView<TourLogModel> tourLogList;
+    public ListView<LocalDate> tourLogList;
 
     public TourLogOverviewView(TourLogOverviewViewModel tourLogOverviewViewModel) {
         this.tourLogOverviewViewModel = tourLogOverviewViewModel;
