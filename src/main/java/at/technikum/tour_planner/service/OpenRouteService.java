@@ -50,27 +50,13 @@ public class OpenRouteService {
 
         JsonObject feature = features.get(0).getAsJsonObject();
         JsonObject properties = feature.getAsJsonObject("properties");
-        JsonArray segments = properties.getAsJsonArray("segments");
 
-        if (segments == null || segments.isEmpty()) {
-            System.err.println("No segments found in the feature properties: " + properties);
-            throw new RuntimeException("No segments found in the feature properties.");
-        }
+        // Fetch the summary from the properties level
+        JsonObject summary = properties.getAsJsonObject("summary");
 
-        JsonObject segment = segments.get(0).getAsJsonObject();
-
-        // Check for the presence of the summary object
-        if (!segment.has("summary")) {
-            System.err.println("No summary found in the segment: " + segment);
-            throw new RuntimeException("No summary found in the segment.");
-        }
-
-        JsonObject summary = segment.getAsJsonObject("summary");
-
-        // Ensure that distance and duration are present in the summary
-        if (!summary.has("distance") || summary.get("distance").isJsonNull() || !summary.has("duration") || summary.get("duration").isJsonNull()) {
-            System.err.println("Incomplete summary found in the segment: " + summary);
-            throw new RuntimeException("Incomplete summary found in the segment.");
+        if (summary == null) {
+            System.err.println("No summary found in the properties: " + properties);
+            throw new RuntimeException("No summary found in the properties.");
         }
 
         double distance = summary.get("distance").getAsDouble();
@@ -78,5 +64,4 @@ public class OpenRouteService {
 
         return new RouteInfo(distance, duration);
     }
-
 }
