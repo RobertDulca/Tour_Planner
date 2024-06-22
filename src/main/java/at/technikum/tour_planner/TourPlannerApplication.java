@@ -1,7 +1,6 @@
 package at.technikum.tour_planner;
 
 import at.technikum.tour_planner.event.Publisher;
-import at.technikum.tour_planner.view.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
