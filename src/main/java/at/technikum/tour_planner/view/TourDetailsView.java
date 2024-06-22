@@ -9,14 +9,14 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class TourDetailsView implements Initializable {
+
     private final TourDetailsViewModel tourDetailsViewModel;
 
-    @FXML private TextField tourName, tourDesc, from, to;
+    @FXML private TextField tourName, tourDesc, from, to, tourDistance, estimatedTime;
     @FXML private ComboBox<String> transportType;
     @FXML private Button addButton, deleteButton, editButton;
     @FXML private ImageView mapImageView;
@@ -44,6 +44,8 @@ public class TourDetailsView implements Initializable {
         from.textProperty().bindBidirectional(tourDetailsViewModel.fromProperty());
         to.textProperty().bindBidirectional(tourDetailsViewModel.toProperty());
         transportType.valueProperty().bindBidirectional(tourDetailsViewModel.transportTypeProperty());
+        tourDistance.textProperty().bind(tourDetailsViewModel.tourDistanceProperty().asString());
+        estimatedTime.textProperty().bind(tourDetailsViewModel.estimatedTimeProperty().asString());
 
         tourDetailsViewModel.imageUrlProperty().addListener((obs, oldVal, newVal) -> mapImageView.setImage(newVal != null && !newVal.isEmpty() ? new Image(newVal) : new Image("src/main/resources/img.png")));
     }
@@ -55,8 +57,16 @@ public class TourDetailsView implements Initializable {
     }
 
     @FXML
+    protected void onAddTour() {
+        tourDetailsViewModel.createAndPublishTour();
+        tourDetailsViewModel.fetchRouteDetails();
+        clearFormFields();
+    }
+
+    @FXML
     protected void onEditTour() {
         tourDetailsViewModel.saveTourChanges();
+        tourDetailsViewModel.fetchRouteDetails();
         clearFormFields();
     }
 
@@ -65,12 +75,6 @@ public class TourDetailsView implements Initializable {
         tourDetailsViewModel.deleteSelectedTour();
         clearFormFields();
         tourDetailsViewModel.clearTourSelection();
-    }
-
-    @FXML
-    protected void onAddTour() {
-        tourDetailsViewModel.createAndPublishTour();
-        clearFormFields();
     }
 
     private void clearFormFields() {

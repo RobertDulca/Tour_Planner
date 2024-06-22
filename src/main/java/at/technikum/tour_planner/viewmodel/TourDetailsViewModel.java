@@ -3,10 +3,9 @@ package at.technikum.tour_planner.viewmodel;
 import at.technikum.tour_planner.entity.Tour;
 import at.technikum.tour_planner.event.Event;
 import at.technikum.tour_planner.event.Publisher;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import at.technikum.tour_planner.service.OpenRouteService;
+import at.technikum.tour_planner.service.RouteInfo;
+import javafx.beans.property.*;
 
 public class TourDetailsViewModel {
     private final Publisher publisher;
@@ -21,6 +20,9 @@ public class TourDetailsViewModel {
     private final BooleanProperty isEditButtonDisabled = new SimpleBooleanProperty();
     private final BooleanProperty isTourSelected = new SimpleBooleanProperty(false);
     private final StringProperty imageUrl = new SimpleStringProperty();
+    private final DoubleProperty tourDistance = new SimpleDoubleProperty();
+    private final DoubleProperty estimatedTime = new SimpleDoubleProperty();
+    private final OpenRouteService routeService = new OpenRouteService();
 
     public TourDetailsViewModel(Publisher publisher) {
         this.publisher = publisher;
@@ -90,6 +92,8 @@ public class TourDetailsViewModel {
         destination.set("");
         transportType.set("Select Type");
         isTourSelected.set(false);
+        tourDistance.set(0);
+        estimatedTime.set(0);
     }
 
     public void deleteSelectedTour() {
@@ -108,6 +112,35 @@ public class TourDetailsViewModel {
         Tour newTour = new Tour(name.get(), description.get(), origin.get(), destination.get(), transportType.get(), imageUrl.get());
         publisher.publish(Event.TOUR_CREATED, newTour);
     }
+
+    public void fetchRouteDetails() {
+        String from = origin.get();
+        String to = destination.get();
+        String[] fromCoords = from.split(",");
+        String[] toCoords = to.split(",");
+
+        try {
+            System.out.println("Fetching route details from: " + from + " to: " + to);
+            // Fetch the route information
+            String response = routeService.getRoute(fromCoords[0], fromCoords[1], toCoords[0], toCoords[1]);
+            System.out.println("Response: " + response);
+            RouteInfo routeInfo = routeService.parseRoute(response);
+            if (routeInfo != null) {
+                // Update properties with the route information
+                System.out.println("Distance: " + routeInfo.getDistance());
+                System.out.println("Duration: " + routeInfo.getDuration());
+                tourDistance.set(routeInfo.getDistance());
+                estimatedTime.set(routeInfo.getDuration());
+            } else {
+                System.err.println("RouteInfo is null");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Provide feedback to the user, e.g., using an alert dialog
+            System.err.println("Error fetching route details: " + e.getMessage());
+        }
+    }
+
 
     public StringProperty transportTypeProperty() {
         return transportType;
@@ -139,5 +172,13 @@ public class TourDetailsViewModel {
 
     public StringProperty toProperty() {
         return destination;
+    }
+
+    public DoubleProperty tourDistanceProperty() {
+        return tourDistance;
+    }
+
+    public DoubleProperty estimatedTimeProperty() {
+        return estimatedTime;
     }
 }
