@@ -61,16 +61,26 @@ public class TourDetailsViewModel {
 
     public void saveTourChanges() {
         if (selectedTour != null) {
+            boolean originChanged = !selectedTour.getOrigin().equals(origin.get());
+            boolean destinationChanged = !selectedTour.getDestination().equals(destination.get());
+
             selectedTour.setName(name.get());
             selectedTour.setDescription(description.get());
             selectedTour.setOrigin(origin.get());
             selectedTour.setDestination(destination.get());
             selectedTour.setTransportType(transportType.get());
+
+            if (originChanged || destinationChanged) {
+                // Fetch and update the route details if origin or destination has changed
+                fetchRouteDetails(selectedTour);
+            }
+
             selectedTour.setDistance(distance.get());
             selectedTour.setEstimatedTime(estimatedTime.get());
             publisher.publish(Event.TOUR_UPDATED, selectedTour);
         }
     }
+
 
     public void setSelectedTour(Tour tour) {
         selectedTour = tour;

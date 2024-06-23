@@ -37,7 +37,7 @@
         <Label text="Origin" GridPane.columnIndex="0" GridPane.rowIndex="3" />
         <Label text="Destination" GridPane.columnIndex="0" GridPane.rowIndex="4" />
         <Label text="Transport Type" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-        <Label text="Tour Distance (Meters)" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+        <Label text="Tour Distance (Kilometers)" GridPane.columnIndex="0" GridPane.rowIndex="6" />
         <Label text="Estimated Time (Minutes)" GridPane.columnIndex="0" GridPane.rowIndex="7" />
         <Label text="Route Information" GridPane.columnIndex="0" GridPane.rowIndex="8" />
 

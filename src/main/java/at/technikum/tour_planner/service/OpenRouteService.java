@@ -62,8 +62,8 @@ public class OpenRouteService {
             throw new RuntimeException("No summary found in the properties.");
         }
 
-        double distance = summary.get("distance").getAsDouble();
-        double duration = (summary.get("duration").getAsDouble())/60;
+        double distance = (summary.get("distance").getAsDouble())/1000; //Kilometers
+        double duration = (summary.get("duration").getAsDouble())/60; //Minutes
 
         return new RouteInfo(distance, duration);
     }
