@@ -20,7 +20,7 @@ public class TourDetailsViewModel {
     private final BooleanProperty isEditButtonDisabled = new SimpleBooleanProperty();
     private final BooleanProperty isTourSelected = new SimpleBooleanProperty(false);
     private final StringProperty imageUrl = new SimpleStringProperty();
-    private final DoubleProperty tourDistance = new SimpleDoubleProperty();
+    private final DoubleProperty distance = new SimpleDoubleProperty();
     private final DoubleProperty estimatedTime = new SimpleDoubleProperty();
     private final OpenRouteService routeService = new OpenRouteService();
 
@@ -66,6 +66,8 @@ public class TourDetailsViewModel {
             selectedTour.setOrigin(origin.get());
             selectedTour.setDestination(destination.get());
             selectedTour.setTransportType(transportType.get());
+            selectedTour.setDistance(distance.get());
+            selectedTour.setEstimatedTime(estimatedTime.get());
             publisher.publish(Event.TOUR_UPDATED, selectedTour);
         }
     }
@@ -79,6 +81,8 @@ public class TourDetailsViewModel {
             origin.set(tour.getOrigin());
             destination.set(tour.getDestination());
             transportType.set(tour.getTransportType());
+            distance.set(tour.getDistance());
+            estimatedTime.set(tour.getEstimatedTime());
             imageUrl.set(tour.getImageUrl());
         } else {
             clearTourDetails();
@@ -92,7 +96,7 @@ public class TourDetailsViewModel {
         destination.set("");
         transportType.set("Select Type");
         isTourSelected.set(false);
-        tourDistance.set(0);
+        distance.set(0);
         estimatedTime.set(0);
     }
 
@@ -110,14 +114,15 @@ public class TourDetailsViewModel {
 
     public void createAndPublishTour() {
         Tour newTour = new Tour(name.get(), description.get(), origin.get(), destination.get(), transportType.get(), imageUrl.get());
+        fetchRouteDetails(newTour);
         publisher.publish(Event.TOUR_CREATED, newTour);
     }
 
-    public void fetchRouteDetails() {
-        String from = origin.get();
-        String to = destination.get();
-        String[] fromCoords = from.split(",");
-        String[] toCoords = to.split(",");
+    private void fetchRouteDetails(Tour tour) {
+        String from = tour.getOrigin();
+        String to = tour.getDestination();
+        String[] fromCoords = from.split(", ");
+        String[] toCoords = to.split(", ");
 
         try {
             System.out.println("Fetching route details from: " + from + " to: " + to);
@@ -129,14 +134,15 @@ public class TourDetailsViewModel {
                 // Update properties with the route information
                 System.out.println("Distance: " + routeInfo.getDistance());
                 System.out.println("Duration: " + routeInfo.getDuration());
-                tourDistance.set(routeInfo.getDistance());
+                distance.set(routeInfo.getDistance());
                 estimatedTime.set(routeInfo.getDuration());
+                tour.setDistance(routeInfo.getDistance());
+                tour.setEstimatedTime(routeInfo.getDuration());
             } else {
                 System.err.println("RouteInfo is null");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            // Provide feedback to the user, e.g., using an alert dialog
             System.err.println("Error fetching route details: " + e.getMessage());
         }
     }
@@ -175,7 +181,7 @@ public class TourDetailsViewModel {
     }
 
     public DoubleProperty tourDistanceProperty() {
-        return tourDistance;
+        return distance;
     }
 
     public DoubleProperty estimatedTimeProperty() {

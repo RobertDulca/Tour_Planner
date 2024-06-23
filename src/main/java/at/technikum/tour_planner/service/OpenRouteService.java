@@ -9,7 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 //TODO: change origin/destination from coordinates to name search
-//TODO: update distance/time correctly in details
+//TODO: add transport type to route calc
 
 public class OpenRouteService {
     private static final String API_KEY = "5b3ce3597851110001cf62489053f9d72da2401d91e21169cbc311f9";
@@ -54,7 +54,7 @@ public class OpenRouteService {
         JsonObject feature = features.get(0).getAsJsonObject();
         JsonObject properties = feature.getAsJsonObject("properties");
 
-        // Fetch the summary from the properties level
+        // Fetch the summary from properties level
         JsonObject summary = properties.getAsJsonObject("summary");
 
         if (summary == null) {

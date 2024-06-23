@@ -59,14 +59,12 @@ public class TourDetailsView implements Initializable {
     @FXML
     protected void onAddTour() {
         tourDetailsViewModel.createAndPublishTour();
-        tourDetailsViewModel.fetchRouteDetails();
         clearFormFields();
     }
 
     @FXML
     protected void onEditTour() {
         tourDetailsViewModel.saveTourChanges();
-        tourDetailsViewModel.fetchRouteDetails();
         clearFormFields();
     }
 
