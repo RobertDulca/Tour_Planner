@@ -30,24 +30,31 @@ public class Tour {
     public String getName() {
         return name.get();
     }
+
     public String getDescription() {
         return description.get();
     }
+
     public String getOrigin() {
         return from.get();
     }
+
     public String getDestination() {
         return to.get();
     }
+
     public String getTransportType() {
         return transportType.get();
     }
+
     public String getImageUrl() {
         return imageUrl.get();
     }
+
     public double getDistance() {
         return distance.get();
     }
+
     public double getEstimatedTime() {
         return estimatedTime.get();
     }
@@ -56,24 +63,31 @@ public class Tour {
     public void setName(String name) {
         this.name.set(name);
     }
+
     public void setDescription(String description) {
         this.description.set(description);
     }
+
     public void setOrigin(String origin) {
         this.from.set(origin);
     }
+
     public void setDestination(String destination) {
         this.to.set(destination);
     }
+
     public void setTransportType(String transportType) {
         this.transportType.set(transportType);
     }
+
     public void setImageUrl(String imageUrl) {
         this.imageUrl.set(imageUrl);
     }
+
     public void setDistance(double distance) {
         this.distance.set(distance);
     }
+
     public void setEstimatedTime(double estimatedTime) {
         this.estimatedTime.set(estimatedTime);
     }

@@ -81,5 +81,7 @@ public class TourDetailsView implements Initializable {
         from.clear();
         to.clear();
         transportType.getSelectionModel().select("Select Type");
+        tourDetailsViewModel.tourDistanceProperty().set(0);
+        tourDetailsViewModel.estimatedTimeProperty().set(0);
     }
 }

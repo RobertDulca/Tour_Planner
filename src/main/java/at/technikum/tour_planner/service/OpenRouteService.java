@@ -63,7 +63,7 @@ public class OpenRouteService {
         }
 
         double distance = summary.get("distance").getAsDouble();
-        double duration = summary.get("duration").getAsDouble();
+        double duration = (summary.get("duration").getAsDouble())/60;
 
         return new RouteInfo(distance, duration);
     }
