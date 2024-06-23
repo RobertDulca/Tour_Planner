@@ -8,6 +8,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+//TODO: change origin/destination from coordinates to name search
+//TODO: update distance/time correctly in details
+
 public class OpenRouteService {
     private static final String API_KEY = "5b3ce3597851110001cf62489053f9d72da2401d91e21169cbc311f9";
     private static final String BASE_URL = "https://api.openrouteservice.org/v2/directions/driving-car";
