@@ -13,7 +13,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class TourDetailsView implements Initializable {
-
     private final TourDetailsViewModel tourDetailsViewModel;
 
     @FXML private TextField tourName, tourDesc, from, to, tourDistance, estimatedTime;

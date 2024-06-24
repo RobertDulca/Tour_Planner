@@ -47,7 +47,7 @@ public class ToursTabView implements Initializable {
                 viewModel.clearSelectedTour();
             }
         });
-        // Clear selection when a tour is removed or updated
+
         viewModel.getTours().addListener((ListChangeListener<Tour>) change -> {
             if (change.next() && (change.wasRemoved() || change.wasUpdated())) {
                 toursList.getSelectionModel().clearSelection();

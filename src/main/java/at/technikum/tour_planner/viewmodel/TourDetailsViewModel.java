@@ -74,7 +74,6 @@ public class TourDetailsViewModel {
             selectedTour.setTransportType(transportType.get());
 
             if (originChanged || destinationChanged || transportTypeChanged) {
-                // Fetch and update the route details if origin, destination, or transport type has changed
                 fetchRouteDetails(selectedTour);
             }
 
@@ -136,31 +135,22 @@ public class TourDetailsViewModel {
         String transportType = convertTransportType(tour.getTransportType());
 
         try {
-            // Geocode the addresses
             String[] fromCoords = routeService.geocodeAddress(from);
             String[] toCoords = routeService.geocodeAddress(to);
 
-            System.out.println("Fetching route details from: " + from + " to: " + to + " using " + transportType);
-            // Fetch the route information
             String response = routeService.getRoute(fromCoords[0], fromCoords[1], toCoords[0], toCoords[1], transportType);
-            System.out.println("Response: " + response);
             RouteInfo routeInfo = routeService.parseRoute(response);
             if (routeInfo != null) {
-                // Update properties with the route information
-                System.out.println("Distance: " + routeInfo.getDistance());
-                System.out.println("Duration: " + routeInfo.getDuration());
                 distance.set(routeInfo.getDistance());
                 estimatedTime.set(routeInfo.getDuration());
                 tour.setDistance(routeInfo.getDistance());
                 tour.setEstimatedTime(routeInfo.getDuration());
             } else {
-                System.err.println("RouteInfo is null");
-                showAlert("ERROR!!!!!!!!!!!!", "Oh man! Failed to fetch Route Details :-(\nTry again maybe");
+                showAlert("Failed to fetch route details :-(\nPlease try again!");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert("ERROR!!!!!!!!!!!!", "Something went wrong :-(\nCheck input and try again ");
-
+            showAlert("Something went wrong :-(\nCheck input and try again!");
         }
     }
 
@@ -173,10 +163,10 @@ public class TourDetailsViewModel {
         };
     }
 
-    private void showAlert(String title, String message) {
+    private void showAlert(String message) {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle(title);
+            alert.setTitle("Error!");
             alert.setHeaderText(null);
             alert.setContentText(message);
             alert.showAndWait();
