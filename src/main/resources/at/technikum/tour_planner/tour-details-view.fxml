@@ -39,14 +39,17 @@
         <Label text="Transport Type" GridPane.columnIndex="0" GridPane.rowIndex="5" />
         <Label text="Tour Distance (Kilometers)" GridPane.columnIndex="0" GridPane.rowIndex="6" />
         <Label text="Estimated Time (Minutes)" GridPane.columnIndex="0" GridPane.rowIndex="7" />
-        <Label text="Route Information" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+        <Label text="Route Information:" GridPane.columnIndex="2" GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets left="20.0" />
+         </GridPane.margin></Label>
 
-        <ImageView fx:id="mapImageView" fitHeight="200" fitWidth="400" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowSpan="8">
+        <ImageView fx:id="mapImageView" fitHeight="200" fitWidth="400" preserveRatio="true" GridPane.columnIndex="2" GridPane.columnSpan="2147483647" GridPane.rowSpan="11">
             <image>
                 <Image url="@/img.png" />
             </image>
             <GridPane.margin>
-                <Insets left="40.0" />
+                <Insets left="20.0" />
             </GridPane.margin>
         </ImageView>
 
@@ -55,8 +58,8 @@
         <TextField fx:id="from" promptText="From" GridPane.columnIndex="1" GridPane.rowIndex="3" />
         <TextField fx:id="to" promptText="To" GridPane.columnIndex="1" GridPane.rowIndex="4" />
         <ComboBox fx:id="transportType" promptText="Select Transport" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-        <TextField fx:id="tourDistance" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
-        <TextField fx:id="estimatedTime" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+        <TextField fx:id="tourDistance" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+        <TextField fx:id="estimatedTime" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="7" />
 
     </GridPane>
 </AnchorPane>

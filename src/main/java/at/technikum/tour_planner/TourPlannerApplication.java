@@ -16,7 +16,7 @@ public class TourPlannerApplication extends Application {
         publisher = new Publisher();
         FXMLLoader loader = new FXMLLoader(TourPlannerApplication.class.getResource("main-view.fxml"));
         loader.setControllerFactory(new TourPlannerControllerFactory(publisher));
-        Scene scene = new Scene(loader.load(), 900, 500);
+        Scene scene = new Scene(loader.load(), 900, 550);
         stage.setTitle("Tour Planner");
         stage.setScene(scene);
         stage.show();

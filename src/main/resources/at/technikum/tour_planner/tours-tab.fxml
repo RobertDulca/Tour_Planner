@@ -3,16 +3,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<TabPane tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.tour_planner.view.ToursTabView">
+<TabPane prefHeight="400.0" prefWidth="150.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.tour_planner.view.ToursTabView">
     <Tab>
         <graphic>
             <HBox alignment="CENTER_LEFT" spacing="5">
-                <Label prefWidth="250.0" text="Tours" />
-                <HBox alignment="CENTER_RIGHT">
-                    <Button text="+"/>
-                    <Button text="-"/>
-                    <Button text="..."/>
-                </HBox>
+                <Label text="Tours" />
+                <HBox alignment="CENTER_RIGHT" />
             </HBox>
         </graphic>
         <ListView fx:id="toursList" />
