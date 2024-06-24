@@ -5,7 +5,9 @@ import at.technikum.tour_planner.event.Event;
 import at.technikum.tour_planner.event.Publisher;
 import at.technikum.tour_planner.service.OpenRouteService;
 import at.technikum.tour_planner.service.RouteInfo;
+import javafx.application.Platform;
 import javafx.beans.property.*;
+import javafx.scene.control.Alert;
 
 public class TourDetailsViewModel {
     private final Publisher publisher;
@@ -63,6 +65,7 @@ public class TourDetailsViewModel {
         if (selectedTour != null) {
             boolean originChanged = !selectedTour.getOrigin().equals(origin.get());
             boolean destinationChanged = !selectedTour.getDestination().equals(destination.get());
+            boolean transportTypeChanged = !selectedTour.getTransportType().equals(transportType.get());
 
             selectedTour.setName(name.get());
             selectedTour.setDescription(description.get());
@@ -70,8 +73,8 @@ public class TourDetailsViewModel {
             selectedTour.setDestination(destination.get());
             selectedTour.setTransportType(transportType.get());
 
-            if (originChanged || destinationChanged) {
-                // Fetch and update the route details if origin or destination has changed
+            if (originChanged || destinationChanged || transportTypeChanged) {
+                // Fetch and update the route details if origin, destination, or transport type has changed
                 fetchRouteDetails(selectedTour);
             }
 
@@ -80,7 +83,6 @@ public class TourDetailsViewModel {
             publisher.publish(Event.TOUR_UPDATED, selectedTour);
         }
     }
-
 
     public void setSelectedTour(Tour tour) {
         selectedTour = tour;
@@ -132,10 +134,12 @@ public class TourDetailsViewModel {
         String from = tour.getOrigin();
         String to = tour.getDestination();
         String transportType = convertTransportType(tour.getTransportType());
-        String[] fromCoords = from.split(", ");
-        String[] toCoords = to.split(", ");
 
         try {
+            // Geocode the addresses
+            String[] fromCoords = routeService.geocodeAddress(from);
+            String[] toCoords = routeService.geocodeAddress(to);
+
             System.out.println("Fetching route details from: " + from + " to: " + to + " using " + transportType);
             // Fetch the route information
             String response = routeService.getRoute(fromCoords[0], fromCoords[1], toCoords[0], toCoords[1], transportType);
@@ -151,10 +155,12 @@ public class TourDetailsViewModel {
                 tour.setEstimatedTime(routeInfo.getDuration());
             } else {
                 System.err.println("RouteInfo is null");
+                showAlert("ERROR!!!!!!!!!!!!", "Oh man! Failed to fetch Route Details :-(\nTry again maybe");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Error fetching route details: " + e.getMessage());
+            showAlert("ERROR!!!!!!!!!!!!", "Something went wrong :-(\nCheck input and try again ");
+
         }
     }
 
@@ -167,7 +173,15 @@ public class TourDetailsViewModel {
         };
     }
 
-
+    private void showAlert(String title, String message) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        });
+    }
 
     public StringProperty transportTypeProperty() {
         return transportType;
