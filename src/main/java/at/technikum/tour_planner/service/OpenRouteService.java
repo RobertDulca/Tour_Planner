@@ -9,14 +9,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 //TODO: change origin/destination from coordinates to name search
-//TODO: add transport type to route calc
 
 public class OpenRouteService {
     private static final String API_KEY = "5b3ce3597851110001cf62489053f9d72da2401d91e21169cbc311f9";
-    private static final String BASE_URL = "https://api.openrouteservice.org/v2/directions/driving-car";
 
-    public String getRoute(String fromLat, String fromLon, String toLat, String toLon) throws Exception {
-        String urlString = String.format("%s?api_key=%s&start=%s,%s&end=%s,%s", BASE_URL, API_KEY, fromLon, fromLat, toLon, toLat);
+    public String getRoute(String fromLat, String fromLon, String toLat, String toLon, String transportType) throws Exception {
+        String baseUrl = String.format("https://api.openrouteservice.org/v2/directions/%s", transportType);
+        String urlString = String.format("%s?api_key=%s&start=%s,%s&end=%s,%s", baseUrl, API_KEY, fromLon, fromLat, toLon, toLat);
         URL url = new URL(urlString);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
@@ -62,8 +61,8 @@ public class OpenRouteService {
             throw new RuntimeException("No summary found in the properties.");
         }
 
-        double distance = (summary.get("distance").getAsDouble())/1000; //Kilometers
-        double duration = (summary.get("duration").getAsDouble())/60; //Minutes
+        double distance = (summary.get("distance").getAsDouble()) / 1000; // Kilometers
+        double duration = (summary.get("duration").getAsDouble()) / 60; // Minutes
 
         return new RouteInfo(distance, duration);
     }

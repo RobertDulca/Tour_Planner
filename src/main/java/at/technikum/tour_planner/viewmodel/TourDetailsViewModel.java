@@ -131,13 +131,14 @@ public class TourDetailsViewModel {
     private void fetchRouteDetails(Tour tour) {
         String from = tour.getOrigin();
         String to = tour.getDestination();
+        String transportType = convertTransportType(tour.getTransportType());
         String[] fromCoords = from.split(", ");
         String[] toCoords = to.split(", ");
 
         try {
-            System.out.println("Fetching route details from: " + from + " to: " + to);
+            System.out.println("Fetching route details from: " + from + " to: " + to + " using " + transportType);
             // Fetch the route information
-            String response = routeService.getRoute(fromCoords[0], fromCoords[1], toCoords[0], toCoords[1]);
+            String response = routeService.getRoute(fromCoords[0], fromCoords[1], toCoords[0], toCoords[1], transportType);
             System.out.println("Response: " + response);
             RouteInfo routeInfo = routeService.parseRoute(response);
             if (routeInfo != null) {
@@ -156,6 +157,16 @@ public class TourDetailsViewModel {
             System.err.println("Error fetching route details: " + e.getMessage());
         }
     }
+
+    private String convertTransportType(String transportType) {
+        return switch (transportType) {
+            case "Car" -> "driving-car";
+            case "Bicycle" -> "cycling-regular";
+            case "Walk" -> "foot-walking";
+            default -> throw new IllegalArgumentException("Unknown transport type: " + transportType);
+        };
+    }
+
 
 
     public StringProperty transportTypeProperty() {
