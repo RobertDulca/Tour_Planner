@@ -1,61 +1,82 @@
 package at.technikum.tour_planner.entity;
 
+import jakarta.persistence.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Tour {
-    private final StringProperty name;
-    private final StringProperty description;
-    private final StringProperty from;
-    private final StringProperty to;
-    private final StringProperty transportType;
-    private final StringProperty imageUrl;
+import java.util.UUID;
 
+@Entity
+public class Tour {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @Column(name = "name")
+    private  String name;
+    @Column(name = "description")
+    private  String description;
+    @Column(name = "from")
+    private  String from;
+    @Column(name = "to")
+    private  String to;
+    @Column(name = "transportType")
+    private  String transportType;
+    @Column(name = "imageUrl")
+    private  String imageUrl;
+
+    public Tour() {}
     public Tour(String name, String description, String from, String to, String transportType, String imageUrl) {
-        this.name = new SimpleStringProperty(name);
-        this.description = new SimpleStringProperty(description);
-        this.from = new SimpleStringProperty(from);
-        this.to = new SimpleStringProperty(to);
-        this.transportType = new SimpleStringProperty(transportType);
-        this.imageUrl = new SimpleStringProperty(imageUrl);
+        this.name = name;
+        this.description = description;
+        this.from = from;
+        this.to = to;
+        this.transportType = transportType;
+        this.imageUrl = imageUrl;
     }
 
+    public UUID getId() {
+        return id;
+    }
     public String getName() {
-        return name.get();
+        return name;
     }
     public String getDescription() {
-        return description.get();
+        return description;
     }
     public String getOrigin() {
-        return from.get();
+        return from;
     }
     public String getDestination() {
-        return to.get();
+        return to;
     }
     public String getTransportType() {
-        return transportType.get();
+        return transportType;
     }
     public String getImageUrl() {
-        return imageUrl.get();
+        return imageUrl;
     }
 
+    public void setId(UUID id) {
+        this.id = id;
+    }
     public void setName(String name) {
-        this.name.set(name);
+        this.name = name;
     }
     public void setDescription(String description) {
-        this.description.set(description);
+        this.description = description;
     }
     public void setOrigin(String origin) {
-        this.from.set(origin);
+        this.from = origin;
     }
     public void setDestination(String destination) {
-        this.to.set(destination);
+        this.to = destination;
     }
     public void setTransportType(String transportType) {
-        this.transportType.set(transportType);
+        this.transportType = transportType;
     }
 
     public void setImageUrl(String imageUrl) {
-        this.imageUrl.set(imageUrl);
+        this.imageUrl = imageUrl;
     }
 }

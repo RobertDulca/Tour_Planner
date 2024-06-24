@@ -10,9 +10,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TourLogOverviewViewModel {
     private final Publisher publisher;
@@ -58,14 +56,8 @@ public class TourLogOverviewViewModel {
         tourLogs.setAll(allTourLogs);
     }
 
-    public ObservableList<LocalDate> getTourLogs() {
-        if (!tourLogs.isEmpty()) {
-            return FXCollections.observableArrayList(tourLogs.stream()
-                    .map(TourLogModel::getDate) // Extract the date from each TourLogModel
-                    .collect(Collectors.toList()));
-        } else {
-            return FXCollections.observableArrayList(); // Return an empty list if tourLogs is null
-        }
+    public ObservableList<TourLogModel> getTourLogs() {
+        return tourLogs;
     }
 
     public IntegerProperty selectedTourLogIndexProperty() {

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefWidth="500" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.tour_planner.view.TourLogOverviewView">
+<VBox prefWidth="500" xmlns:fx="http://javafx.com/fxml/" fx:controller="at.technikum.tour_planner.view.TourLogOverviewView">
     <ToolBar>
         <Label text="MediaOverview_Items" />
         <Pane HBox.hgrow="ALWAYS" />

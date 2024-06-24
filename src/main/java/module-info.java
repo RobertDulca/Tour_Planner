@@ -2,6 +2,9 @@ module at.technikum.tour_planner {
     requires javafx.controls;
     requires javafx.fxml;
     requires org.controlsfx.controls;
+    requires jakarta.persistence;
+    requires org.hibernate.orm.core;
+    requires org.apache.logging.log4j;
 
     opens at.technikum.tour_planner to javafx.fxml;
     opens at.technikum.tour_planner.view to javafx.fxml;
