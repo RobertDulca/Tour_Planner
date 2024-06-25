@@ -40,8 +40,6 @@ public class ToursTabViewModel {
         publisher.publish(Event.TOUR_SELECTED, null);
     }
 
-    //TODO: finish the following methods
-
     private void onTourCreated(Object message) {
         if (message instanceof Tour) {
             tours.setAll(tourService.getAllTours());

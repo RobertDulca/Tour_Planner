@@ -2,6 +2,7 @@ package at.technikum.tour_planner.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -23,6 +24,8 @@ public class Tour {
     private  String transportType;
     @Column(name = "imageUrl")
     private  String imageUrl;
+    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TourLogModel> tourLogs;
 
     public Tour() {}
     public Tour(String name, String description, String from, String to, String transportType, String imageUrl) {

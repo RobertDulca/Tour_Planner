@@ -6,10 +6,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ToursTabRepository {
-    List<Tour> findAll();
-    Optional<Tour> findById(UUID id);
-    Tour save(Tour tour);
+public interface ToursTabRepository <T> {
+    List<T> findAll();
+    Optional<T> findById(UUID id);
+    List<T> findByTourId(UUID tourId);
+    T save(T tour);
     boolean deleteById(UUID id);
-    Tour update(Tour tour);
+    T update(T tour);
 }

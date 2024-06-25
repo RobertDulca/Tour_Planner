@@ -1,7 +1,7 @@
 package at.technikum.tour_planner;
 
 import at.technikum.tour_planner.event.Publisher;
-import at.technikum.tour_planner.repository.TourLogOverviewRepository;
+import at.technikum.tour_planner.repository.TourLogOverviewDatabaseRepository;
 import at.technikum.tour_planner.repository.ToursTabDatabaseRepository;
 import at.technikum.tour_planner.repository.ToursTabRepository;
 import at.technikum.tour_planner.service.TourLogOverviewService;
@@ -15,7 +15,7 @@ import at.technikum.tour_planner.viewmodel.ToursTabViewModel;
 public class TourPlannerControllerFactory implements javafx.util.Callback<Class<?>, Object> {
     private final Publisher publisher;
 
-    private final TourLogOverviewRepository tourLogOverviewRepository;
+    private final TourLogOverviewDatabaseRepository tourLogOverviewRepository;
     private final ToursTabRepository toursTabRepository;
     private final ToursTabService toursTabService;
     private final TourLogOverviewService tourLogOverviewService;
@@ -29,7 +29,7 @@ public class TourPlannerControllerFactory implements javafx.util.Callback<Class<
     public TourPlannerControllerFactory(Publisher publisher) {
         this.publisher = publisher;
 
-        tourLogOverviewRepository = new TourLogOverviewRepository();
+        tourLogOverviewRepository = new TourLogOverviewDatabaseRepository();
         toursTabRepository = new ToursTabDatabaseRepository();
         tourLogOverviewService = new TourLogOverviewService(tourLogOverviewRepository);
         toursTabService = new ToursTabService(toursTabRepository);

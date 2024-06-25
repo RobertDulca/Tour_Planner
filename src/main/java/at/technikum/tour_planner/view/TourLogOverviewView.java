@@ -1,7 +1,9 @@
 package at.technikum.tour_planner.view;
 
+import at.technikum.tour_planner.entity.Tour;
 import at.technikum.tour_planner.entity.TourLogModel;
 import at.technikum.tour_planner.viewmodel.TourLogOverviewViewModel;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
@@ -25,7 +27,6 @@ public class TourLogOverviewView implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.tourLogList.setItems(tourLogOverviewViewModel.getTourLogs());
-        this.tourLogOverviewViewModel.selectedTourLogIndexProperty().bind(tourLogList.getSelectionModel().selectedIndexProperty());
         setupListView();
     }
 
@@ -46,13 +47,19 @@ public class TourLogOverviewView implements Initializable {
             }
         }));
 
-        // Add a listener to handle selection changes if necessary
-        /*tourLogList.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+        tourLogList.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
-                tourLogOverviewViewModel.selectTourLog(newSelection); // Assuming selectTourLog is a method in your viewModel
+                tourLogOverviewViewModel.selectTourLog(newSelection);
             } else {
-                tourLogOverviewViewModel.clearSelectedTourLog(); // Assuming clearSelectedTourLog is a method in your viewModel
+                tourLogOverviewViewModel.clearSelectedTourLog();
             }
-        });*/
+        });
+
+        // Clear selection when a tour is removed or updated
+        tourLogOverviewViewModel.getTourLogs().addListener((ListChangeListener<TourLogModel>) change -> {
+            if (change.next() && (change.wasRemoved() || change.wasUpdated())) {
+                tourLogList.getSelectionModel().clearSelection();
+            }
+        });
     }
 }

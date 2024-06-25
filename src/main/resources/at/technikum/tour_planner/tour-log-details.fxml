@@ -29,11 +29,10 @@
       <TextArea fx:id="tourLogComment" prefHeight="89.0" prefWidth="309.0" promptText="Comment" GridPane.columnIndex="2" GridPane.rowIndex="7" />
       <Label text="Rating" GridPane.columnIndex="1" GridPane.rowIndex="5" />
       <Rating fx:id="tourLogRating" prefWidth="231.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-      <Button mnemonicParsing="false" prefHeight="36.0" prefWidth="166.0" text="SaveTourlog" GridPane.columnIndex="2" GridPane.rowIndex="8" onAction="#createTourLog">
-         <GridPane.margin>
-            <Insets bottom="10.0" top="10.0" />
-         </GridPane.margin>
-      </Button>
+      <Button fx:id="addButton" onAction="#createTourLog" text="Add Tour" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+      <Button fx:id="deleteButton" onAction="#deleteTourLog" text="Delete Tour" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+      <Button fx:id="editButton" onAction="#updateTourLog" text="Save Changes" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+
    </children>
    <padding>
       <Insets left="20.0" right="10.0" top="10.0" />

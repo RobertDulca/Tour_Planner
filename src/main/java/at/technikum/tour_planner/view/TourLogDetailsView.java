@@ -3,10 +3,7 @@ package at.technikum.tour_planner.view;
 import at.technikum.tour_planner.viewmodel.TourLogDetailsViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.util.converter.NumberStringConverter;
 import org.controlsfx.control.Rating;
 
@@ -26,15 +23,18 @@ public class TourLogDetailsView implements Initializable {
     private Rating tourLogRating;
     @FXML
     private TextArea tourLogComment;
+    @FXML
+    private Button addButton, deleteButton, editButton;
 
-    public TourLogDetailsView(TourLogDetailsViewModel tourLogModel) {
-        this.tourLogDetailsViewModel = tourLogModel;
+    public TourLogDetailsView(TourLogDetailsViewModel tourLogViewModel) {
+        this.tourLogDetailsViewModel = tourLogViewModel;
     }
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         bindProperties();
+        setupButtonBindings();
     }
 
     private void bindProperties() {
@@ -45,8 +45,35 @@ public class TourLogDetailsView implements Initializable {
         this.tourLogComment.textProperty().bindBidirectional(tourLogDetailsViewModel.commentProperty());
     }
 
+    private void setupButtonBindings() {
+        addButton.disableProperty().bind(tourLogDetailsViewModel.addButtonDisabledProperty());
+        deleteButton.disableProperty().bind(tourLogDetailsViewModel.isTourSelectedProperty().not());
+        editButton.disableProperty().bind(tourLogDetailsViewModel.editButtonDisabledProperty());
+    }
+
     @FXML
     public void createTourLog() {
         this.tourLogDetailsViewModel.createTourLog();
+        clearFormFields();
+    }
+
+    @FXML
+    public void updateTourLog() {
+        this.tourLogDetailsViewModel.updateTourLog();
+        clearFormFields();
+    }
+
+    @FXML
+    public void deleteTourLog() {
+        this.tourLogDetailsViewModel.deleteSelectedTourLog();
+        clearFormFields();
+    }
+
+    private void clearFormFields() {
+        tourLogDate.setValue(null);
+        difficulty.setValue(0);
+        tourLogTime.clear();
+        tourLogRating.setRating(0);
+        tourLogComment.clear();
     }
 }

@@ -9,11 +9,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class ToursTabService {
-    private final ToursTabRepository tourRepository;
+    private final ToursTabRepository<Tour> tourRepository;
 
-
-    //TODO: Update the following methods to use the ToursTabDatabaseRepository
-    public ToursTabService(ToursTabRepository tourRepository) {
+    public ToursTabService(ToursTabRepository<Tour> tourRepository) {
         this.tourRepository = tourRepository;
     }
 

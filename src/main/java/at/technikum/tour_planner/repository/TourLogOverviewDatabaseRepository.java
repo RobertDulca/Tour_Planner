@@ -8,40 +8,41 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class ToursTabDatabaseRepository implements ToursTabRepository <Tour>{
+public class TourLogOverviewDatabaseRepository implements ToursTabRepository <TourLogModel>{
     private final EntityManagerFactory entityManagerFactory;
 
-    public ToursTabDatabaseRepository() {
+    public TourLogOverviewDatabaseRepository() {
         entityManagerFactory = Persistence.createEntityManagerFactory("hibernate");
     }
 
     @Override
-    public List<Tour> findAll() {
+    public List<TourLogModel> findAll() {
         CriteriaBuilder criteriaBuilder = entityManagerFactory.getCriteriaBuilder();
-        CriteriaQuery<Tour> criteriaQuery = criteriaBuilder.createQuery(Tour.class);
-        Root<Tour> root = criteriaQuery.from(Tour.class);
-        CriteriaQuery<Tour> all = criteriaQuery.select(root);
+        CriteriaQuery<TourLogModel> criteriaQuery = criteriaBuilder.createQuery(TourLogModel.class);
+        Root<TourLogModel> root = criteriaQuery.from(TourLogModel.class);
+        CriteriaQuery<TourLogModel> all = criteriaQuery.select(root);
 
         try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
             return entityManager.createQuery(all).getResultList();
         }
     }
 
+    //TODO: Rework the following methods to use the EntityManagerFactory
     @Override
-    public Optional<Tour> findById(UUID id) {
+    public Optional<TourLogModel> findById(UUID id) {
         CriteriaBuilder criteriaBuilder = entityManagerFactory.getCriteriaBuilder();
-        CriteriaQuery<Tour> criteriaQuery = criteriaBuilder.createQuery(Tour.class);
-        Root<Tour> root = criteriaQuery.from(Tour.class);
+        CriteriaQuery<TourLogModel> criteriaQuery = criteriaBuilder.createQuery(TourLogModel.class);
+        Root<TourLogModel> root = criteriaQuery.from(TourLogModel.class);
 
         Predicate termPredicate = criteriaBuilder.equal(root.get("id"), id);
         criteriaQuery.where(termPredicate);
         try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
-            Tour tour = entityManager.createQuery(criteriaQuery).getSingleResult();
+            TourLogModel tour = entityManager.createQuery(criteriaQuery).getSingleResult();
 
             return Optional.of(tour);
         } catch (NoResultException e) {
@@ -50,7 +51,7 @@ public class ToursTabDatabaseRepository implements ToursTabRepository <Tour>{
     }
 
     @Override
-    public Tour save(Tour tour) {
+    public TourLogModel save(TourLogModel tour) {
         try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
             EntityTransaction transaction = entityManager.getTransaction();
             transaction.begin();
@@ -66,7 +67,7 @@ public class ToursTabDatabaseRepository implements ToursTabRepository <Tour>{
         EntityManager em = entityManagerFactory.createEntityManager();
         try {
             em.getTransaction().begin();
-            Tour tour = em.find(Tour.class, id);
+            TourLogModel tour = em.find(TourLogModel.class, id);
             if (tour != null) {
                 em.remove(tour);
                 em.getTransaction().commit();
@@ -86,12 +87,12 @@ public class ToursTabDatabaseRepository implements ToursTabRepository <Tour>{
     }
 
     @Override
-    public Tour update(Tour updatedTour) {
+    public TourLogModel update(TourLogModel updatedTour) {
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            Tour mergedTour = em.merge(updatedTour);
+            TourLogModel mergedTour = em.merge(updatedTour);
             transaction.commit();
             return mergedTour;
         } catch (RuntimeException e) {
@@ -105,7 +106,10 @@ public class ToursTabDatabaseRepository implements ToursTabRepository <Tour>{
     }
 
     @Override
-    public List<Tour> findByTourId(UUID tourId) {
-        return Collections.emptyList();
+    public List<TourLogModel> findByTourId(UUID tourId) {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        TypedQuery<TourLogModel> query = em.createQuery("SELECT l FROM TourLogModel l WHERE l.tour.id = :tourId", TourLogModel.class);
+        query.setParameter("tourId", tourId);
+        return query.getResultList();
     }
 }

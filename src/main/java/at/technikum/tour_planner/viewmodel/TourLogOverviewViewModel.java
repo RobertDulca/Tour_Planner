@@ -1,58 +1,56 @@
 package at.technikum.tour_planner.viewmodel;
 
+import at.technikum.tour_planner.entity.Tour;
 import at.technikum.tour_planner.entity.TourLogModel;
 import at.technikum.tour_planner.event.Event;
 import at.technikum.tour_planner.event.Publisher;
-import at.technikum.tour_planner.repository.TourLogOverviewRepository;
 import at.technikum.tour_planner.service.TourLogOverviewService;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.List;
+import java.util.UUID;
 
 public class TourLogOverviewViewModel {
     private final Publisher publisher;
-
     private final TourLogOverviewService tourLogOverviewService;
-
-    public static TourLogOverviewViewModel getInstance() {
-        return instance;
-    }
-
-    private static final TourLogOverviewViewModel instance = new TourLogOverviewViewModel(new Publisher(), new TourLogOverviewService(new TourLogOverviewRepository()));
-
     private final ObservableList<TourLogModel> tourLogs = FXCollections.observableArrayList();
-
-    private final IntegerProperty selectedTourLogIndex = new SimpleIntegerProperty();
+    private UUID selectedTourId;
 
     public TourLogOverviewViewModel(Publisher publisher, TourLogOverviewService tourLogOverviewService) {
         this.publisher = publisher;
         this.tourLogOverviewService = tourLogOverviewService;
 
-        this.selectedTourLogIndex.addListener(observable -> selectTourLog());
+        // Subscribe to tour selection changes
+        publisher.subscribe(Event.TOUR_SELECTED, this::onTourSelected);
 
+        // Initial loading of logs (could be empty if no tour is selected initially)
+        updateTourLogs(null);
+
+        // Subscribe to log changes
         publisher.subscribe(Event.TOUR_LOG_CREATED, this::updateTourLogs);
+        publisher.subscribe(Event.TOUR_LOG_UPDATED, this::updateTourLogs);
+        publisher.subscribe(Event.TOUR_LOG_DELETED, this::updateTourLogs);
     }
 
-    public void selectTourLog() {
-        if (selectedTourLogIndex.get() == -1) {
-            return;
+    private void onTourSelected(Object message) {
+        if (message instanceof Tour) {
+            Tour selectedTour = (Tour) message;
+            selectedTourId = selectedTour.getId();
+        } else {
+            selectedTourId = null;
         }
-
-        publisher.publish(Event.TOUR_LOG_SELECTED, tourLogs.get(selectedTourLogIndex.get()));
+        updateTourLogs(null);
     }
 
     private void updateTourLogs(Object message) {
-        System.out.println("Updating tour logs...");
-        List<TourLogModel> allTourLogs = tourLogOverviewService.findAll();
-        if(allTourLogs.isEmpty()) {
-            System.out.println("No tour logs found.");
+        List<TourLogModel> allTourLogs;
+        if (selectedTourId != null) {
+            allTourLogs = tourLogOverviewService.findByTourId(selectedTourId);
         } else {
-            System.out.println("Received tour logs: " + allTourLogs.size());
-            allTourLogs.forEach(log -> System.out.println("Log Date: " + log.getDate() + ", Details: " + log.getComment())); // Assuming getDetails() is a method in TourLogModel
+            allTourLogs = FXCollections.emptyObservableList(); // Clear logs if no tour is selected
         }
+        tourLogs.clear();
         tourLogs.setAll(allTourLogs);
     }
 
@@ -60,7 +58,11 @@ public class TourLogOverviewViewModel {
         return tourLogs;
     }
 
-    public IntegerProperty selectedTourLogIndexProperty() {
-        return selectedTourLogIndex;
+    public void selectTourLog(TourLogModel tourLog) {
+        publisher.publish(Event.TOUR_LOG_SELECTED, tourLog);
+    }
+
+    public void clearSelectedTourLog() {
+        publisher.publish(Event.TOUR_LOG_SELECTED, null);
     }
 }
