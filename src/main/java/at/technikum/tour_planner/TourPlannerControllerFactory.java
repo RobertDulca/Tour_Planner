@@ -24,7 +24,7 @@ public class TourPlannerControllerFactory implements javafx.util.Callback<Class<
     private final TourLogOverviewViewModel tourLogOverviewViewModel;
     private final ToursTabViewModel toursTabViewModel;
     private final TourLogDetailsViewModel tourLogDetailsViewModel;
-    //private final TourDetailsViewModel tourDetailsViewModel;
+    private final TourDetailsViewModel tourDetailsViewModel;
 
     public TourPlannerControllerFactory(Publisher publisher) {
         this.publisher = publisher;
@@ -36,7 +36,7 @@ public class TourPlannerControllerFactory implements javafx.util.Callback<Class<
         tourLogOverviewViewModel = new TourLogOverviewViewModel(publisher, tourLogOverviewService);
         toursTabViewModel = new ToursTabViewModel(publisher, toursTabService);
         tourLogDetailsViewModel = new TourLogDetailsViewModel(publisher, tourLogOverviewService);
-        //tourDetailsViewModel = new TourDetailsViewModel(publisher, toursTabService);
+        tourDetailsViewModel = new TourDetailsViewModel(publisher, toursTabService);
         tourLogOverviewView = new TourLogOverviewView(tourLogOverviewViewModel);
         tourLogDetailsView = new TourLogDetailsView(tourLogDetailsViewModel);
     }
@@ -49,7 +49,7 @@ public class TourPlannerControllerFactory implements javafx.util.Callback<Class<
             } else if (param == SearchBarView.class) {
                 return new SearchBarView(publisher);
             } else if (param == TourDetailsView.class) {
-                return new TourDetailsView(publisher);
+                return new TourDetailsView(tourDetailsViewModel);
             } else if (param == ToursTabView.class) {
                 return new ToursTabView(toursTabViewModel);
             } else if (param == TourLogDetailsView.class) {

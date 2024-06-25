@@ -10,5 +10,6 @@ public interface ToursTabRepository {
     List<Tour> findAll();
     Optional<Tour> findById(UUID id);
     Tour save(Tour tour);
-    void deleteById(UUID id);
+    boolean deleteById(UUID id);
+    Tour update(Tour tour);
 }

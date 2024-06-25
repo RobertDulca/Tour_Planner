@@ -44,29 +44,21 @@ public class ToursTabViewModel {
 
     private void onTourCreated(Object message) {
         if (message instanceof Tour) {
-            Tour tour = (Tour) message;
-            tourService.saveTour(tour);
-            tours.add(tour);
+            tours.setAll(tourService.getAllTours());
         }
     }
 
     private void onTourUpdated(Object message) {
         if (message instanceof Tour) {
-            Tour tour = (Tour) message;
-            tourService.saveTour(tour);
-            int index = tours.indexOf(tour);
-            if (index != -1) {
-                tours.set(index, tour);
-            }
+            tours.clear();
+            tours.setAll(tourService.getAllTours());
         }
     }
 
     private void onTourDeleted(Object message) {
         if (message instanceof Tour) {
-            Tour tour = (Tour) message;
-            tourService.deleteTour(tour.getId());
-            tours.remove(tour);
-            clearSelectedTour();
+            tours.clear();
+            tours.setAll(tourService.getAllTours());
         }
     }
 }

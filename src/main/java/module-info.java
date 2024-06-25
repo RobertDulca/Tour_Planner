@@ -8,7 +8,7 @@ module at.technikum.tour_planner {
 
     opens at.technikum.tour_planner to javafx.fxml;
     opens at.technikum.tour_planner.view to javafx.fxml;
-    opens at.technikum.tour_planner.entity to javafx.fxml;
+    opens at.technikum.tour_planner.entity;
     opens at.technikum.tour_planner.viewmodel to javafx.fxml;
     opens at.technikum.tour_planner.event to javafx.fxml;
 

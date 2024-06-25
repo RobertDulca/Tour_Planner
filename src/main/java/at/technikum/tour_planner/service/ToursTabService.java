@@ -32,4 +32,8 @@ public class ToursTabService {
     public void deleteTour(UUID id) {
         tourRepository.deleteById(id);
     }
+
+    public void updateTour(Tour selectedTour) {
+        tourRepository.update(selectedTour);
+    }
 }

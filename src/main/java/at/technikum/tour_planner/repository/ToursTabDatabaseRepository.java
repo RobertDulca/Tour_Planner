@@ -1,11 +1,10 @@
 package at.technikum.tour_planner.repository;
 
 import at.technikum.tour_planner.entity.Tour;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
+import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
 import java.util.List;
@@ -30,28 +29,77 @@ public class ToursTabDatabaseRepository implements ToursTabRepository{
             return entityManager.createQuery(all).getResultList();
         }
     }
+
     //TODO: Rework the following methods to use the EntityManagerFactory
     @Override
     public Optional<Tour> findById(UUID id) {
-        Tour tour = entityManager.find(Tour.class, id);
-        return tour != null ? Optional.of(tour) : Optional.empty();
-    }
+        CriteriaBuilder criteriaBuilder = entityManagerFactory.getCriteriaBuilder();
+        CriteriaQuery<Tour> criteriaQuery = criteriaBuilder.createQuery(Tour.class);
+        Root<Tour> root = criteriaQuery.from(Tour.class);
 
-    @Override
-    public Tour save(Tour tour) {
-        if (tour.getId() == null) {
-            entityManager.persist(tour);
-            return tour;
-        } else {
-            return entityManager.merge(tour);
+        Predicate termPredicate = criteriaBuilder.equal(root.get("id"), id);
+        criteriaQuery.where(termPredicate);
+        try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+            Tour tour = entityManager.createQuery(criteriaQuery).getSingleResult();
+
+            return Optional.of(tour);
+        } catch (NoResultException e) {
+            return Optional.empty();
         }
     }
 
     @Override
-    public void deleteById(UUID id) {
-        Tour tour = entityManager.find(Tour.class, id);
-        if (tour != null) {
-            entityManager.remove(tour);
+    public Tour save(Tour tour) {
+        try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+            EntityTransaction transaction = entityManager.getTransaction();
+            transaction.begin();
+            entityManager.persist(tour);
+            transaction.commit();
+        }
+
+        return tour;
+    }
+
+    @Override
+    public boolean deleteById(UUID id) {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            Tour tour = em.find(Tour.class, id);
+            if (tour != null) {
+                em.remove(tour);
+                em.getTransaction().commit();
+                return true;
+            } else {
+                em.getTransaction().rollback();
+                return false;
+            }
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public Tour update(Tour updatedTour) {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        try {
+            transaction.begin();
+            Tour mergedTour = em.merge(updatedTour);
+            transaction.commit();
+            return mergedTour;
+        } catch (RuntimeException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e; // Or handle it depending on your error handling policy
+        } finally {
+            em.close();
         }
     }
 }

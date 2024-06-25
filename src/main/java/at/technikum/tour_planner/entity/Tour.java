@@ -1,12 +1,11 @@
 package at.technikum.tour_planner.entity;
 
 import jakarta.persistence.*;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 
 import java.util.UUID;
 
 @Entity
+@Table(name = "tour")
 public class Tour {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -16,10 +15,10 @@ public class Tour {
     private  String name;
     @Column(name = "description")
     private  String description;
-    @Column(name = "from")
-    private  String from;
-    @Column(name = "to")
-    private  String to;
+    @Column(name = "start")
+    private  String start;
+    @Column(name = "destination")
+    private  String destination;
     @Column(name = "transportType")
     private  String transportType;
     @Column(name = "imageUrl")
@@ -29,8 +28,8 @@ public class Tour {
     public Tour(String name, String description, String from, String to, String transportType, String imageUrl) {
         this.name = name;
         this.description = description;
-        this.from = from;
-        this.to = to;
+        this.start = from;
+        this.destination = to;
         this.transportType = transportType;
         this.imageUrl = imageUrl;
     }
@@ -45,10 +44,10 @@ public class Tour {
         return description;
     }
     public String getOrigin() {
-        return from;
+        return start;
     }
     public String getDestination() {
-        return to;
+        return destination;
     }
     public String getTransportType() {
         return transportType;
@@ -67,10 +66,10 @@ public class Tour {
         this.description = description;
     }
     public void setOrigin(String origin) {
-        this.from = origin;
+        this.start = origin;
     }
     public void setDestination(String destination) {
-        this.to = destination;
+        this.destination = destination;
     }
     public void setTransportType(String transportType) {
         this.transportType = transportType;
