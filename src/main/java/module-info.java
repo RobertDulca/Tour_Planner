@@ -4,6 +4,8 @@ module at.technikum.tour_planner {
     requires org.controlsfx.controls;
     requires jdk.jsobject;
     requires com.google.gson;
+    requires java.desktop;
+    requires javafx.swing;
 
     opens at.technikum.tour_planner to javafx.fxml;
     opens at.technikum.tour_planner.view to javafx.fxml;

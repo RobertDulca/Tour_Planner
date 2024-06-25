@@ -8,6 +8,12 @@ import at.technikum.tour_planner.service.RouteInfo;
 import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
+import javafx.embed.swing.SwingFXUtils;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
 
 public class TourDetailsViewModel {
     private final Publisher publisher;
@@ -21,7 +27,7 @@ public class TourDetailsViewModel {
     private final BooleanProperty isAddButtonDisabled = new SimpleBooleanProperty();
     private final BooleanProperty isEditButtonDisabled = new SimpleBooleanProperty();
     private final BooleanProperty isTourSelected = new SimpleBooleanProperty(false);
-    private final StringProperty imageUrl = new SimpleStringProperty();
+    private final ObjectProperty<Image> imageUrl = new SimpleObjectProperty<>();
     private final DoubleProperty distance = new SimpleDoubleProperty();
     private final DoubleProperty estimatedTime = new SimpleDoubleProperty();
     private final OpenRouteService routeService = new OpenRouteService();
@@ -57,8 +63,14 @@ public class TourDetailsViewModel {
         }
     }
 
-    public StringProperty imageUrlProperty() {
-        return imageUrl;
+    public void showAlert(String message) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error!");
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        });
     }
 
     public void saveTourChanges() {
@@ -94,10 +106,19 @@ public class TourDetailsViewModel {
             transportType.set(tour.getTransportType());
             distance.set(tour.getDistance());
             estimatedTime.set(tour.getEstimatedTime());
-            imageUrl.set(tour.getImageUrl());
+            if (tour.getImageUrl() != null && !tour.getImageUrl().isEmpty()) {
+                imageUrl.set(new Image(tour.getImageUrl()));
+            } else {
+                imageUrl.set(null); // Handle case where image URL is null or empty
+            }
         } else {
             clearTourDetails();
         }
+    }
+
+
+    public Tour getSelectedTour() {
+        return selectedTour;
     }
 
     private void clearTourDetails() {
@@ -124,9 +145,25 @@ public class TourDetailsViewModel {
     }
 
     public void createAndPublishTour() {
-        Tour newTour = new Tour(name.get(), description.get(), origin.get(), destination.get(), transportType.get(), imageUrl.get());
-        fetchRouteDetails(newTour);
-        publisher.publish(Event.TOUR_CREATED, newTour);
+        String imageUrlValue = imageUrl.get() != null ? imageUrl.get().getUrl() : ""; // Handle null case
+        Tour newTour = new Tour(name.get(), description.get(), origin.get(), destination.get(), transportType.get(), imageUrlValue);
+        try {
+            fetchRouteDetails(newTour);
+            fetchAndSetMapImage(newTour);
+            publisher.publish(Event.TOUR_CREATED, newTour);
+        } catch (Exception e) {
+            showAlert("Failed to create new tour: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private String convertTransportType(String transportType) {
+        return switch (transportType) {
+            case "Car" -> "driving-car";
+            case "Bicycle" -> "cycling-regular";
+            case "Walk" -> "foot-walking";
+            default -> throw new IllegalArgumentException("Unknown transport type: " + transportType);
+        };
     }
 
     private void fetchRouteDetails(Tour tour) {
@@ -135,10 +172,10 @@ public class TourDetailsViewModel {
         String transportType = convertTransportType(tour.getTransportType());
 
         try {
-            String[] fromCoords = routeService.geocodeAddress(from);
-            String[] toCoords = routeService.geocodeAddress(to);
+            double[] fromCoords = routeService.geocodeAddress(from);
+            double[] toCoords = routeService.geocodeAddress(to);
 
-            String response = routeService.getRoute(fromCoords[0], fromCoords[1], toCoords[0], toCoords[1], transportType);
+            String response = routeService.getRoute(Double.toString(fromCoords[0]), Double.toString(fromCoords[1]), Double.toString(toCoords[0]), Double.toString(toCoords[1]), transportType);
             RouteInfo routeInfo = routeService.parseRoute(response);
             if (routeInfo != null) {
                 distance.set(routeInfo.getDistance());
@@ -154,23 +191,20 @@ public class TourDetailsViewModel {
         }
     }
 
-    private String convertTransportType(String transportType) {
-        return switch (transportType) {
-            case "Car" -> "driving-car";
-            case "Bicycle" -> "cycling-regular";
-            case "Walk" -> "foot-walking";
-            default -> throw new IllegalArgumentException("Unknown transport type: " + transportType);
-        };
+    public void fetchAndSetMapImage(Tour tour) throws IOException {
+        try {
+            BufferedImage mapImage = routeService.fetchMapForTour(tour, 16, 3); // Adjusted zoom level
+            WritableImage fxImage = SwingFXUtils.toFXImage(mapImage, null);
+            imageUrl.set(fxImage);
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Failed to fetch map image: " + e.getMessage());
+            throw e;
+        }
     }
 
-    private void showAlert(String message) {
-        Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error!");
-            alert.setHeaderText(null);
-            alert.setContentText(message);
-            alert.showAndWait();
-        });
+    public ObjectProperty<Image> imageProperty() {
+        return imageUrl;
     }
 
     public StringProperty transportTypeProperty() {

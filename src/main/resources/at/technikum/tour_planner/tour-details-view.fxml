@@ -44,7 +44,7 @@
             <Insets left="20.0" />
          </GridPane.margin></Label>
 
-        <ImageView fx:id="mapImageView" fitHeight="200" fitWidth="400" preserveRatio="true" GridPane.columnIndex="2" GridPane.columnSpan="2147483647" GridPane.rowSpan="11">
+        <ImageView fx:id="mapImageView" fitHeight="200" fitWidth="400" preserveRatio="true" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowSpan="11" >
             <image>
                 <Image url="@/img.png" />
             </image>
@@ -52,6 +52,7 @@
                 <Insets left="20.0" />
             </GridPane.margin>
         </ImageView>
+
 
         <TextField fx:id="tourName" promptText="Name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
         <TextField fx:id="tourDesc" promptText="Description" GridPane.columnIndex="1" GridPane.rowIndex="2" />

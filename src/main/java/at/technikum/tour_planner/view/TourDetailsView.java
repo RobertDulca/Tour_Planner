@@ -1,5 +1,6 @@
 package at.technikum.tour_planner.view;
 
+import at.technikum.tour_planner.entity.Tour;
 import at.technikum.tour_planner.event.Publisher;
 import at.technikum.tour_planner.viewmodel.TourDetailsViewModel;
 import javafx.fxml.FXML;
@@ -7,7 +8,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -46,7 +46,7 @@ public class TourDetailsView implements Initializable {
         tourDistance.textProperty().bind(tourDetailsViewModel.tourDistanceProperty().asString());
         estimatedTime.textProperty().bind(tourDetailsViewModel.estimatedTimeProperty().asString());
 
-        tourDetailsViewModel.imageUrlProperty().addListener((obs, oldVal, newVal) -> mapImageView.setImage(newVal != null && !newVal.isEmpty() ? new Image(newVal) : new Image("src/main/resources/img.png")));
+        mapImageView.imageProperty().bind(tourDetailsViewModel.imageProperty());
     }
 
     private void setupButtonBindings() {
@@ -56,15 +56,27 @@ public class TourDetailsView implements Initializable {
     }
 
     @FXML
-    protected void onAddTour() {
-        tourDetailsViewModel.createAndPublishTour();
-        clearFormFields();
+    private void onAddTour() {
+        try {
+            tourDetailsViewModel.createAndPublishTour();
+            clearFormFields();
+        } catch (Exception e) {
+            tourDetailsViewModel.showAlert("Failed to create new tour: " + e.getMessage());
+        }
     }
 
     @FXML
-    protected void onEditTour() {
-        tourDetailsViewModel.saveTourChanges();
-        clearFormFields();
+    private void onEditTour() {
+        try {
+            tourDetailsViewModel.saveTourChanges();
+            clearFormFields();
+            Tour editedTour = tourDetailsViewModel.getSelectedTour();
+            if (editedTour != null) {
+                tourDetailsViewModel.fetchAndSetMapImage(editedTour);
+            }
+        } catch (Exception e) {
+            tourDetailsViewModel.showAlert("Failed to update the tour: " + e.getMessage());
+        }
     }
 
     @FXML
