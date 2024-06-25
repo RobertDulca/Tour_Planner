@@ -3,6 +3,7 @@ package at.technikum.tour_planner.viewmodel;
 import at.technikum.tour_planner.entity.Tour;
 import at.technikum.tour_planner.event.Event;
 import at.technikum.tour_planner.event.Publisher;
+import at.technikum.tour_planner.service.ToursTabService;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -11,6 +12,7 @@ import javafx.beans.property.StringProperty;
 public class TourDetailsViewModel {
     private final Publisher publisher;
     private Tour selectedTour;
+    private final ToursTabService tourService;
 
     private final StringProperty name = new SimpleStringProperty();
     private final StringProperty description = new SimpleStringProperty();
@@ -22,8 +24,9 @@ public class TourDetailsViewModel {
     private final BooleanProperty isTourSelected = new SimpleBooleanProperty(false);
     private final StringProperty imageUrl = new SimpleStringProperty();
 
-    public TourDetailsViewModel(Publisher publisher) {
+    public TourDetailsViewModel(Publisher publisher, ToursTabService tourService) {
         this.publisher = publisher;
+        this.tourService = tourService;
 
         isAddButtonDisabled.bind(
                 name.isEmpty()
@@ -64,6 +67,7 @@ public class TourDetailsViewModel {
             selectedTour.setOrigin(origin.get());
             selectedTour.setDestination(destination.get());
             selectedTour.setTransportType(transportType.get());
+            tourService.updateTour(selectedTour);
             publisher.publish(Event.TOUR_UPDATED, selectedTour);
         }
     }
@@ -94,6 +98,7 @@ public class TourDetailsViewModel {
 
     public void deleteSelectedTour() {
         if (selectedTour != null) {
+            tourService.deleteTour(selectedTour.getId());
             publisher.publish(Event.TOUR_DELETED, selectedTour);
             setSelectedTour(null);
             clearTourSelection();
@@ -106,6 +111,7 @@ public class TourDetailsViewModel {
 
     public void createAndPublishTour() {
         Tour newTour = new Tour(name.get(), description.get(), origin.get(), destination.get(), transportType.get(), imageUrl.get());
+        tourService.saveTour(newTour);
         publisher.publish(Event.TOUR_CREATED, newTour);
     }
 

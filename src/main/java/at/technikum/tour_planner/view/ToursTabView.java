@@ -17,8 +17,8 @@ public class ToursTabView implements Initializable {
 
     @FXML private ListView<Tour> toursList;
 
-    public ToursTabView(Publisher publisher) {
-        this.viewModel = new ToursTabViewModel(publisher);
+    public ToursTabView(ToursTabViewModel tourLogOverviewViewModel) {
+        this.viewModel = tourLogOverviewViewModel;
     }
 
     @Override
@@ -47,6 +47,7 @@ public class ToursTabView implements Initializable {
                 viewModel.clearSelectedTour();
             }
         });
+
         // Clear selection when a tour is removed or updated
         viewModel.getTours().addListener((ListChangeListener<Tour>) change -> {
             if (change.next() && (change.wasRemoved() || change.wasUpdated())) {
