@@ -14,6 +14,11 @@ import javafx.embed.swing.SwingFXUtils;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+import at.technikum.tour_planner.service.ToursTabService;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class TourDetailsViewModel {
     private final Publisher publisher;
@@ -32,8 +37,9 @@ public class TourDetailsViewModel {
     private final DoubleProperty estimatedTime = new SimpleDoubleProperty();
     private final OpenRouteService routeService = new OpenRouteService();
 
-    public TourDetailsViewModel(Publisher publisher) {
+    public TourDetailsViewModel(Publisher publisher, ToursTabService tourService) {
         this.publisher = publisher;
+        this.tourService = tourService;
 
         isAddButtonDisabled.bind(
                 name.isEmpty()
@@ -91,6 +97,7 @@ public class TourDetailsViewModel {
 
             selectedTour.setDistance(distance.get());
             selectedTour.setEstimatedTime(estimatedTime.get());
+            tourService.updateTour(selectedTour);
             publisher.publish(Event.TOUR_UPDATED, selectedTour);
         }
     }
@@ -134,6 +141,7 @@ public class TourDetailsViewModel {
 
     public void deleteSelectedTour() {
         if (selectedTour != null) {
+            tourService.deleteTour(selectedTour.getId());
             publisher.publish(Event.TOUR_DELETED, selectedTour);
             setSelectedTour(null);
             clearTourSelection();
@@ -145,6 +153,9 @@ public class TourDetailsViewModel {
     }
 
     public void createAndPublishTour() {
+        Tour newTour = new Tour(name.get(), description.get(), origin.get(), destination.get(), transportType.get(), imageUrl.get());
+        tourService.saveTour(newTour);
+        publisher.publish(Event.TOUR_CREATED, newTour);
         String imageUrlValue = imageUrl.get() != null ? imageUrl.get().getUrl() : ""; // Handle null case
         Tour newTour = new Tour(name.get(), description.get(), origin.get(), destination.get(), transportType.get(), imageUrlValue);
         try {

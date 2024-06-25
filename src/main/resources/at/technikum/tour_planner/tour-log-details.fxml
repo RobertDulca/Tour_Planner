@@ -11,7 +11,7 @@
 
 <?import org.controlsfx.control.Rating?>
 <?import javafx.scene.control.Slider?>
-<GridPane layoutX="1.0" layoutY="1.0" prefHeight="300.0" prefWidth="500.0" vgap="5.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.tour_planner.view.TourLogDetailsView">
+<GridPane layoutX="1.0" layoutY="1.0" prefHeight="300.0" prefWidth="500.0" vgap="5.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.tour_planner.view.TourLogDetailsView">
    <columnConstraints>
       <ColumnConstraints />
       <ColumnConstraints maxWidth="223.20003662109374" minWidth="83.20003204345704" prefWidth="83.20003204345704" />
@@ -29,11 +29,10 @@
       <TextArea fx:id="tourLogComment" prefHeight="89.0" prefWidth="309.0" promptText="Comment" GridPane.columnIndex="2" GridPane.rowIndex="7" />
       <Label text="Rating" GridPane.columnIndex="1" GridPane.rowIndex="5" />
       <Rating fx:id="tourLogRating" prefWidth="231.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-      <Button mnemonicParsing="false" prefHeight="36.0" prefWidth="166.0" text="SaveTourlog" GridPane.columnIndex="2" GridPane.rowIndex="8">
-         <GridPane.margin>
-            <Insets bottom="10.0" top="10.0" />
-         </GridPane.margin>
-      </Button>
+      <Button fx:id="addButton" onAction="#createTourLog" text="Add Tour" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+      <Button fx:id="deleteButton" onAction="#deleteTourLog" text="Delete Tour" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+      <Button fx:id="editButton" onAction="#updateTourLog" text="Save Changes" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+
    </children>
    <padding>
       <Insets left="20.0" right="10.0" top="10.0" />

@@ -17,8 +17,8 @@ public class ToursTabView implements Initializable {
 
     @FXML private ListView<Tour> toursList;
 
-    public ToursTabView(Publisher publisher) {
-        this.viewModel = new ToursTabViewModel(publisher);
+    public ToursTabView(ToursTabViewModel tourLogOverviewViewModel) {
+        this.viewModel = tourLogOverviewViewModel;
     }
 
     @Override

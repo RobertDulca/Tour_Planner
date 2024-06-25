@@ -3,6 +3,7 @@ package at.technikum.tour_planner.view;
 import at.technikum.tour_planner.entity.Tour;
 import at.technikum.tour_planner.event.Publisher;
 import at.technikum.tour_planner.viewmodel.TourDetailsViewModel;
+import at.technikum.tour_planner.viewmodel.ToursTabViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -20,8 +21,8 @@ public class TourDetailsView implements Initializable {
     @FXML private Button addButton, deleteButton, editButton;
     @FXML private ImageView mapImageView;
 
-    public TourDetailsView(Publisher publisher) {
-        this.tourDetailsViewModel = new TourDetailsViewModel(publisher);
+    public TourDetailsView(TourDetailsViewModel toursTabViewModel) {
+        this.tourDetailsViewModel = toursTabViewModel;
     }
 
     @Override
