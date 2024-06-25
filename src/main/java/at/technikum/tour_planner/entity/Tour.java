@@ -1,11 +1,6 @@
 package at.technikum.tour_planner.entity;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import jakarta.persistence.*;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -15,14 +10,6 @@ public class Tour {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    private final StringProperty name;
-    private final StringProperty description;
-    private final StringProperty from;
-    private final StringProperty to;
-    private final StringProperty transportType;
-    private final StringProperty imageUrl;
-    private final DoubleProperty distance;
-    private final DoubleProperty estimatedTime;
 
     @Column(name = "name")
     private  String name;
@@ -36,6 +23,10 @@ public class Tour {
     private  String transportType;
     @Column(name = "imageUrl")
     private  String imageUrl;
+    @Column(name = "distance")
+    private Double distance;
+    @Column(name = "time")
+    private Double estimatedTime;
     @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TourLogModel> tourLogs;
 
@@ -77,20 +68,21 @@ public class Tour {
         return imageUrl;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
     public double getDistance() {
-        return distance.get();
+        return distance;
     }
 
     public double getEstimatedTime() {
-        return estimatedTime.get();
+        return estimatedTime;
     }
 
     //Setters
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public void setDescription(String description) {
@@ -114,10 +106,10 @@ public class Tour {
     }
 
     public void setDistance(double distance) {
-        this.distance.set(distance);
+        this.distance = distance;
     }
 
     public void setEstimatedTime(double estimatedTime) {
-        this.estimatedTime.set(estimatedTime);
+        this.estimatedTime = estimatedTime;
     }
 }

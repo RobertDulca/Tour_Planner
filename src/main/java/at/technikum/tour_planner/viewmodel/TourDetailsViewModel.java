@@ -23,6 +23,7 @@ import javafx.beans.property.StringProperty;
 public class TourDetailsViewModel {
     private final Publisher publisher;
     private Tour selectedTour;
+    private final ToursTabService tourService;
 
     private final StringProperty name = new SimpleStringProperty();
     private final StringProperty description = new SimpleStringProperty();
@@ -153,14 +154,12 @@ public class TourDetailsViewModel {
     }
 
     public void createAndPublishTour() {
-        Tour newTour = new Tour(name.get(), description.get(), origin.get(), destination.get(), transportType.get(), imageUrl.get());
-        tourService.saveTour(newTour);
-        publisher.publish(Event.TOUR_CREATED, newTour);
         String imageUrlValue = imageUrl.get() != null ? imageUrl.get().getUrl() : ""; // Handle null case
         Tour newTour = new Tour(name.get(), description.get(), origin.get(), destination.get(), transportType.get(), imageUrlValue);
         try {
             fetchRouteDetails(newTour);
             fetchAndSetMapImage(newTour);
+            tourService.saveTour(newTour);
             publisher.publish(Event.TOUR_CREATED, newTour);
         } catch (Exception e) {
             showAlert("Failed to create new tour: " + e.getMessage());
