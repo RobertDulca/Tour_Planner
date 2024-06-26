@@ -6,17 +6,33 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 
 public class OpenRouteService {
-    private static final String API_KEY = "5b3ce3597851110001cf62489053f9d72da2401d91e21169cbc311f9";
-    private static final String BASE_URL = "https://api.openrouteservice.org/v2/directions/";
+    private static final String CONFIG_FILE = "/config.properties";
+    private static final String API_KEY;
+    private static final String BASE_URL;
+    private static final String GEOCODE_URL;
+
+    static {
+        try (InputStream input = OpenRouteService.class.getResourceAsStream(CONFIG_FILE)) {
+            if (input == null) {
+                throw new RuntimeException("Sorry, unable to find " + CONFIG_FILE);
+            }
+            Properties properties = new Properties();
+            properties.load(input);
+            API_KEY = properties.getProperty("api.key");
+            BASE_URL = properties.getProperty("base.url");
+            GEOCODE_URL = properties.getProperty("geocode.url");
+        } catch (IOException ex) {
+            throw new RuntimeException("Failed to load configuration", ex);
+        }
+    }
 
     public String getRoute(String fromLat, String fromLon, String toLat, String toLon, String transportType) throws Exception {
         String urlString = String.format("%s%s?api_key=%s&start=%s,%s&end=%s,%s", BASE_URL, transportType, API_KEY, fromLon, fromLat, toLon, toLat);
@@ -24,7 +40,7 @@ public class OpenRouteService {
     }
 
     public double[] geocodeAddress(String address) throws Exception {
-        String urlString = String.format("https://api.openrouteservice.org/geocode/search?api_key=%s&text=%s", API_KEY, URLEncoder.encode(address, StandardCharsets.UTF_8));
+        String urlString = String.format("%s?api_key=%s&text=%s", GEOCODE_URL,  API_KEY, URLEncoder.encode(address, StandardCharsets.UTF_8));
         String response = makeHttpRequest(urlString);
 
         JsonObject jsonObject = JsonParser.parseString(response).getAsJsonObject();

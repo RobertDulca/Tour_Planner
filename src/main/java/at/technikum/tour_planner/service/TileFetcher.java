@@ -6,12 +6,29 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Properties;
 
 public class TileFetcher {
-    private static final String USER_AGENT = "TourPlannerSwen";
+    private static final String CONFIG_FILE = "/config.properties";
+    private static final String USER_AGENT;
+    private static final String TILE_BASE_URL;
+
+    static {
+        try (InputStream input = TileFetcher.class.getResourceAsStream(CONFIG_FILE)) {
+            if (input == null) {
+                throw new RuntimeException("Sorry, unable to find " + CONFIG_FILE);
+            }
+            Properties properties = new Properties();
+            properties.load(input);
+            TILE_BASE_URL = properties.getProperty("tile.base.url");
+            USER_AGENT = properties.getProperty("user.agent");
+        } catch (IOException ex) {
+            throw new RuntimeException("Failed to load configuration", ex);
+        }
+    }
 
     public BufferedImage fetchTile(int x, int y, int zoom) throws IOException {
-        String tileUrl = String.format("https://tile.openstreetmap.org/%d/%d/%d.png", zoom, x, y);
+        String tileUrl = String.format("%s/%d/%d/%d.png", TILE_BASE_URL, zoom, x, y);
         URL url = new URL(tileUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestProperty("User-Agent", USER_AGENT);
