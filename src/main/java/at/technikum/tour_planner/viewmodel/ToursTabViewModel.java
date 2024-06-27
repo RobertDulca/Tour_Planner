@@ -26,6 +26,7 @@ public class ToursTabViewModel {
         publisher.subscribe(Event.TOUR_CREATED, this::onTourCreated);
         publisher.subscribe(Event.TOUR_UPDATED, this::onTourUpdated);
         publisher.subscribe(Event.TOUR_DELETED, this::onTourDeleted);
+        publisher.subscribe(Event.TOUR_IMPORTED, this::onTourImported);
     }
 
     public ObservableList<Tour> getTours() {
@@ -57,6 +58,12 @@ public class ToursTabViewModel {
         if (message instanceof Tour) {
             tours.clear();
             tours.setAll(tourService.getAllTours());
+        }
+    }
+
+    private void onTourImported(Object message) {
+        if (message instanceof Tour) {
+            tours.add((Tour) message);
         }
     }
 }

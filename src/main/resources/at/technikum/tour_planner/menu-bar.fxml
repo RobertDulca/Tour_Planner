@@ -2,19 +2,17 @@
 <?import javafx.scene.control.*?>
 
 <MenuBar xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="at.technikum.tour_planner.view.MenuBarView">
+         xmlns:fx="http://javafx.com/fxml"
+         fx:controller="at.technikum.tour_planner.view.MenuBarView"
+         fx:id="menuBar">
 
     <Menu text="File">
-        <MenuItem text="New Tour" onAction="#onNewTour"/>
-        <MenuItem text="Exit" onAction="#onExit"/>
+        <MenuItem text="All Summary" onAction="#onSummary"/>
+        <MenuItem text="Export Tour" onAction="#onExport"/>
+        <MenuItem text="Import Tour" onAction="#onImport"/>
     </Menu>
-    <Menu text="Edit">
-        <MenuItem text="Copy" onAction="#onCopy"/>
-        <MenuItem text="Paste" onAction="#onPaste"/>
-        <MenuItem text="Delete" onAction="#onDelete"/>
-    </Menu>
+
     <Menu text="Options"/>
     <Menu text="Help"/>
-
+    <Menu text="Edit"/>
 </MenuBar>
