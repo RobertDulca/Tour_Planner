@@ -13,24 +13,33 @@ public class Tour {
 
     @Column(name = "name")
     private  String name;
+
     @Column(name = "description")
     private  String description;
+
     @Column(name = "start")
     private  String start;
+
     @Column(name = "destination")
     private  String destination;
+
     @Column(name = "transportType")
     private  String transportType;
+
     @Column(name = "imageUrl")
     private  String imageUrl;
+
     @Column(name = "distance")
     private Double distance;
+
     @Column(name = "time")
     private Double estimatedTime;
+
     @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TourLogModel> tourLogs;
 
     public Tour() {}
+
     public Tour(String name, String description, String from, String to, String transportType, String imageUrl) {
         this.name = name;
         this.description = description;

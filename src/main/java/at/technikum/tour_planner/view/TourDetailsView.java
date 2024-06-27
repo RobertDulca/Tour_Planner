@@ -4,12 +4,17 @@ import at.technikum.tour_planner.entity.Tour;
 import at.technikum.tour_planner.event.Publisher;
 import at.technikum.tour_planner.viewmodel.TourDetailsViewModel;
 import at.technikum.tour_planner.viewmodel.ToursTabViewModel;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.ObjectBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -47,7 +52,16 @@ public class TourDetailsView implements Initializable {
         tourDistance.textProperty().bind(tourDetailsViewModel.tourDistanceProperty().asString());
         estimatedTime.textProperty().bind(tourDetailsViewModel.estimatedTimeProperty().asString());
 
-        mapImageView.imageProperty().bind(tourDetailsViewModel.imageProperty());
+        // Convert the image path to an Image object and bind it to the ImageView
+        ObjectBinding<Image> imageBinding = Bindings.createObjectBinding(() -> {
+            String imagePath = tourDetailsViewModel.imageProperty().get();
+            if (imagePath == null || imagePath.isEmpty()) {
+                return null;
+            }
+            return new Image(new File(imagePath).toURI().toString());
+        }, tourDetailsViewModel.imageProperty());
+
+        mapImageView.imageProperty().bind(imageBinding);
     }
 
     private void setupButtonBindings() {
@@ -95,5 +109,6 @@ public class TourDetailsView implements Initializable {
         transportType.getSelectionModel().select("Select Type");
         tourDetailsViewModel.tourDistanceProperty().set(0);
         tourDetailsViewModel.estimatedTimeProperty().set(0);
+        tourDetailsViewModel.imageProperty().set(null);
     }
 }

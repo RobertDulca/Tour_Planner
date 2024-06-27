@@ -5,13 +5,16 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.Properties;
+import java.util.UUID;
 
 public class OpenRouteService {
     private static final String CONFIG_FILE = "/config.properties";
@@ -91,7 +94,16 @@ public class OpenRouteService {
         MapAssembler mapAssembler = new MapAssembler();
         double centerLat = (fromCoords[0] + toCoords[0]) / 2;
         double centerLon = (fromCoords[1] + toCoords[1]) / 2;
-        return mapAssembler.assembleMap(centerLat, centerLon, zoom, gridSize);
+        BufferedImage mapImage = mapAssembler.assembleMap(centerLat, centerLon, zoom, gridSize);
+
+        return mapImage;
+    }
+
+    public String saveImage(BufferedImage image) throws IOException {
+        String randomFileName = UUID.randomUUID().toString() + ".png";
+        Path destinationPath = Path.of("src/main/resources/images", randomFileName);
+        ImageIO.write(image, "png", destinationPath.toFile());
+        return destinationPath.toString();
     }
 
     private String makeHttpRequest(String urlString) throws Exception {

@@ -33,7 +33,7 @@ public class TourDetailsViewModel {
     private final BooleanProperty isAddButtonDisabled = new SimpleBooleanProperty();
     private final BooleanProperty isEditButtonDisabled = new SimpleBooleanProperty();
     private final BooleanProperty isTourSelected = new SimpleBooleanProperty(false);
-    private final ObjectProperty<Image> imageUrl = new SimpleObjectProperty<>();
+    private final StringProperty imageUrl = new SimpleStringProperty();
     private final DoubleProperty distance = new SimpleDoubleProperty();
     private final DoubleProperty estimatedTime = new SimpleDoubleProperty();
     private final OpenRouteService routeService = new OpenRouteService();
@@ -94,10 +94,17 @@ public class TourDetailsViewModel {
 
             if (originChanged || destinationChanged || transportTypeChanged) {
                 fetchRouteDetails(selectedTour);
+                try {
+                    fetchAndSetMapImage(selectedTour);
+                } catch (IOException e) {
+                    showAlert("Failed to update map image: " + e.getMessage());
+                    e.printStackTrace();
+                }
             }
 
             selectedTour.setDistance(distance.get());
             selectedTour.setEstimatedTime(estimatedTime.get());
+            selectedTour.setImageUrl(imageUrl.get());
             tourService.updateTour(selectedTour);
             publisher.publish(Event.TOUR_UPDATED, selectedTour);
         }
@@ -114,16 +121,16 @@ public class TourDetailsViewModel {
             transportType.set(tour.getTransportType());
             distance.set(tour.getDistance());
             estimatedTime.set(tour.getEstimatedTime());
+            imageUrl.set(tour.getImageUrl());
             if (tour.getImageUrl() != null && !tour.getImageUrl().isEmpty()) {
-                imageUrl.set(new Image(tour.getImageUrl()));
+                imageUrl.set(tour.getImageUrl());
             } else {
-                imageUrl.set(null); // Handle case where image URL is null or empty
+                imageUrl.set(null);
             }
         } else {
             clearTourDetails();
         }
     }
-
 
     public Tour getSelectedTour() {
         return selectedTour;
@@ -138,6 +145,7 @@ public class TourDetailsViewModel {
         isTourSelected.set(false);
         distance.set(0);
         estimatedTime.set(0);
+        imageUrl.set("");
     }
 
     public void deleteSelectedTour() {
@@ -154,7 +162,7 @@ public class TourDetailsViewModel {
     }
 
     public void createAndPublishTour() {
-        String imageUrlValue = imageUrl.get() != null ? imageUrl.get().getUrl() : ""; // Handle null case
+        String imageUrlValue = imageUrl.get() != null ? imageUrl.get() : "";
         Tour newTour = new Tour(name.get(), description.get(), origin.get(), destination.get(), transportType.get(), imageUrlValue);
         try {
             fetchRouteDetails(newTour);
@@ -204,8 +212,9 @@ public class TourDetailsViewModel {
     public void fetchAndSetMapImage(Tour tour) throws IOException {
         try {
             BufferedImage mapImage = routeService.fetchMapForTour(tour, 16, 3); // Adjusted zoom level
-            WritableImage fxImage = SwingFXUtils.toFXImage(mapImage, null);
-            imageUrl.set(fxImage);
+            String imagePath = routeService.saveImage(mapImage);
+            imageUrl.set(imagePath);
+            tour.setImageUrl(imagePath);
         } catch (IOException e) {
             e.printStackTrace();
             showAlert("Failed to fetch map image: " + e.getMessage());
@@ -213,7 +222,8 @@ public class TourDetailsViewModel {
         }
     }
 
-    public ObjectProperty<Image> imageProperty() {
+
+    public StringProperty imageProperty() {
         return imageUrl;
     }
 
