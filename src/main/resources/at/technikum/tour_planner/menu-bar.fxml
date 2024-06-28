@@ -8,7 +8,7 @@
 
     <Menu text="File">
         <MenuItem text="All Summary" onAction="#onSummary"/>
-        <MenuItem text="Export Tour" onAction="#onExport"/>
+        <MenuItem text="Export Tour" onAction="#onExport" fx:id="exportMenuItem"/>
         <MenuItem text="Import Tour" onAction="#onImport"/>
     </Menu>
 

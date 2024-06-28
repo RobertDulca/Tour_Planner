@@ -101,7 +101,7 @@ public class OpenRouteService {
 
     public String saveImage(BufferedImage image) throws IOException {
         String randomFileName = UUID.randomUUID().toString() + ".png";
-        Path destinationPath = Path.of("src/main/resources/images", randomFileName);
+        Path destinationPath = Path.of("src/main/resources/Images", randomFileName);
         ImageIO.write(image, "png", destinationPath.toFile());
         return destinationPath.toString();
     }

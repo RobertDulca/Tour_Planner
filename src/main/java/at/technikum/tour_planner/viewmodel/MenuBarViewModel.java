@@ -8,11 +8,10 @@ import at.technikum.tour_planner.repository.TourLogOverviewDatabaseRepository;
 import at.technikum.tour_planner.repository.ToursTabDatabaseRepository;
 import at.technikum.tour_planner.service.TourLogOverviewService;
 import at.technikum.tour_planner.service.ToursTabService;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+
+import java.io.*;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -73,6 +72,30 @@ public class MenuBarViewModel {
             }
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Error importing tours", e);
+            throw e;
+        }
+    }
+
+    public void exportTourToCsv(Tour selectedTour, File file) throws IOException {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
+            if (selectedTour != null) {
+                writer.println("Tour," + selectedTour.getName() + "," + selectedTour.getDescription() + ","
+                        + selectedTour.getOrigin() + "," + selectedTour.getDestination() + ","
+                        + selectedTour.getTransportType() + "," + selectedTour.getDistance() + ","
+                        + selectedTour.getEstimatedTime());
+
+                List<TourLogModel> logs = tourLogService.findByTourId(selectedTour.getId());
+                for (TourLogModel log : logs) {
+                    writer.println("Log," + log.getDate() + "," + log.getComment() + ","
+                            + log.getDifficulty() + "," + log.getTotalTime() + "," + log.getRating());
+                }
+
+                logger.log(Level.INFO, "Exported tour: {0} to {1}", new Object[]{selectedTour.getName(), file.getPath()});
+            } else {
+                logger.log(Level.WARNING, "No tour selected for export.");
+            }
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "Error exporting tour", e);
             throw e;
         }
     }
