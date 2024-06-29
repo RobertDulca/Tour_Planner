@@ -175,7 +175,7 @@ public class TourDetailsViewModel {
         }
     }
 
-    private String convertTransportType(String transportType) {
+    private String convertTransportType(String transportType) {     //make it API friendly
         return switch (transportType) {
             case "Car" -> "driving-car";
             case "Bicycle" -> "cycling-regular";
@@ -221,7 +221,6 @@ public class TourDetailsViewModel {
             throw e;
         }
     }
-
 
     public StringProperty imageProperty() {
         return imageUrl;
