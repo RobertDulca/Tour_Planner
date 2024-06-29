@@ -4,6 +4,7 @@ import at.technikum.tour_planner.entity.Tour;
 import at.technikum.tour_planner.event.Event;
 import at.technikum.tour_planner.event.Publisher;
 import at.technikum.tour_planner.viewmodel.MenuBarViewModel;
+import at.technikum.tour_planner.viewmodel.ToursTabViewModel;
 import com.itextpdf.text.DocumentException;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,11 +22,17 @@ import java.util.ResourceBundle;
 public class MenuBarView implements Initializable {
 
     private final MenuBarViewModel viewModel;
+    private final ToursTabViewModel toursTabViewModel;
     private Tour selectedTour;
 
-    public MenuBarView(Publisher publisher) {
+    public MenuBarView(Publisher publisher, ToursTabViewModel toursTabViewModel) {
         this.viewModel = new MenuBarViewModel(publisher);
+        this.toursTabViewModel = toursTabViewModel;
         publisher.subscribe(Event.TOUR_SELECTED, this::onTourSelected);
+        publisher.subscribe(Event.TOUR_CREATED, this::onToursUpdated);
+        publisher.subscribe(Event.TOUR_UPDATED, this::onToursUpdated);
+        publisher.subscribe(Event.TOUR_DELETED, this::onToursUpdated);
+        publisher.subscribe(Event.TOUR_IMPORTED, this::onToursUpdated);
     }
 
     @FXML
@@ -34,6 +41,8 @@ public class MenuBarView implements Initializable {
     private MenuItem exportMenuItem;
     @FXML
     private MenuItem reportMenuItem;
+    @FXML
+    private MenuItem summaryMenuItem;
 
     @FXML
     protected void onReport() {
@@ -59,6 +68,20 @@ public class MenuBarView implements Initializable {
 
     @FXML
     protected void onSummary() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Summary PDF");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+        Stage stage = (Stage) menuBar.getScene().getWindow();
+        File file = fileChooser.showSaveDialog(stage);
+
+        if (file != null) {
+            try {
+                viewModel.generateSummaryReport(file);
+            } catch (DocumentException | IOException e) {
+                showAlert("Failed to generate Summary Report: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
     }
 
     @FXML
@@ -107,6 +130,10 @@ public class MenuBarView implements Initializable {
         reportMenuItem.setDisable(selectedTour == null);
     }
 
+    private void onToursUpdated(Object message) {
+        summaryMenuItem.setDisable(toursTabViewModel.getTours().isEmpty());
+    }
+
     private void onTourSelected(Object message) {
         if (message instanceof Tour) {
             setSelectedTour((Tour) message);
@@ -119,6 +146,7 @@ public class MenuBarView implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         exportMenuItem.setDisable(true);
         reportMenuItem.setDisable(true);
+        summaryMenuItem.setDisable(toursTabViewModel.getTours().isEmpty());
     }
 
     private void showAlert(String message) {
@@ -129,3 +157,4 @@ public class MenuBarView implements Initializable {
         alert.showAndWait();
     }
 }
+

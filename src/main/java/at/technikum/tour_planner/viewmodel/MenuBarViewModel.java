@@ -31,7 +31,46 @@ public class MenuBarViewModel {
         this.tourLogService = new TourLogOverviewService(new TourLogOverviewDatabaseRepository());
     }
 
+    public void generateSummaryReport(File file) throws DocumentException, IOException {
+        Document doc = new Document();
+        PdfWriter.getInstance(doc, new FileOutputStream(file));
+        doc.open();
 
+        List<Tour> tours = tourService.getAllTours();
+        if (!tours.isEmpty()) {
+            doc.add(new Paragraph("Summary Report"));
+
+            for (Tour tour : tours) {
+                List<TourLogModel> logs = tourLogService.findByTourId(tour.getId());
+                double totalDistance = 0;
+                double totalTime = 0;
+                double totalRating = 0;
+
+                for (TourLogModel log : logs) {
+                    totalDistance += log.getTotalDistance();
+                    totalTime += log.getTotalTime();
+                    totalRating += log.getRating();
+
+                }
+
+                double avgDistance = logs.isEmpty() ? 0 : totalDistance / logs.size();
+                double avgTime = logs.isEmpty() ? 0 : totalTime / logs.size();
+                double avgRating = logs.isEmpty() ? 0 : totalRating / logs.size();
+
+                doc.add(new Paragraph("Tour: " + tour.getName()));
+                doc.add(new Paragraph("Average Distance: " + avgDistance));
+                doc.add(new Paragraph("Average Time: " + avgTime));
+                doc.add(new Paragraph("Average Rating: " + avgRating));
+                doc.add(new Paragraph("\n"));
+            }
+
+            logger.log(Level.INFO, "Summary Report Generated");
+        } else {
+            logger.log(Level.WARNING, "No Tours found for Report");
+        }
+
+        doc.close();
+    }
 
     public void generateTourReport(Tour selectedTour, File file) throws DocumentException, IOException {
         Document document = new Document();
