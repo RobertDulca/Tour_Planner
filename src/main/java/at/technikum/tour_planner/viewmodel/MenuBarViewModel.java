@@ -35,7 +35,7 @@ public class MenuBarViewModel {
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
                 if (values.length >= 1) {
-                    if (values[0].equalsIgnoreCase("Tour") && values.length >= 8) {
+                    if (values[0].equalsIgnoreCase("Tour") && values.length >= 9) {
                         // Handle Tour
                         String name = values[1];
                         String description = values[2];
@@ -44,10 +44,11 @@ public class MenuBarViewModel {
                         String transportType = values[5];
                         double distance = Double.parseDouble(values[6]);
                         double estimatedTime = Double.parseDouble(values[7]);
+                        String imagePath = values[8];
 
                         logger.log(Level.INFO, "Importing tour: {0}", name);
 
-                        currentTour = new Tour(name, description, origin, destination, transportType, "");
+                        currentTour = new Tour(name, description, origin, destination, transportType, imagePath);
                         currentTour.setDistance(distance);
                         currentTour.setEstimatedTime(estimatedTime);
                         tourService.saveTour(currentTour);
@@ -82,7 +83,7 @@ public class MenuBarViewModel {
                 writer.println("Tour," + selectedTour.getName() + "," + selectedTour.getDescription() + ","
                         + selectedTour.getOrigin() + "," + selectedTour.getDestination() + ","
                         + selectedTour.getTransportType() + "," + selectedTour.getDistance() + ","
-                        + selectedTour.getEstimatedTime());
+                        + selectedTour.getEstimatedTime() + "," + selectedTour.getImageUrl());
 
                 List<TourLogModel> logs = tourLogService.findByTourId(selectedTour.getId());
                 for (TourLogModel log : logs) {
