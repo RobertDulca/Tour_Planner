@@ -10,7 +10,7 @@
         </padding>
         <children>
             <TextField fx:id="searchBar" HBox.hgrow="ALWAYS" minWidth="600.0" promptText="Search..." />
-            <Button fx:id="searchButton" text="Search" minWidth="100.0" />
+            <ComboBox fx:id="searchType" promptText="Select Search" minWidth="100"/>
         </children>
     </HBox>
 </AnchorPane>

@@ -13,4 +13,5 @@ public interface ToursTabRepository <T> {
     T save(T tour);
     boolean deleteById(UUID id);
     T update(T tour);
+    List<T> findToursByID(List<UUID> searchedToursID);
 }

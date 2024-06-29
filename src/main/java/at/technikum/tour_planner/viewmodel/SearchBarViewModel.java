@@ -1,27 +1,68 @@
 package at.technikum.tour_planner.viewmodel;
 
+import at.technikum.tour_planner.event.Event;
 import at.technikum.tour_planner.event.Publisher;
+import at.technikum.tour_planner.service.SearchService;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.util.List;
+import java.util.UUID;
+
 public class SearchBarViewModel {
     private final Publisher publisher;
-    private StringProperty searchText = new SimpleStringProperty("");
-    private BooleanProperty disabledSearchButton = new SimpleBooleanProperty(true);
+    private final SearchService searchService;
+    private final StringProperty searchText = new SimpleStringProperty("");
+    private final StringProperty searchType = new SimpleStringProperty("");
+    private final BooleanProperty comboBoxDisabled = new SimpleBooleanProperty(true);
 
-    public SearchBarViewModel(Publisher publisher) {
+    public SearchBarViewModel(Publisher publisher, SearchService searchService) {
         this.publisher = publisher;
-        // set disabledSearchButton true whenever searchText is empty or null.
-        disabledSearchButton.bind(searchText.isEmpty().or(searchText.isNull()));
+        this.searchService = searchService;
+
+        comboBoxDisabled.bind(searchText.isEmpty());
     }
 
     public StringProperty searchTextProperty() {
         return searchText;
     }
+    public StringProperty selectedCategoryProperty() {
+        return searchType;
+    }
+    public BooleanProperty comboBoxDisabledProperty() {
+        return comboBoxDisabled;
+    }
 
-    public BooleanProperty searchButtonDisabledProperty() {
-        return disabledSearchButton;
+    public void performSearch() {
+        System.out.println("Performing search");
+        if (searchText.get().isEmpty() || searchType.get().isEmpty()){
+            publisher.publish(Event.SEARCH_CLEARED, null);
+            System.out.println("Search text or category is empty");
+            return; // No action if search text or category is not selected
+        }
+
+        switch (searchType.get()) {
+            case "Tour" -> searchTours(searchText.get());
+            case "Tour Log" -> searchTourLog(searchText.get());
+            case "Special Attribute" -> searchSpecialAttribute(searchText.get());
+            default -> {
+            }
+        }
+    }
+    private void searchTours(String searchText) {
+        List<UUID> overviewIDs = searchService.searchtours(searchText);
+        publisher.publish(Event.TOUR_SEARCHED, overviewIDs);
+    }
+
+    private void searchTourLog(String searchText) {
+        searchService.searchtourLog(searchText);
+        System.out.println("Searching TourLog for: " + searchText);
+    }
+
+    private void searchSpecialAttribute(String searchText) {
+        searchService.searchAttribute(searchText);
+        System.out.println("Searching Special Attribute for: " + searchText);
     }
 }

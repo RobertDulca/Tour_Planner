@@ -1,30 +1,33 @@
 package at.technikum.tour_planner;
 
 import at.technikum.tour_planner.event.Publisher;
+import at.technikum.tour_planner.repository.SearchRepository;
 import at.technikum.tour_planner.repository.TourLogOverviewDatabaseRepository;
 import at.technikum.tour_planner.repository.ToursTabDatabaseRepository;
 import at.technikum.tour_planner.repository.ToursTabRepository;
+import at.technikum.tour_planner.service.SearchService;
 import at.technikum.tour_planner.service.TourLogOverviewService;
 import at.technikum.tour_planner.service.ToursTabService;
 import at.technikum.tour_planner.view.*;
-import at.technikum.tour_planner.viewmodel.TourDetailsViewModel;
-import at.technikum.tour_planner.viewmodel.TourLogDetailsViewModel;
-import at.technikum.tour_planner.viewmodel.TourLogOverviewViewModel;
-import at.technikum.tour_planner.viewmodel.ToursTabViewModel;
+import at.technikum.tour_planner.viewmodel.*;
 
 public class TourPlannerControllerFactory implements javafx.util.Callback<Class<?>, Object> {
     private final Publisher publisher;
 
     private final TourLogOverviewDatabaseRepository tourLogOverviewRepository;
-    private final ToursTabRepository toursTabRepository;
+    private final ToursTabDatabaseRepository toursTabRepository;
+    private final SearchRepository searchRepository;
     private final ToursTabService toursTabService;
     private final TourLogOverviewService tourLogOverviewService;
+    private final SearchService searchService;
     private final TourLogOverviewView tourLogOverviewView;
     private final TourLogDetailsView tourLogDetailsView;
+    private final SearchBarView searchBarView;
     private final TourLogOverviewViewModel tourLogOverviewViewModel;
     private final ToursTabViewModel toursTabViewModel;
     private final TourLogDetailsViewModel tourLogDetailsViewModel;
     private final TourDetailsViewModel tourDetailsViewModel;
+    private final SearchBarViewModel searchBarViewModel;
 
     public TourPlannerControllerFactory(Publisher publisher) {
         this.publisher = publisher;
@@ -39,6 +42,11 @@ public class TourPlannerControllerFactory implements javafx.util.Callback<Class<
         tourDetailsViewModel = new TourDetailsViewModel(publisher, toursTabService);
         tourLogOverviewView = new TourLogOverviewView(tourLogOverviewViewModel);
         tourLogDetailsView = new TourLogDetailsView(tourLogDetailsViewModel);
+
+        searchRepository = new SearchRepository();
+        searchService = new SearchService(searchRepository);
+        searchBarViewModel = new SearchBarViewModel(publisher, searchService);
+        searchBarView = new SearchBarView(searchBarViewModel);
     }
 
     @Override
@@ -47,7 +55,7 @@ public class TourPlannerControllerFactory implements javafx.util.Callback<Class<
             if (param == MenuBarView.class) {
                 return new MenuBarView(publisher);
             } else if (param == SearchBarView.class) {
-                return new SearchBarView(publisher);
+                return new SearchBarView(searchBarViewModel);
             } else if (param == TourDetailsView.class) {
                 return new TourDetailsView(tourDetailsViewModel);
             } else if (param == ToursTabView.class) {

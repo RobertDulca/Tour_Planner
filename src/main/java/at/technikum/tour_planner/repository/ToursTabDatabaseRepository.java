@@ -108,4 +108,20 @@ public class ToursTabDatabaseRepository implements ToursTabRepository <Tour>{
     public List<Tour> findByTourId(UUID tourId) {
         return Collections.emptyList();
     }
+    @Override
+    public List<Tour> findToursByID(List<UUID> searchedToursID) {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Tour> cq = cb.createQuery(Tour.class);
+            Root<Tour> tour = cq.from(Tour.class);
+
+            Predicate predicate = tour.get("id").in(searchedToursID);
+            cq.where(predicate);
+
+            return em.createQuery(cq).getResultList();
+        } finally {
+            em.close();
+        }
+    }
 }
