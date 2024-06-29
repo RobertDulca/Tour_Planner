@@ -7,7 +7,8 @@
          fx:id="menuBar">
 
     <Menu text="File">
-        <MenuItem text="All Summary" onAction="#onSummary"/>
+        <MenuItem text="Tour Report" onAction="#onReport" fx:id="reportMenuItem"/>
+        <MenuItem text="Summary Report" onAction="#onSummary"/>
         <MenuItem text="Export Tour" onAction="#onExport" fx:id="exportMenuItem"/>
         <MenuItem text="Import Tour" onAction="#onImport"/>
     </Menu>

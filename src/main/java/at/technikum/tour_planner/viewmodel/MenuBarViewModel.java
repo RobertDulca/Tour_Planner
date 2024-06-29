@@ -8,6 +8,11 @@ import at.technikum.tour_planner.repository.TourLogOverviewDatabaseRepository;
 import at.technikum.tour_planner.repository.ToursTabDatabaseRepository;
 import at.technikum.tour_planner.service.TourLogOverviewService;
 import at.technikum.tour_planner.service.ToursTabService;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -25,6 +30,43 @@ public class MenuBarViewModel {
         this.publisher = publisher;
         this.tourService = new ToursTabService(new ToursTabDatabaseRepository());
         this.tourLogService = new TourLogOverviewService(new TourLogOverviewDatabaseRepository());
+    }
+
+    public void generateTourReport(Tour selectedTour, File file) throws DocumentException, IOException {
+        Document document = new Document();
+        PdfWriter.getInstance(document, new FileOutputStream(file));
+        document.open();
+
+        if (selectedTour != null) {
+            document.add(new Paragraph("Tour Report"));
+            document.add(new Paragraph("Tour Name: " + selectedTour.getName()));
+            document.add(new Paragraph("Description: " + selectedTour.getDescription()));
+            document.add(new Paragraph("Origin: " + selectedTour.getOrigin()));
+            document.add(new Paragraph("Destination: " + selectedTour.getDestination()));
+            document.add(new Paragraph("Transport Type: " + selectedTour.getTransportType()));
+            document.add(new Paragraph("Distance: " + selectedTour.getDistance()));
+            document.add(new Paragraph("Estimated Time: " + selectedTour.getEstimatedTime()));
+            if (selectedTour.getImageUrl() != null && !selectedTour.getImageUrl().isEmpty()) {
+                Image image = Image.getInstance(selectedTour.getImageUrl());
+                document.add(image);
+            }
+
+            List<TourLogModel> logs = tourLogService.findByTourId(selectedTour.getId());
+            for (TourLogModel log : logs) {
+                document.add(new Paragraph("Log:"));
+                document.add(new Paragraph("Date: " + log.getDate()));
+                document.add(new Paragraph("Comment: " + log.getComment()));
+                document.add(new Paragraph("Difficulty: " + log.getDifficulty()));
+                document.add(new Paragraph("Total Time: " + log.getTotalTime()));
+                document.add(new Paragraph("Rating: " + log.getRating()));
+            }
+
+            logger.log(Level.INFO, "Generated Tour Report: {0}", selectedTour.getName());
+        } else {
+            logger.log(Level.WARNING, "No Tour selected for Report");
+        }
+
+        document.close();
     }
 
     public void importTourFromCsv(File file) throws IOException {
