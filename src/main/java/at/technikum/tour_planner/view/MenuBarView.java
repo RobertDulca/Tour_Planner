@@ -5,7 +5,6 @@ import at.technikum.tour_planner.event.Event;
 import at.technikum.tour_planner.event.Publisher;
 import at.technikum.tour_planner.viewmodel.MenuBarViewModel;
 import com.itextpdf.text.DocumentException;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;

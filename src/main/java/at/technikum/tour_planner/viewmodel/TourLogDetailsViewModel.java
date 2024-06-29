@@ -19,6 +19,8 @@ public class TourLogDetailsViewModel {
 
     private final DoubleProperty totalTime = new SimpleDoubleProperty();
 
+    private final DoubleProperty totalDistance = new SimpleDoubleProperty();
+
     private final IntegerProperty rating = new SimpleIntegerProperty();
     private final BooleanProperty isAddButtonDisabled = new SimpleBooleanProperty();
     private final BooleanProperty isEditButtonDisabled = new SimpleBooleanProperty();
@@ -37,6 +39,7 @@ public class TourLogDetailsViewModel {
                         .or(comment.isEmpty())
                         .or(difficulty.isEqualTo(0))
                         .or(totalTime.isEqualTo(0))
+                        .or(totalDistance.isEqualTo(0))
                         .or(rating.isEqualTo(0))
         );
 
@@ -46,6 +49,7 @@ public class TourLogDetailsViewModel {
                         .or(comment.isEmpty())
                         .or(difficulty.isEqualTo(0))
                         .or(totalTime.isEqualTo(0))
+                        .or(totalDistance.isEqualTo(0))
                         .or(rating.isEqualTo(0))
         );
 
@@ -79,6 +83,7 @@ public class TourLogDetailsViewModel {
             comment.set(tourLog.getComment());
             difficulty.set(tourLog.getDifficulty());
             totalTime.set(tourLog.getTotalTime());
+            totalDistance.set(tourLog.getTotalTime());
             rating.set(tourLog.getRating());
         } else {
             clearTourLogDetails();
@@ -92,12 +97,13 @@ public class TourLogDetailsViewModel {
         comment.set("");
         difficulty.set(0);
         totalTime.set(0);
+        totalDistance.set(0);
         rating.set(0);
     }
 
     public void createTourLog() {
         if (selectedTour != null) { // Ensure a tour is selected
-            TourLogModel newTourLog = new TourLogModel(date.get(), comment.get(), difficulty.get(), totalTime.get(), rating.get());
+            TourLogModel newTourLog = new TourLogModel(date.get(), comment.get(), difficulty.get(), totalTime.get(), totalDistance.get(), rating.get());
             newTourLog.setTour(selectedTour); // Set the selected tour on the new log
             tourLogOverviewService.add(newTourLog);
             publisher.publish(Event.TOUR_LOG_CREATED, newTourLog);
@@ -123,6 +129,7 @@ public class TourLogDetailsViewModel {
             selectedTourLog.setComment(comment.get());
             selectedTourLog.setDifficulty(difficulty.get());
             selectedTourLog.setTotalTime(totalTime.get());
+            selectedTourLog.setTotalDistance(totalDistance.get());
             selectedTourLog.setRating(rating.get());
             selectedTourLog.setTour(selectedTour); // Ensure the selected tour is set
             tourLogOverviewService.update(selectedTourLog);
@@ -144,6 +151,10 @@ public class TourLogDetailsViewModel {
 
     public DoubleProperty totalTimeProperty() {
         return totalTime;
+    }
+
+    public DoubleProperty totalDistanceProperty() {
+        return totalDistance;
     }
 
     public IntegerProperty ratingProperty() {

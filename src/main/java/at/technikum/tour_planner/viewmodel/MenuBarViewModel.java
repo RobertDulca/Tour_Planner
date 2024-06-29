@@ -13,7 +13,6 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
-
 import java.io.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -31,6 +30,8 @@ public class MenuBarViewModel {
         this.tourService = new ToursTabService(new ToursTabDatabaseRepository());
         this.tourLogService = new TourLogOverviewService(new TourLogOverviewDatabaseRepository());
     }
+
+
 
     public void generateTourReport(Tour selectedTour, File file) throws DocumentException, IOException {
         Document document = new Document();
@@ -58,6 +59,7 @@ public class MenuBarViewModel {
                 document.add(new Paragraph("Comment: " + log.getComment()));
                 document.add(new Paragraph("Difficulty: " + log.getDifficulty()));
                 document.add(new Paragraph("Total Time: " + log.getTotalTime()));
+                document.add(new Paragraph("Total Distance: " + log.getTotalDistance()));
                 document.add(new Paragraph("Rating: " + log.getRating()));
             }
 
@@ -95,17 +97,18 @@ public class MenuBarViewModel {
                         currentTour.setEstimatedTime(estimatedTime);
                         tourService.saveTour(currentTour);
                         publisher.publish(Event.TOUR_IMPORTED, currentTour);
-                    } else if (values[0].equalsIgnoreCase("Log") && values.length >= 6 && currentTour != null) {
+                    } else if (values[0].equalsIgnoreCase("Log") && values.length >= 7 && currentTour != null) {
                         // Handle Log
                         LocalDate date = LocalDate.parse(values[1]);
                         String comment = values[2];
                         int difficulty = Integer.parseInt(values[3]);
                         double totalTime = Double.parseDouble(values[4]);
-                        int rating = Integer.parseInt(values[5]);
+                        double totalDistance = Double.parseDouble(values[5]);
+                        int rating = Integer.parseInt(values[6]);
 
                         logger.log(Level.INFO, "Importing log for tour: {0}", currentTour.getName());
 
-                        TourLogModel log = new TourLogModel(date, comment, difficulty, totalTime, rating);
+                        TourLogModel log = new TourLogModel(date, comment, difficulty, totalTime, totalDistance, rating);
                         log.setTour(currentTour);
                         tourLogService.add(log);
                     } else {
@@ -130,7 +133,7 @@ public class MenuBarViewModel {
                 List<TourLogModel> logs = tourLogService.findByTourId(selectedTour.getId());
                 for (TourLogModel log : logs) {
                     writer.println("Log," + log.getDate() + "," + log.getComment() + ","
-                            + log.getDifficulty() + "," + log.getTotalTime() + "," + log.getRating());
+                            + log.getDifficulty() + "," + log.getTotalTime() + "," + log.getTotalDistance() + "," + log.getRating());
                 }
 
                 logger.log(Level.INFO, "Exported tour: {0} to {1}", new Object[]{selectedTour.getName(), file.getPath()});

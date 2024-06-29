@@ -20,6 +20,8 @@ public class TourLogDetailsView implements Initializable {
     @FXML
     private TextField tourLogTime;
     @FXML
+    private TextField tourLogDistance;
+    @FXML
     private Rating tourLogRating;
     @FXML
     private TextArea tourLogComment;
@@ -41,6 +43,7 @@ public class TourLogDetailsView implements Initializable {
         this.tourLogDate.valueProperty().bindBidirectional(tourLogDetailsViewModel.dateProperty());
         this.difficulty.valueProperty().bindBidirectional(tourLogDetailsViewModel.difficultyProperty());
         this.tourLogTime.textProperty().bindBidirectional(tourLogDetailsViewModel.totalTimeProperty(), new NumberStringConverter());
+        this.tourLogDistance.textProperty().bindBidirectional(tourLogDetailsViewModel.totalDistanceProperty(), new NumberStringConverter());
         this.tourLogRating.ratingProperty().bindBidirectional(tourLogDetailsViewModel.ratingProperty());
         this.tourLogComment.textProperty().bindBidirectional(tourLogDetailsViewModel.commentProperty());
     }
@@ -73,6 +76,7 @@ public class TourLogDetailsView implements Initializable {
         tourLogDate.setValue(null);
         difficulty.setValue(0);
         tourLogTime.clear();
+        tourLogDistance.clear();
         tourLogRating.setRating(0);
         tourLogComment.clear();
     }
