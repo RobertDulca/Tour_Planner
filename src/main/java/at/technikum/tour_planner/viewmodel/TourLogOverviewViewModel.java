@@ -10,12 +10,14 @@ import javafx.collections.ObservableList;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 public class TourLogOverviewViewModel {
     private final Publisher publisher;
     private final TourLogOverviewService tourLogOverviewService;
     private final ObservableList<TourLogModel> tourLogs = FXCollections.observableArrayList();
     private UUID selectedTourId;
+    private final Logger logger = Logger.getLogger(TourLogOverviewViewModel.class.getName());
 
     public TourLogOverviewViewModel(Publisher publisher, TourLogOverviewService tourLogOverviewService) {
         this.publisher = publisher;
@@ -33,6 +35,7 @@ public class TourLogOverviewViewModel {
         publisher.subscribe(Event.TOUR_LOG_DELETED, this::updateTourLogs);
         publisher.subscribe(Event.TOUR_LOG_SEARCHED, this::searchTourLogs);
         publisher.subscribe(Event.SEARCH_CLEARED, this::cleanSearch);
+        logger.info("TourLogOverviewViewModel initialized.");
     }
 
     private void cleanSearch(Object message) {
@@ -41,15 +44,16 @@ public class TourLogOverviewViewModel {
         tourLogs.setAll(allTourLogs);
     }
 
-    private void searchTourLogs(Object message) {
+    public void searchTourLogs(Object message) {
         if (message instanceof List) {
             List<UUID> logIds = (List<UUID>) message;
             tourLogs.clear();
             tourLogs.setAll(tourLogOverviewService.getTourLogsByIds(logIds));
+            logger.info("Tour logs searched:" + logIds.size());
         }
     }
 
-    private void onTourSelected(Object message) {
+    public void onTourSelected(Object message) {
         if (message instanceof Tour) {
             Tour selectedTour = (Tour) message;
             selectedTourId = selectedTour.getId();
@@ -59,7 +63,7 @@ public class TourLogOverviewViewModel {
         updateTourLogs(null);
     }
 
-    private void updateTourLogs(Object message) {
+    public void updateTourLogs(Object message) {
         List<TourLogModel> allTourLogs;
         if (selectedTourId != null) {
             allTourLogs = tourLogOverviewService.findByTourId(selectedTourId);

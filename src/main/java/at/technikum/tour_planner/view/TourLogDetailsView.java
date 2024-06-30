@@ -9,9 +9,12 @@ import org.controlsfx.control.Rating;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TourLogDetailsView implements Initializable {
     private final TourLogDetailsViewModel tourLogDetailsViewModel;
+    private static final Logger logger = Logger.getLogger(TourLogDetailsView.class.getName());
 
     @FXML
     private DatePicker tourLogDate;
@@ -30,6 +33,7 @@ public class TourLogDetailsView implements Initializable {
 
     public TourLogDetailsView(TourLogDetailsViewModel tourLogViewModel) {
         this.tourLogDetailsViewModel = tourLogViewModel;
+        logger.info("TourLogDetailsView initialized.");
     }
 
 
@@ -37,6 +41,7 @@ public class TourLogDetailsView implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         bindProperties();
         setupButtonBindings();
+        logger.info("TourLogDetailsView initialized with property bindings and button bindings.");
     }
 
     private void bindProperties() {
@@ -56,20 +61,28 @@ public class TourLogDetailsView implements Initializable {
 
     @FXML
     public void createTourLog() {
-        this.tourLogDetailsViewModel.createTourLog();
-        clearFormFields();
+        try {
+            this.tourLogDetailsViewModel.createTourLog();
+            clearFormFields();
+            logger.info("Tour log created.");
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Error creating tour log.", e);
+            tourLogDetailsViewModel.showAlert("Error creating tour log" + e.getMessage());
+        }
     }
 
     @FXML
     public void updateTourLog() {
         this.tourLogDetailsViewModel.updateTourLog();
         clearFormFields();
+        logger.info("Tour log updated.");
     }
 
     @FXML
     public void deleteTourLog() {
         this.tourLogDetailsViewModel.deleteSelectedTourLog();
         clearFormFields();
+        logger.info("Tour log deleted.");
     }
 
     private void clearFormFields() {
