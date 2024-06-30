@@ -25,11 +25,25 @@ public class TourDetailsView implements Initializable {
     private static final Logger logger = Logger.getLogger(TourDetailsView.class.getName());
 
     @FXML
-    private TextField tourName, tourDesc, from, to, tourDistance, estimatedTime;
+    public TextField tourName;
     @FXML
-    private ComboBox<String> transportType;
+    public TextField tourDesc;
     @FXML
-    private Button addButton, deleteButton, editButton;
+    public TextField from;
+    @FXML
+    public TextField to;
+    @FXML
+    private TextField tourDistance;
+    @FXML
+    private TextField estimatedTime;
+    @FXML
+    public ComboBox<String> transportType;
+    @FXML
+    private Button addButton;
+    @FXML
+    public Button deleteButton;
+    @FXML
+    private Button editButton;
     @FXML
     private ImageView mapImageView;
 
@@ -80,7 +94,7 @@ public class TourDetailsView implements Initializable {
     }
 
     @FXML
-    private void onAddTour() {
+    public void onAddTour() {
         try {
             tourDetailsViewModel.createAndPublishTour();
             clearFormFields();
@@ -108,7 +122,7 @@ public class TourDetailsView implements Initializable {
     }
 
     @FXML
-    protected void onDeleteTour() {
+    public void onDeleteTour() {
         tourDetailsViewModel.deleteSelectedTour();
         clearFormFields();
         tourDetailsViewModel.clearTourSelection();

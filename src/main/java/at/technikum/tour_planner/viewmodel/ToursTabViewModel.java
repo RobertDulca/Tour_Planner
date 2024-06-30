@@ -57,7 +57,7 @@ public class ToursTabViewModel {
         logger.info("Search cleared, all tours reloaded.");
     }
 
-    private void onTourCreated(Object message) {
+    public void onTourCreated(Object message) {
         if (message instanceof Tour) {
             tours.setAll(tourService.getAllTours());
             logger.info("Tour created: " + ((Tour) message).getName());

@@ -24,8 +24,8 @@ import java.util.logging.Logger;
 public class MenuBarView implements Initializable {
 
     private final MenuBarViewModel viewModel;
-    private final ToursTabViewModel toursTabViewModel;
-    private Tour selectedTour;
+    public final ToursTabViewModel toursTabViewModel;
+    public Tour selectedTour;
     private static final Logger logger = Logger.getLogger(MenuBarView.class.getName());
 
     public MenuBarView(Publisher publisher, ToursTabViewModel toursTabViewModel) {
@@ -40,16 +40,16 @@ public class MenuBarView implements Initializable {
     }
 
     @FXML
-    private MenuBar menuBar;
+    public MenuBar menuBar;
     @FXML
-    private MenuItem exportMenuItem;
+    public MenuItem exportMenuItem;
     @FXML
-    private MenuItem reportMenuItem;
+    public MenuItem reportMenuItem;
     @FXML
     private MenuItem summaryMenuItem;
 
     @FXML
-    protected void onReport() {
+    public void onReport() {
         if (selectedTour != null) {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Save PDF File");
@@ -74,7 +74,7 @@ public class MenuBarView implements Initializable {
     }
 
     @FXML
-    protected void onSummary() {
+    public void onSummary() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save Summary PDF");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
@@ -119,7 +119,7 @@ public class MenuBarView implements Initializable {
     }
 
     @FXML
-    protected void onImport() {
+    public void onImport() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open CSV File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));

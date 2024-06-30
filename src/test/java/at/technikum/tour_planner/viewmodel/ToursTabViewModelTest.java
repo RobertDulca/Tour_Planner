@@ -1,68 +1,50 @@
 package at.technikum.tour_planner.viewmodel;
-
 import at.technikum.tour_planner.entity.Tour;
+import at.technikum.tour_planner.event.Event;
+import at.technikum.tour_planner.event.Publisher;
+import at.technikum.tour_planner.service.ToursTabService;
+import javafx.collections.ObservableList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import java.util.List;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+public class ToursTabViewModelTest {
 
-class ToursTabViewModelTest {
-    /*
-    ToursTabViewModel viewModel;
+    private Publisher publisher;
+    private ToursTabService tourService;
+    private ToursTabViewModel viewModel;
 
     @BeforeEach
-    public void setUp() {
-        //viewModel = ToursTabViewModel.getInstance();
-        viewModel.getTours().clear(); // Clear the list before each test
-    }
-    @Test
-    public void testAddTour() {
-
-        Tour tour = new Tour("Tour1", "Description", "From", "To", "Car", "src/main/resources/img.png");
-        viewModel.addTour(tour);
-        assertTrue(viewModel.getTours().contains(tour));
+    public void setup() {
+        publisher = mock(Publisher.class);
+        tourService = mock(ToursTabService.class);
+        viewModel = new ToursTabViewModel(publisher, tourService);
     }
 
     @Test
-    public void testRemoveTour() {
+    public void testSelectTour() {
+        Tour tour = new Tour("Test Tour", "Description", "Vienna", "Graz", "Car", "");
+        viewModel.selectTour(tour);
 
-        Tour tour = new Tour("Tour1", "Description", "From", "To", "Car", "src/main/resources/img.png");
-        viewModel.addTour(tour);
-        viewModel.removeTour(tour);
-        assertFalse(viewModel.getTours().contains(tour));
+        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
+        verify(publisher).publish(eq(Event.TOUR_SELECTED), captor.capture());
+        assertEquals(tour, captor.getValue());
     }
 
     @Test
-    public void testListFindRemovedItem() {
+    public void testOnTourCreated() {
+        Tour newTour = new Tour("New Tour", "Description", "Vienna", "Salzburg", "Bicycle", "");
+        List<Tour> tourList = List.of(newTour);
+        when(tourService.getAllTours()).thenReturn(tourList);
 
-        viewModel.getTours().clear(); // Clear list for testing
+        viewModel.onTourCreated(newTour);
 
-        Tour tour1 = new Tour("Tour4", "Description1", "From1", "To1", "Car", "src/main/resources/img.png");
-        Tour tour2 = new Tour("Tour5", "Description2", "From2", "To2", "Walk", "src/main/resources/img.png");
-        viewModel.addTour(tour1);
-        viewModel.addTour(tour2);
-
-        viewModel.removeTour(tour1);
-
-        assertFalse(viewModel.getTours().contains(tour1));
-        assertTrue(viewModel.getTours().contains(tour2));
+        ObservableList<Tour> tours = viewModel.getTours();
+        assertEquals(1, tours.size());
+        assertEquals(newTour, tours.getFirst());
     }
-    @Test
-    public void testRemoveTours() {
-
-        Tour tour1 = new Tour("Tour1", "Description1", "From1", "To1", "Bus", "src/resources/img1.png");
-        Tour tour2 = new Tour("Tour2", "Description2", "From2", "To2", "Train", "src/resources/img2.png");
-        viewModel.addTour(tour1);
-        viewModel.addTour(tour2);
-
-        // Remove tour1 and check if it is removed
-        viewModel.removeTour(tour1);
-        assertFalse(viewModel.getTours().contains(tour1));
-
-        // Remove the last tour and check if no tour is selected
-        viewModel.removeTour(tour2);
-        assertTrue(viewModel.getTours().isEmpty());
-    }
-
-     */
 }

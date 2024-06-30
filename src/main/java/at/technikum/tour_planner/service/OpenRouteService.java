@@ -129,7 +129,7 @@ public class OpenRouteService {
         return destinationPath.toString();
     }
 
-    private String makeHttpRequest(String urlString) throws Exception {
+    protected String makeHttpRequest(String urlString) throws Exception {
         URI uri = new URI(urlString);
         HttpURLConnection conn = (HttpURLConnection) uri.toURL().openConnection();
         conn.setRequestMethod("GET");

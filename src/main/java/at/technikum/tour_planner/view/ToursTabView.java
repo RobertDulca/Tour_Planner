@@ -17,7 +17,8 @@ public class ToursTabView implements Initializable {
     private final ToursTabViewModel viewModel;
     private static final Logger logger = Logger.getLogger(ToursTabView.class.getName());
 
-    @FXML private ListView<Tour> toursList;
+    @FXML
+    public ListView<Tour> toursList;
 
     public ToursTabView(ToursTabViewModel tourLogOverviewViewModel) {
         this.viewModel = tourLogOverviewViewModel;
@@ -61,5 +62,4 @@ public class ToursTabView implements Initializable {
             }
         });
     }
-
 }
