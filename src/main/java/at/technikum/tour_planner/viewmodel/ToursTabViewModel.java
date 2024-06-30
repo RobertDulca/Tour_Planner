@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.List;
+import java.util.UUID;
 
 public class ToursTabViewModel {
     private final Publisher publisher;
@@ -26,6 +27,8 @@ public class ToursTabViewModel {
         publisher.subscribe(Event.TOUR_CREATED, this::onTourCreated);
         publisher.subscribe(Event.TOUR_UPDATED, this::onTourUpdated);
         publisher.subscribe(Event.TOUR_DELETED, this::onTourDeleted);
+        publisher.subscribe(Event.TOUR_SEARCHED, this::onTourSearched);
+        publisher.subscribe(Event.SEARCH_CLEARED, this::cleanSearch);
     }
 
     public ObservableList<Tour> getTours() {
@@ -40,6 +43,10 @@ public class ToursTabViewModel {
         publisher.publish(Event.TOUR_SELECTED, null);
     }
 
+    private void cleanSearch(Object message) {
+        tours.clear();
+        tours.setAll(tourService.getAllTours());
+    }
     private void onTourCreated(Object message) {
         if (message instanceof Tour) {
             tours.setAll(tourService.getAllTours());
@@ -57,6 +64,14 @@ public class ToursTabViewModel {
         if (message instanceof Tour) {
             tours.clear();
             tours.setAll(tourService.getAllTours());
+        }
+    }
+
+    private void onTourSearched(Object message) {
+        if (message instanceof List) {
+            List<UUID> searchedToursID = (List<UUID>) message;
+            tours.clear();
+            tours.setAll(tourService.getToursByID(searchedToursID));
         }
     }
 }

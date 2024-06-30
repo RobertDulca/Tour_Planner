@@ -31,6 +31,22 @@ public class TourLogOverviewViewModel {
         publisher.subscribe(Event.TOUR_LOG_CREATED, this::updateTourLogs);
         publisher.subscribe(Event.TOUR_LOG_UPDATED, this::updateTourLogs);
         publisher.subscribe(Event.TOUR_LOG_DELETED, this::updateTourLogs);
+        publisher.subscribe(Event.TOUR_LOG_SEARCHED, this::searchTourLogs);
+        publisher.subscribe(Event.SEARCH_CLEARED, this::cleanSearch);
+    }
+
+    private void cleanSearch(Object message) {
+        List<TourLogModel> allTourLogs = tourLogOverviewService.findByTourId(selectedTourId);
+        tourLogs.clear();
+        tourLogs.setAll(allTourLogs);
+    }
+
+    private void searchTourLogs(Object message) {
+        if (message instanceof List) {
+            List<UUID> logIds = (List<UUID>) message;
+            tourLogs.clear();
+            tourLogs.setAll(tourLogOverviewService.getTourLogsByIds(logIds));
+        }
     }
 
     private void onTourSelected(Object message) {

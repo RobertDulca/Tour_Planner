@@ -34,4 +34,8 @@ public class ToursTabService {
     public void updateTour(Tour selectedTour) {
         tourRepository.update(selectedTour);
     }
+
+    public List<Tour> getToursByID(List<UUID> searchedToursID) {
+        return tourRepository.findToursByID(searchedToursID);
+    }
 }

@@ -3,15 +3,9 @@ package at.technikum.tour_planner.repository;
 import at.technikum.tour_planner.entity.Tour;
 import at.technikum.tour_planner.entity.TourLogModel;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class TourLogOverviewDatabaseRepository implements ToursTabRepository <TourLogModel>{
     private final EntityManagerFactory entityManagerFactory;
@@ -32,7 +26,7 @@ public class TourLogOverviewDatabaseRepository implements ToursTabRepository <To
         }
     }
 
-    //TODO: Rework the following methods to use the EntityManagerFactory
+
     @Override
     public Optional<TourLogModel> findById(UUID id) {
         CriteriaBuilder criteriaBuilder = entityManagerFactory.getCriteriaBuilder();
@@ -108,8 +102,38 @@ public class TourLogOverviewDatabaseRepository implements ToursTabRepository <To
     @Override
     public List<TourLogModel> findByTourId(UUID tourId) {
         EntityManager em = entityManagerFactory.createEntityManager();
-        TypedQuery<TourLogModel> query = em.createQuery("SELECT l FROM TourLogModel l WHERE l.tour.id = :tourId", TourLogModel.class);
-        query.setParameter("tourId", tourId);
-        return query.getResultList();
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<TourLogModel> cq = cb.createQuery(TourLogModel.class);
+            Root<TourLogModel> tourLog = cq.from(TourLogModel.class);
+            Join<Object, Object> tour = tourLog.join("tour");
+
+            cq.where(cb.equal(tour.get("id"), tourId));
+
+            return em.createQuery(cq).getResultList();
+        } finally {
+            em.close();
+        }
+    }
+    @Override
+    public List<TourLogModel> findToursByID(List<UUID> searchedToursID){
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<TourLogModel> findTourLogsByID(List<UUID> logIds){
+        EntityManager em = entityManagerFactory.createEntityManager();
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<TourLogModel> cq = cb.createQuery(TourLogModel.class);
+            Root<TourLogModel> tourLog = cq.from(TourLogModel.class);
+
+            Predicate predicate = tourLog.get("id").in(logIds);
+            cq.where(predicate);
+
+            return em.createQuery(cq).getResultList();
+        } finally {
+            em.close();
+        }
     }
 }
