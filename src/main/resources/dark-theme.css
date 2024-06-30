@@ -4,11 +4,6 @@
     -fx-text-fill: #ffffff;
 }
 
-.menu-bar {
-    -fx-background-color: #3f3f3f;
-    -fx-text-fill: #ffffff;
-}
-
 .text-field {
     -fx-background-color: #3e3e3e;
     -fx-text-fill: #ffffff;
@@ -106,4 +101,63 @@
 
 .tool-bar {
     -fx-background-color: #717171;
+}
+/* dark-theme.css */
+.menu-bar {
+    -fx-background-color: #2e2e2e;
+    -fx-text-fill: #ffffff;
+}
+
+.menu-bar .menu {
+    -fx-background-color: #2e2e2e;
+    -fx-text-fill: #ffffff;
+
+}
+
+.menu-bar .menu .menu-item {
+    -fx-background-color: #2e2e2e;
+    -fx-text-fill: #ffffff;
+    -fx-padding: 5px 10px; /* Adjust padding to your preference */
+    -fx-border-width: 0; /* Remove any border */
+}
+
+.menu-bar .menu .menu-item:hover {
+    -fx-background-color: #3e3e3e;
+    -fx-text-fill: #ffffff;
+}
+
+.menu-bar .menu .menu-item:disabled {
+    -fx-background-color: #2e2e2e;
+    -fx-text-fill: #7a7a7a; /* Lighter gray for disabled text */
+}
+
+.menu-bar .menu .menu-item:disabled:hover {
+    -fx-background-color: #2e2e2e; /* Keep background color same when disabled */
+    -fx-text-fill: #7a7a7a; /* Keep text color same when disabled */
+}
+
+.context-menu {
+    -fx-background-color: #2e2e2e;
+    -fx-border-color: #2e2e2e;
+    -fx-padding: 0;
+}
+
+.context-menu .menu-item {
+    -fx-background-color: #2e2e2e;
+    -fx-text-fill: #ffffff;
+}
+
+.context-menu .menu-item:hover {
+    -fx-background-color: #3e3e3e;
+    -fx-text-fill: #ffffff;
+}
+
+.context-menu .menu-item:disabled {
+    -fx-background-color: #2e2e2e;
+    -fx-text-fill: #7a7a7a;
+}
+
+.context-menu .menu-item:disabled:hover {
+    -fx-background-color: #2e2e2e;
+    -fx-text-fill: #7a7a7a;
 }
