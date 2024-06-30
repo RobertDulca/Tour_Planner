@@ -10,12 +10,14 @@ import javafx.collections.ObservableList;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 public class TourLogOverviewViewModel {
     private final Publisher publisher;
     private final TourLogOverviewService tourLogOverviewService;
     private final ObservableList<TourLogModel> tourLogs = FXCollections.observableArrayList();
     private UUID selectedTourId;
+    private final Logger logger = Logger.getLogger(TourLogOverviewViewModel.class.getName());
 
     public TourLogOverviewViewModel(Publisher publisher, TourLogOverviewService tourLogOverviewService) {
         this.publisher = publisher;
@@ -33,6 +35,7 @@ public class TourLogOverviewViewModel {
         publisher.subscribe(Event.TOUR_LOG_DELETED, this::updateTourLogs);
         publisher.subscribe(Event.TOUR_LOG_SEARCHED, this::searchTourLogs);
         publisher.subscribe(Event.SEARCH_CLEARED, this::cleanSearch);
+        logger.info("TourLogOverviewViewModel initialized.");
     }
 
     private void cleanSearch(Object message) {
@@ -46,6 +49,7 @@ public class TourLogOverviewViewModel {
             List<UUID> logIds = (List<UUID>) message;
             tourLogs.clear();
             tourLogs.setAll(tourLogOverviewService.getTourLogsByIds(logIds));
+            logger.info("Tour logs searched:" + logIds.size());
         }
     }
 

@@ -11,6 +11,7 @@ import javafx.beans.property.StringProperty;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 public class SearchBarViewModel {
     private final Publisher publisher;
@@ -19,6 +20,7 @@ public class SearchBarViewModel {
     private final StringProperty searchText = new SimpleStringProperty("");
     private final StringProperty searchType = new SimpleStringProperty("");
     private final BooleanProperty comboBoxDisabled = new SimpleBooleanProperty(true);
+    private final Logger logger = Logger.getLogger(SearchBarViewModel.class.getName());
 
     public SearchBarViewModel(Publisher publisher, SearchService searchService) {
         this.publisher = publisher;
@@ -26,6 +28,7 @@ public class SearchBarViewModel {
 
         comboBoxDisabled.bind(searchText.isEmpty());
         publisher.subscribe(Event.TOUR_SELECTED, this::onTourSelected);
+        logger.info("SearchBarViewModel initialized.");
     }
 
     public void onTourSelected(Object message) {
@@ -50,10 +53,9 @@ public class SearchBarViewModel {
     }
 
     public void performSearch() {
-        System.out.println("Performing search");
         if (searchText.get().isEmpty() || searchType.get().isEmpty()){
             publisher.publish(Event.SEARCH_CLEARED, null);
-            System.out.println("Search text or category is empty");
+            logger.info("Search category or text empty.");
             return; // No action if search text or category is not selected
         }
 
@@ -68,11 +70,13 @@ public class SearchBarViewModel {
     private void searchTours(String searchText) {
         List<UUID> overviewIDs = searchService.searchTours(searchText);
         publisher.publish(Event.TOUR_SEARCHED, overviewIDs);
+        logger.info("Searching Tours for: " + searchText);
     }
 
     private void searchTourLog(String searchText) {
         List<UUID> searchId = searchService.searchTourLog(searchText, selectedTour.getId());
         publisher.publish(Event.TOUR_LOG_SEARCHED, searchId);
+        logger.info("Searching Tour Log for: " + searchText);
     }
 
     private void searchSpecialAttribute(String searchText) {

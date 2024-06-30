@@ -59,6 +59,7 @@ public class TourLogDetailsViewModel {
 
         publisher.subscribe(Event.TOUR_LOG_SELECTED, this::onTourLogSelected);
         publisher.subscribe(Event.TOUR_SELECTED, this::onTourSelected);
+        logger.info("TourLogDetailsViewModel initialized and subscriptions added.");
     }
 
     private void onTourSelected(Object message) {
@@ -74,8 +75,10 @@ public class TourLogDetailsViewModel {
     private void onTourLogSelected(Object message) {
         if (message instanceof TourLogModel) {
             setSelectedTourLog((TourLogModel) message);
+            logger.info("Tour log selected: " + ((TourLogModel) message).getDate().toString());
         } else {
             clearTourLogDetails();
+            logger.info("Tour log selection cleared.");
         }
     }
 
@@ -111,6 +114,7 @@ public class TourLogDetailsViewModel {
             newTourLog.setTour(selectedTour); // Set the selected tour on the new log
             tourLogOverviewService.add(newTourLog);
             publisher.publish(Event.TOUR_LOG_CREATED, newTourLog);
+            logger.info("New tour log created:" + newTourLog.getDate().toString());
         }
     }
 
@@ -120,6 +124,7 @@ public class TourLogDetailsViewModel {
             publisher.publish(Event.TOUR_LOG_DELETED, selectedTourLog);
             setSelectedTourLog(null);
             clearTourSelection();
+            logger.info("Tour log deleted.");
         }
     }
 
@@ -138,6 +143,7 @@ public class TourLogDetailsViewModel {
             selectedTourLog.setTour(selectedTour); // Ensure the selected tour is set
             tourLogOverviewService.update(selectedTourLog);
             publisher.publish(Event.TOUR_LOG_UPDATED, selectedTourLog);
+            logger.info("Tour log updated:" + selectedTourLog.getDate().toString());
         }
     }
 
