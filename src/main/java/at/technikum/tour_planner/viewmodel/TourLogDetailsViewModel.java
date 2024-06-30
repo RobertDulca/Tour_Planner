@@ -62,7 +62,7 @@ public class TourLogDetailsViewModel {
         logger.info("TourLogDetailsViewModel initialized and subscriptions added.");
     }
 
-    private void onTourSelected(Object message) {
+    public void onTourSelected(Object message) {
         if (message instanceof Tour) {
             selectedTour = (Tour) message;
             isTourSelected.set(true);
@@ -72,7 +72,7 @@ public class TourLogDetailsViewModel {
         }
     }
 
-    private void onTourLogSelected(Object message) {
+    public void onTourLogSelected(Object message) {
         if (message instanceof TourLogModel) {
             setSelectedTourLog((TourLogModel) message);
             logger.info("Tour log selected: " + ((TourLogModel) message).getDate().toString());

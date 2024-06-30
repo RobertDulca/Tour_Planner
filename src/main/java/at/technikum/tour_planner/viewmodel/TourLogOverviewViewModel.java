@@ -44,7 +44,7 @@ public class TourLogOverviewViewModel {
         tourLogs.setAll(allTourLogs);
     }
 
-    private void searchTourLogs(Object message) {
+    public void searchTourLogs(Object message) {
         if (message instanceof List) {
             List<UUID> logIds = (List<UUID>) message;
             tourLogs.clear();
@@ -53,7 +53,7 @@ public class TourLogOverviewViewModel {
         }
     }
 
-    private void onTourSelected(Object message) {
+    public void onTourSelected(Object message) {
         if (message instanceof Tour) {
             Tour selectedTour = (Tour) message;
             selectedTourId = selectedTour.getId();
@@ -63,7 +63,7 @@ public class TourLogOverviewViewModel {
         updateTourLogs(null);
     }
 
-    private void updateTourLogs(Object message) {
+    public void updateTourLogs(Object message) {
         List<TourLogModel> allTourLogs;
         if (selectedTourId != null) {
             allTourLogs = tourLogOverviewService.findByTourId(selectedTourId);
