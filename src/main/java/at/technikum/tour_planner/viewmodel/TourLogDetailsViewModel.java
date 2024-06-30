@@ -5,9 +5,12 @@ import at.technikum.tour_planner.entity.TourLogModel;
 import at.technikum.tour_planner.event.Event;
 import at.technikum.tour_planner.event.Publisher;
 import at.technikum.tour_planner.service.TourLogOverviewService;
+import javafx.application.Platform;
 import javafx.beans.property.*;
+import javafx.scene.control.Alert;
 
 import java.time.LocalDate;
+import java.util.logging.Logger;
 
 public class TourLogDetailsViewModel {
 
@@ -27,6 +30,7 @@ public class TourLogDetailsViewModel {
     private final BooleanProperty isTourSelected = new SimpleBooleanProperty(false);
     private final Publisher publisher;
     private final TourLogOverviewService tourLogOverviewService;
+    private static final Logger logger = Logger.getLogger(TourDetailsViewModel.class.getName());
     private TourLogModel selectedTourLog;
     private Tour selectedTour;
 
@@ -171,5 +175,16 @@ public class TourLogDetailsViewModel {
 
     public BooleanProperty isTourSelectedProperty() {
         return isTourSelected;
+    }
+
+    public void showAlert(String message) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error!");
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+            logger.warning("Alert shown: " + message);
+        });
     }
 }

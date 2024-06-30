@@ -14,20 +14,24 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 public class TourLogOverviewView implements Initializable {
     private final TourLogOverviewViewModel tourLogOverviewViewModel;
+    private static final Logger logger = Logger.getLogger(ToursTabView.class.getName());
     @FXML
     public ListView<TourLogModel> tourLogList;
 
     public TourLogOverviewView(TourLogOverviewViewModel tourLogOverviewViewModel) {
         this.tourLogOverviewViewModel = tourLogOverviewViewModel;
+        logger.info("TourLogOverviewView initialized.");
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.tourLogList.setItems(tourLogOverviewViewModel.getTourLogs());
         setupListView();
+        logger.info("TourLogOverviewView initialized with tour log list and setup.");
     }
 
     private void setupListView() {
@@ -53,8 +57,10 @@ public class TourLogOverviewView implements Initializable {
         tourLogList.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 tourLogOverviewViewModel.selectTourLog(newSelection);
+                logger.info("Tour log selected: " + newSelection.getDate().format(dateFormatter));
             } else {
                 tourLogOverviewViewModel.clearSelectedTourLog();
+                logger.info("Tour log selection cleared.");
             }
         });
 
@@ -62,6 +68,7 @@ public class TourLogOverviewView implements Initializable {
         tourLogOverviewViewModel.getTourLogs().addListener((ListChangeListener<TourLogModel>) change -> {
             if (change.next() && (change.wasRemoved() || change.wasUpdated())) {
                 tourLogList.getSelectionModel().clearSelection();
+                logger.info("Tour logs list updated or tour log removed. Selection cleared.");
             }
         });
     }
