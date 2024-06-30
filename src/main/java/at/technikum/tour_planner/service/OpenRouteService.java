@@ -16,16 +16,21 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class OpenRouteService {
     private static final String CONFIG_FILE = "/config.properties";
     private static final String API_KEY;
     private static final String BASE_URL;
     private static final String GEOCODE_URL;
+    private static final Logger logger = Logger.getLogger(OpenRouteService.class.getName());
 
     static {
         try (InputStream input = OpenRouteService.class.getResourceAsStream(CONFIG_FILE)) {
             if (input == null) {
+
+                logger.severe("Unable to find " + CONFIG_FILE);
                 throw new RuntimeException("Sorry, unable to find " + CONFIG_FILE);
             }
             Properties properties = new Properties();
@@ -34,22 +39,26 @@ public class OpenRouteService {
             BASE_URL = properties.getProperty("base.url");
             GEOCODE_URL = properties.getProperty("geocode.url");
         } catch (IOException ex) {
-            throw new RuntimeException("Failed to load configuration", ex);
+            logger.log(Level.SEVERE, "Failed to load config", ex);
+            throw new RuntimeException("Failed to load config", ex);
         }
     }
 
     public String getRoute(String fromLat, String fromLon, String toLat, String toLon, String transportType) throws Exception {
         String urlString = String.format("%s%s?api_key=%s&start=%s,%s&end=%s,%s", BASE_URL, transportType, API_KEY, fromLon, fromLat, toLon, toLat);
+        logger.info("Requesting route: " + urlString);
         return makeHttpRequest(urlString);
     }
 
     public double[] geocodeAddress(String address) throws Exception {
         String urlString = String.format("%s?api_key=%s&text=%s", GEOCODE_URL,  API_KEY, URLEncoder.encode(address, StandardCharsets.UTF_8));
+        logger.info("Geo address: " + urlString);
         String response = makeHttpRequest(urlString);
 
         JsonObject jsonObject = JsonParser.parseString(response).getAsJsonObject();
         JsonArray features = jsonObject.getAsJsonArray("features");
         if (features == null || features.isEmpty()) {
+            logger.warning("No coordinates found for the address: " + address);
             throw new Exception("No coordinates found for the address: " + address);
         }
         JsonObject geometry = features.get(0).getAsJsonObject().getAsJsonObject("geometry");
@@ -61,16 +70,21 @@ public class OpenRouteService {
         JsonObject jsonObject = JsonParser.parseString(jsonResponse).getAsJsonObject();
         if (jsonObject.has("error")) {
             String errorMessage = jsonObject.get("error").getAsString();
+            logger.severe("API Error: " + errorMessage);
+
             throw new RuntimeException("API Error: " + errorMessage);
         }
         JsonArray features = jsonObject.getAsJsonArray("features");
         if (features == null || features.isEmpty()) {
+            logger.severe("No features found in the response.");
             throw new RuntimeException("No features found in the response.");
         }
         JsonObject feature = features.get(0).getAsJsonObject();
         JsonObject properties = feature.getAsJsonObject("properties");
         JsonObject summary = properties.getAsJsonObject("summary");
         if (summary == null) {
+            logger.severe("No summary found in the properties.");
+
             throw new RuntimeException("No summary found in the properties.");
         }
         double distance = summary.get("distance").getAsDouble() / 1000; // Kilometers
@@ -111,6 +125,7 @@ public class OpenRouteService {
         }
 
         ImageIO.write(image, "png", destinationPath.toFile());
+        logger.info("Saved image to " + destinationPath.toString());
         return destinationPath.toString();
     }
 
@@ -119,8 +134,10 @@ public class OpenRouteService {
         HttpURLConnection conn = (HttpURLConnection) uri.toURL().openConnection();
         conn.setRequestMethod("GET");
 
-        if (conn.getResponseCode() != 200) {
-            throw new Exception("Failed : HTTP error code : " + conn.getResponseCode());
+        int responseCode = conn.getResponseCode();
+        if (responseCode != 200) {
+            logger.severe("Failed : HTTP error code : " + responseCode);
+            throw new Exception("Failed : HTTP error code : " + responseCode);
         }
 
         BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -130,6 +147,7 @@ public class OpenRouteService {
             sb.append(output);
         }
         conn.disconnect();
+        logger.info("HTTP request successful: " + urlString);
         return sb.toString();
     }
 }

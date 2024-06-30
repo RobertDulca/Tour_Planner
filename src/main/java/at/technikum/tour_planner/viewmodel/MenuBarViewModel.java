@@ -29,7 +29,9 @@ public class MenuBarViewModel {
         this.publisher = publisher;
         this.tourService = new ToursTabService(new ToursTabDatabaseRepository());
         this.tourLogService = new TourLogOverviewService(new TourLogOverviewDatabaseRepository());
+        logger.info("MenuBarViewModel initialized.");
     }
+
 
     public void generateSummaryReport(File file) throws DocumentException, IOException {
         Document doc = new Document();
@@ -39,7 +41,6 @@ public class MenuBarViewModel {
         List<Tour> tours = tourService.getAllTours();
         if (!tours.isEmpty()) {
             doc.add(new Paragraph("Summary Report"));
-
             for (Tour tour : tours) {
                 List<TourLogModel> logs = tourLogService.findByTourId(tour.getId());
                 double totalDistance = 0;
@@ -50,7 +51,6 @@ public class MenuBarViewModel {
                     totalDistance += log.getTotalDistance();
                     totalTime += log.getTotalTime();
                     totalRating += log.getRating();
-
                 }
 
                 double avgDistance = logs.isEmpty() ? 0 : totalDistance / logs.size();
@@ -63,14 +63,14 @@ public class MenuBarViewModel {
                 doc.add(new Paragraph("Average Rating: " + avgRating));
                 doc.add(new Paragraph("\n"));
             }
-
-            logger.log(Level.INFO, "Summary Report Generated");
+            logger.log(Level.INFO, "Summary Report Generated successfully.");
         } else {
-            logger.log(Level.WARNING, "No Tours found for Report");
+            logger.log(Level.WARNING, "No Tours found for Summary Report.");
         }
 
         doc.close();
     }
+
 
     public void generateTourReport(Tour selectedTour, File file) throws DocumentException, IOException {
         Document document = new Document();
@@ -102,13 +102,14 @@ public class MenuBarViewModel {
                 document.add(new Paragraph("Rating: " + log.getRating()));
             }
 
-            logger.log(Level.INFO, "Generated Tour Report: {0}", selectedTour.getName());
+            logger.log(Level.INFO, "Generated Tour Report for: {0}", selectedTour.getName());
         } else {
-            logger.log(Level.WARNING, "No Tour selected for Report");
+            logger.log(Level.WARNING, "No Tour selected for Report generation.");
         }
 
         document.close();
     }
+
 
     public void importTourFromCsv(File file) throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
@@ -161,6 +162,7 @@ public class MenuBarViewModel {
         }
     }
 
+
     public void exportTourToCsv(Tour selectedTour, File file) throws IOException {
         try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
             if (selectedTour != null) {
@@ -184,4 +186,5 @@ public class MenuBarViewModel {
             throw e;
         }
     }
+
 }

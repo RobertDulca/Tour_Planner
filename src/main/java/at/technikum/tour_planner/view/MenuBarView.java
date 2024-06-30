@@ -18,12 +18,15 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MenuBarView implements Initializable {
 
     private final MenuBarViewModel viewModel;
     private final ToursTabViewModel toursTabViewModel;
     private Tour selectedTour;
+    private static final Logger logger = Logger.getLogger(MenuBarView.class.getName());
 
     public MenuBarView(Publisher publisher, ToursTabViewModel toursTabViewModel) {
         this.viewModel = new MenuBarViewModel(publisher);
@@ -33,6 +36,7 @@ public class MenuBarView implements Initializable {
         publisher.subscribe(Event.TOUR_UPDATED, this::onToursUpdated);
         publisher.subscribe(Event.TOUR_DELETED, this::onToursUpdated);
         publisher.subscribe(Event.TOUR_IMPORTED, this::onToursUpdated);
+        logger.info("MenuBarView initialized with subscriptions to events.");
     }
 
     @FXML
@@ -56,13 +60,16 @@ public class MenuBarView implements Initializable {
             if (file != null) {
                 try {
                     viewModel.generateTourReport(selectedTour, file);
+                    logger.info("Tour report generated for tour: " + selectedTour.getName());
                 } catch (DocumentException | IOException e) {
+                    logger.log(Level.SEVERE, "Failed to generate a Report", e);
                     showAlert("Failed to generate a Report: " + e.getMessage());
                     e.printStackTrace();
                 }
             }
         } else {
             showAlert("No tour selected for Report");
+            logger.warning("Attempted to generate report with no tour selected.");
         }
     }
 
@@ -77,7 +84,9 @@ public class MenuBarView implements Initializable {
         if (file != null) {
             try {
                 viewModel.generateSummaryReport(file);
+                logger.info("Summary report generated.");
             } catch (DocumentException | IOException e) {
+                logger.log(Level.SEVERE, "Failed to generate Summary Report", e);
                 showAlert("Failed to generate Summary Report: " + e.getMessage());
                 e.printStackTrace();
             }
@@ -96,13 +105,16 @@ public class MenuBarView implements Initializable {
             if (file != null) {
                 try {
                     viewModel.exportTourToCsv(selectedTour, file);
+                    logger.info("Tour exported to CSV for tour: " + selectedTour.getName());
                 } catch (IOException e) {
+                    logger.log(Level.SEVERE, "Failed to export tour", e);
                     showAlert("Failed to export tour: " + e.getMessage());
                     e.printStackTrace();
                 }
             }
         } else {
             showAlert("No tour selected for export.");
+            logger.warning("Attempted to export with no tour selected.");
         }
     }
 
@@ -117,37 +129,49 @@ public class MenuBarView implements Initializable {
         if (file != null) {
             try {
                 viewModel.importTourFromCsv(file);
+                logger.info("Tour imported from CSV file: " + file.getName());
             } catch (IOException e) {
+                logger.log(Level.SEVERE, "Failed to import tour", e);
                 showAlert("Failed to import tour: " + e.getMessage());
                 e.printStackTrace();
             }
         }
     }
 
+
     public void setSelectedTour(Tour selectedTour) {
         this.selectedTour = selectedTour;
         exportMenuItem.setDisable(selectedTour == null);
         reportMenuItem.setDisable(selectedTour == null);
+        logger.info("Selected tour set to: " + (selectedTour != null ? selectedTour.getName() : "None"));
     }
+
 
     private void onToursUpdated(Object message) {
         summaryMenuItem.setDisable(toursTabViewModel.getTours().isEmpty());
+        logger.info("Tours updated. Summary menu item is " + (summaryMenuItem.isDisable() ? "disabled" : "enabled"));
     }
+
 
     private void onTourSelected(Object message) {
         if (message instanceof Tour) {
             setSelectedTour((Tour) message);
+            logger.info("Tour selected: " + ((Tour) message).getName());
         } else {
             setSelectedTour(null);
+            logger.info("No tour selected.");
         }
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         exportMenuItem.setDisable(true);
         reportMenuItem.setDisable(true);
         summaryMenuItem.setDisable(toursTabViewModel.getTours().isEmpty());
+        logger.info("MenuBarView initialized. Export, report and summary menu items set to initial state.");
     }
+
 
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -155,6 +179,8 @@ public class MenuBarView implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+        logger.warning("Alert shown: " + message);
     }
+
 }
 

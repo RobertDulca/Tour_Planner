@@ -13,6 +13,8 @@ import javafx.scene.image.WritableImage;
 import javafx.embed.swing.SwingFXUtils;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import at.technikum.tour_planner.service.ToursTabService;
 import javafx.beans.property.BooleanProperty;
@@ -24,6 +26,8 @@ public class TourDetailsViewModel {
     private final Publisher publisher;
     private Tour selectedTour;
     private final ToursTabService tourService;
+    private static final Logger logger = Logger.getLogger(TourDetailsViewModel.class.getName());
+
 
     private final StringProperty name = new SimpleStringProperty();
     private final StringProperty description = new SimpleStringProperty();
@@ -60,15 +64,19 @@ public class TourDetailsViewModel {
         );
 
         publisher.subscribe(Event.TOUR_SELECTED, this::onTourSelected);
+        logger.info("TourDetailsViewModel initialized and subscriptions set up.");
     }
 
     private void onTourSelected(Object message) {
         if (message instanceof Tour) {
             setSelectedTour((Tour) message);
+            logger.info("Tour selected: " + ((Tour) message).getName());
         } else {
             clearTourDetails();
+            logger.info("Tour selection cleared.");
         }
     }
+
 
     public void showAlert(String message) {
         Platform.runLater(() -> {
@@ -77,6 +85,7 @@ public class TourDetailsViewModel {
             alert.setHeaderText(null);
             alert.setContentText(message);
             alert.showAndWait();
+            logger.warning("Alert shown: " + message);
         });
     }
 
@@ -98,6 +107,7 @@ public class TourDetailsViewModel {
                     fetchAndSetMapImage(selectedTour);
                 } catch (IOException e) {
                     showAlert("Failed to update map image: " + e.getMessage());
+                    logger.log(Level.SEVERE, "Failed to update map image", e);
                     e.printStackTrace();
                 }
             }
@@ -107,8 +117,10 @@ public class TourDetailsViewModel {
             selectedTour.setImageUrl(imageUrl.get());
             tourService.updateTour(selectedTour);
             publisher.publish(Event.TOUR_UPDATED, selectedTour);
+            logger.info("Tour changes saved and tour updated: " + selectedTour.getName());
         }
     }
+
 
     public void setSelectedTour(Tour tour) {
         selectedTour = tour;
@@ -127,10 +139,12 @@ public class TourDetailsViewModel {
             } else {
                 imageUrl.set(null);
             }
+            logger.info("Tour details set for: " + tour.getName());
         } else {
             clearTourDetails();
         }
     }
+
 
     public Tour getSelectedTour() {
         return selectedTour;
@@ -146,16 +160,20 @@ public class TourDetailsViewModel {
         distance.set(0);
         estimatedTime.set(0);
         imageUrl.set("");
+        logger.info("Tour details cleared.");
     }
+
 
     public void deleteSelectedTour() {
         if (selectedTour != null) {
             tourService.deleteTour(selectedTour.getId());
             publisher.publish(Event.TOUR_DELETED, selectedTour);
+            logger.info("Tour deleted: " + selectedTour.getName());
             setSelectedTour(null);
             clearTourSelection();
         }
     }
+
 
     public void clearTourSelection() {
         publisher.publish(Event.TOUR_SELECTED, null);
@@ -169,11 +187,14 @@ public class TourDetailsViewModel {
             fetchAndSetMapImage(newTour);
             tourService.saveTour(newTour);
             publisher.publish(Event.TOUR_CREATED, newTour);
+            logger.info("New tour created and published: " + newTour.getName());
         } catch (Exception e) {
             showAlert("Failed to create new tour: " + e.getMessage());
+            logger.log(Level.SEVERE, "Failed to create new tour", e);
             e.printStackTrace();
         }
     }
+
 
     private String convertTransportType(String transportType) {     //make it API friendly
         return switch (transportType) {
@@ -200,14 +221,18 @@ public class TourDetailsViewModel {
                 estimatedTime.set(routeInfo.getDuration());
                 tour.setDistance(routeInfo.getDistance());
                 tour.setEstimatedTime(routeInfo.getDuration());
+                logger.info("Route details fetched for tour: " + tour.getName());
             } else {
                 showAlert("Failed to fetch route details :-(\nPlease try again!");
+                logger.warning("Failed to fetch route details for tour: " + tour.getName());
             }
         } catch (Exception e) {
+            logger.log(Level.SEVERE, "Error fetching route details for tour: " + tour.getName(), e);
             e.printStackTrace();
             showAlert("Something went wrong :-(\nCheck input and try again!");
         }
     }
+
 
     public void fetchAndSetMapImage(Tour tour) throws IOException {
         try {
@@ -215,12 +240,15 @@ public class TourDetailsViewModel {
             String imagePath = routeService.saveImage(mapImage);
             imageUrl.set(imagePath);
             tour.setImageUrl(imagePath);
+            logger.info("Map image fetched and set for tour: " + tour.getName());
         } catch (IOException e) {
+            logger.log(Level.SEVERE, "Failed to fetch map image for tour: " + tour.getName(), e);
             e.printStackTrace();
             showAlert("Failed to fetch map image: " + e.getMessage());
             throw e;
         }
     }
+
 
     public StringProperty imageProperty() {
         return imageUrl;
