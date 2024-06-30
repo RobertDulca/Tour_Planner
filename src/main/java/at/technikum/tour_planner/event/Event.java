@@ -12,6 +12,5 @@ public enum Event {
     TOUR_LOG_DELETED,
     TOUR_LOG_SEARCHED,
     SEARCH_CLEARED,
-    TOUR_LOG_DELETED,
     TOUR_IMPORTED
 }
