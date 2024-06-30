@@ -1,5 +1,6 @@
 package at.technikum.tour_planner.viewmodel;
 
+import at.technikum.tour_planner.entity.Tour;
 import at.technikum.tour_planner.event.Event;
 import at.technikum.tour_planner.event.Publisher;
 import at.technikum.tour_planner.service.SearchService;
@@ -14,6 +15,7 @@ import java.util.UUID;
 public class SearchBarViewModel {
     private final Publisher publisher;
     private final SearchService searchService;
+    private Tour selectedTour;
     private final StringProperty searchText = new SimpleStringProperty("");
     private final StringProperty searchType = new SimpleStringProperty("");
     private final BooleanProperty comboBoxDisabled = new SimpleBooleanProperty(true);
@@ -23,6 +25,18 @@ public class SearchBarViewModel {
         this.searchService = searchService;
 
         comboBoxDisabled.bind(searchText.isEmpty());
+        publisher.subscribe(Event.TOUR_SELECTED, this::onTourSelected);
+    }
+
+    public void onTourSelected(Object message) {
+        if (message instanceof Tour) {
+            selectedTour = (Tour) message;
+            if(!searchText.get().isEmpty() && !searchType.get().isEmpty()) {
+                performSearch();
+            }
+        } else {
+            selectedTour = null;
+        }
     }
 
     public StringProperty searchTextProperty() {
@@ -52,13 +66,13 @@ public class SearchBarViewModel {
         }
     }
     private void searchTours(String searchText) {
-        List<UUID> overviewIDs = searchService.searchtours(searchText);
+        List<UUID> overviewIDs = searchService.searchTours(searchText);
         publisher.publish(Event.TOUR_SEARCHED, overviewIDs);
     }
 
     private void searchTourLog(String searchText) {
-        searchService.searchtourLog(searchText);
-        System.out.println("Searching TourLog for: " + searchText);
+        List<UUID> searchId = searchService.searchTourLog(searchText, selectedTour.getId());
+        publisher.publish(Event.TOUR_LOG_SEARCHED, searchId);
     }
 
     private void searchSpecialAttribute(String searchText) {

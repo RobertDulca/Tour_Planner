@@ -13,11 +13,12 @@ public class SearchService {
         this.searchRepository = searchRepository;
     }
 
-    public List<UUID> searchtours(String searchText) {
+    public List<UUID> searchTours(String searchText) {
         return searchRepository.searchTours(searchText);
     }
 
-    public void searchtourLog(String searchText) {
+    public List<UUID> searchTourLog(String searchText, UUID tourId) {
+        return searchRepository.searchTourLogs(searchText, tourId);
     }
 
     public void searchAttribute(String searchText) {

@@ -31,14 +31,17 @@ public class TourLogOverviewView implements Initializable {
     }
 
     private void setupListView() {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
         // Set a custom cell factory to display the tour logs
         tourLogList.setCellFactory(lv -> new TextFieldListCell<>(new StringConverter<>() {
             @Override
             public String toString(TourLogModel tourLog) {
                 // Customize this to display the relevant information from TourLogModel
-                return tourLog.getDate().format(dateFormatter);
+                return String.format("Date: %s, Difficulty: %d, Rating: %d",
+                        tourLog.getDate() != null ? tourLog.getDate().format(dateFormatter) : "No Date",
+                        tourLog.getDifficulty(),
+                        tourLog.getRating());
             }
 
             @Override

@@ -124,4 +124,9 @@ public class ToursTabDatabaseRepository implements ToursTabRepository <Tour>{
             em.close();
         }
     }
+
+    @Override
+    public List<Tour> findTourLogsByID(List<UUID> logIds) {
+        return Collections.emptyList();
+    }
 }

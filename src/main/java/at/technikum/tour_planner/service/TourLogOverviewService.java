@@ -32,4 +32,8 @@ public class TourLogOverviewService {
     public List<TourLogModel> findByTourId(UUID tourId) {
         return tourLogOverviewRepository.findByTourId(tourId);
     }
+
+    public List<TourLogModel> getTourLogsByIds(List<UUID> logIds) {
+        return tourLogOverviewRepository.findTourLogsByID(logIds);
+    }
 }

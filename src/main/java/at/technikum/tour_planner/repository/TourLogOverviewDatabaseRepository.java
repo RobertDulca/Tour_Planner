@@ -119,4 +119,21 @@ public class TourLogOverviewDatabaseRepository implements ToursTabRepository <To
     public List<TourLogModel> findToursByID(List<UUID> searchedToursID){
         return Collections.emptyList();
     }
+
+    @Override
+    public List<TourLogModel> findTourLogsByID(List<UUID> logIds){
+        EntityManager em = entityManagerFactory.createEntityManager();
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<TourLogModel> cq = cb.createQuery(TourLogModel.class);
+            Root<TourLogModel> tourLog = cq.from(TourLogModel.class);
+
+            Predicate predicate = tourLog.get("id").in(logIds);
+            cq.where(predicate);
+
+            return em.createQuery(cq).getResultList();
+        } finally {
+            em.close();
+        }
+    }
 }
