@@ -12,6 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
 import java.util.UUID;
@@ -101,7 +102,14 @@ public class OpenRouteService {
 
     public String saveImage(BufferedImage image) throws IOException {
         String randomFileName = UUID.randomUUID().toString() + ".png";
-        Path destinationPath = Path.of("src/main/resources/images", randomFileName);
+        Path destinationDirectory = Path.of("src/main/resources/Images");
+        Path destinationPath = destinationDirectory.resolve(randomFileName);
+
+        // Check if the directory exists, if not create it
+        if (!Files.exists(destinationDirectory)) {
+            Files.createDirectories(destinationDirectory);
+        }
+
         ImageIO.write(image, "png", destinationPath.toFile());
         return destinationPath.toString();
     }

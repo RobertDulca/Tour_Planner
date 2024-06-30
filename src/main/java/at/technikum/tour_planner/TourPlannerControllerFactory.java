@@ -53,7 +53,7 @@ public class TourPlannerControllerFactory implements javafx.util.Callback<Class<
     public Object call(Class<?> param) {
         try {
             if (param == MenuBarView.class) {
-                return new MenuBarView(publisher);
+                return new MenuBarView(publisher, toursTabViewModel);
             } else if (param == SearchBarView.class) {
                 return new SearchBarView(searchBarViewModel);
             } else if (param == TourDetailsView.class) {

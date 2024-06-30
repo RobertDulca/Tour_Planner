@@ -59,8 +59,8 @@
         <TextField fx:id="from" promptText="From" GridPane.columnIndex="1" GridPane.rowIndex="3" />
         <TextField fx:id="to" promptText="To" GridPane.columnIndex="1" GridPane.rowIndex="4" />
         <ComboBox fx:id="transportType" promptText="Select Transport" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-        <TextField fx:id="tourDistance" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-        <TextField fx:id="estimatedTime" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+        <TextField fx:id="tourDistance" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+        <TextField fx:id="estimatedTime" GridPane.columnIndex="1" GridPane.rowIndex="7" />
 
     </GridPane>
 </AnchorPane>

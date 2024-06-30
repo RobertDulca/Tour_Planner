@@ -24,6 +24,9 @@ public class TourLogModel {
     @Column(name = "total_time")
     private double totalTime;
 
+    @Column(name = "total_distance")
+    private double totalDistance;
+
     @Column(name = "rating")
     private int rating;
 
@@ -34,11 +37,12 @@ public class TourLogModel {
     public TourLogModel() {
     }
 
-    public TourLogModel(LocalDate date, String comment, int difficulty, double totalTime, int rating) {
+    public TourLogModel(LocalDate date, String comment, int difficulty, double totalTime, double totalDistance, int rating) {
         this.date = date;
         this.comment = comment;
         this.difficulty = difficulty;
         this.totalTime = totalTime;
+        this.totalDistance = totalDistance;
         this.rating = rating;
     }
 
@@ -81,6 +85,10 @@ public class TourLogModel {
     public void setTotalTime(double totalTime) {
         this.totalTime = totalTime;
     }
+
+    public double getTotalDistance() {return totalDistance; }
+
+    public void setTotalDistance(double totalDistance) { this.totalDistance = totalDistance; }
 
     public int getRating() {
         return rating;

@@ -27,6 +27,7 @@ public class ToursTabViewModel {
         publisher.subscribe(Event.TOUR_CREATED, this::onTourCreated);
         publisher.subscribe(Event.TOUR_UPDATED, this::onTourUpdated);
         publisher.subscribe(Event.TOUR_DELETED, this::onTourDeleted);
+        publisher.subscribe(Event.TOUR_IMPORTED, this::onTourImported);
         publisher.subscribe(Event.TOUR_SEARCHED, this::onTourSearched);
         publisher.subscribe(Event.SEARCH_CLEARED, this::cleanSearch);
     }
@@ -47,6 +48,7 @@ public class ToursTabViewModel {
         tours.clear();
         tours.setAll(tourService.getAllTours());
     }
+
     private void onTourCreated(Object message) {
         if (message instanceof Tour) {
             tours.setAll(tourService.getAllTours());
@@ -64,6 +66,12 @@ public class ToursTabViewModel {
         if (message instanceof Tour) {
             tours.clear();
             tours.setAll(tourService.getAllTours());
+        }
+    }
+
+    private void onTourImported(Object message) {
+        if (message instanceof Tour) {
+            tours.add((Tour) message);
         }
     }
 

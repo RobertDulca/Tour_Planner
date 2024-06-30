@@ -20,13 +20,15 @@
    <children>
       <DatePicker fx:id="tourLogDate" prefHeight="53.0" prefWidth="230.0" promptText="Date" GridPane.columnIndex="2" GridPane.rowIndex="1" />
       <TextField fx:id="tourLogTime" prefHeight="39.0" prefWidth="348.0" promptText="Total Time" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+      <TextField fx:id="tourLogDistance" prefHeight="39.0" prefWidth="348.0" promptText="Total Distance" GridPane.columnIndex="2" GridPane.rowIndex="7" />
       <Label text="Date" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <Label text="Comment" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+      <Label text="Comment" GridPane.columnIndex="1" GridPane.rowIndex="8" />
       <Label text="Difficulty" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <Slider fx:id="difficulty" blockIncrement="1.0" majorTickUnit="2.0" max="10.0" minorTickCount="1"
               showTickLabels="true" showTickMarks="true" snapToTicks="true" prefWidth="231.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
       <Label text="TotalTime" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-      <TextArea fx:id="tourLogComment" prefHeight="89.0" prefWidth="309.0" promptText="Comment" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+      <Label text="TotalDistance" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+      <TextArea fx:id="tourLogComment" prefHeight="89.0" prefWidth="309.0" promptText="Comment" GridPane.columnIndex="2" GridPane.rowIndex="8" />
       <Label text="Rating" GridPane.columnIndex="1" GridPane.rowIndex="5" />
       <Rating fx:id="tourLogRating" prefWidth="231.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
       <Button fx:id="addButton" onAction="#createTourLog" text="Add Tour" GridPane.columnIndex="1" GridPane.rowIndex="10" />

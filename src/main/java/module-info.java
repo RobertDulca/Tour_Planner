@@ -9,6 +9,9 @@ module at.technikum.tour_planner {
     requires com.google.gson;
     requires java.desktop;
     requires javafx.swing;
+    requires itextpdf;
+    //requires kernel;
+    //requires layout;
 
     opens at.technikum.tour_planner to javafx.fxml;
     opens at.technikum.tour_planner.view to javafx.fxml;
