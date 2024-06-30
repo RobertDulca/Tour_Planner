@@ -11,7 +11,7 @@
 
 <VBox prefWidth="500" xmlns:fx="http://javafx.com/fxml/" fx:controller="at.technikum.tour_planner.view.TourLogOverviewView">
     <ToolBar>
-        <Label text="MediaOverview_Items" />
+        <Label text="Tour Logs Overview" />
         <Pane HBox.hgrow="ALWAYS" />
         <Button text="+" />
         <Button text="-" />
