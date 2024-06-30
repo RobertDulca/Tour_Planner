@@ -11,6 +11,7 @@
         <children>
             <TextField fx:id="searchBar" HBox.hgrow="ALWAYS" minWidth="600.0" promptText="Search..." />
             <ComboBox fx:id="searchType" promptText="Select Search" minWidth="100"/>
+            <ToggleButton fx:id="toggleDarkMode" text="Dark Mode" />
         </children>
     </HBox>
 </AnchorPane>

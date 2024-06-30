@@ -1,0 +1,109 @@
+/* dark-theme.css */
+.root {
+    -fx-background-color: #2e2e2e;
+    -fx-text-fill: #ffffff;
+}
+
+.menu-bar {
+    -fx-background-color: #3f3f3f;
+    -fx-text-fill: #ffffff;
+}
+
+.text-field {
+    -fx-background-color: #3e3e3e;
+    -fx-text-fill: #ffffff;
+}
+
+.text-area .content {
+    -fx-background-color: #3e3e3e;
+    -fx-control-inner-background: #3e3e3e;
+    -fx-text-fill: #ffffff;
+}
+
+.combo-box {
+    -fx-background-color: #3e3e3e;
+    -fx-text-fill: #ffffff;
+}
+
+.button {
+    -fx-background-color: #5a5a5a;
+    -fx-text-fill: #ffffff;
+}
+
+.label {
+    -fx-text-fill: #ffffff;
+}
+
+.tab-pane {
+    -fx-background-color: #2e2e2e;
+}
+
+.tab {
+    -fx-background-color: #2e2e2e;
+    -fx-text-fill: #ffffff;
+}
+
+.tab:selected {
+    -fx-background-color: #3e3e3e;
+}
+
+.hbox {
+    -fx-background-color: #2e2e2e;
+    -fx-text-fill: #ffffff;
+}
+
+.vbox {
+    -fx-background-color: #2e2e2e;
+    -fx-text-fill: #ffffff;
+}
+
+.pane {
+    -fx-background-color: #2e2e2e;
+    -fx-text-fill: #ffffff;
+}
+
+.split-pane {
+    -fx-background-color: #2e2e2e;
+    -fx-text-fill: #ffffff;
+}
+
+/* Explicitly set the tab header text color */
+.tab-pane .tab-header-area .tab {
+    -fx-background-color: #2e2e2e;
+    -fx-text-fill: #ffffff;
+}
+
+.tab-pane .tab-header-area .tab:selected {
+    -fx-background-color: #3e3e3e;
+    -fx-text-fill: #ffffff;
+}
+
+.tab-pane .tab-header-area .tab-label {
+    -fx-text-fill: #ffffff;
+}
+
+.list-view {
+    -fx-background-color: #2e2e2e;
+    -fx-text-fill: #ffffff;
+}
+
+/* ListView dark mode styles */
+.list-view {
+    -fx-background-color: #2e2e2e;
+    -fx-control-inner-background: #2e2e2e;
+    -fx-text-fill: #ffffff;
+}
+
+.list-cell {
+    -fx-background-color: #454444;
+    -fx-text-fill: #ffffff;
+}
+
+.list-cell:filled:selected, .list-cell:filled:selected:hover {
+    -fx-background-color: #3e3e3e;
+    -fx-text-fill: #ffffff;
+}
+
+.tool-bar {
+    -fx-background-color: #717171;
+}

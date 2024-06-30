@@ -24,6 +24,8 @@ public class SearchRepository {
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     private static final Pattern ratingPattern = Pattern.compile("rt:(\\d+)");
     private static final Pattern difficultyPattern = Pattern.compile("df:(\\d+)");
+    private static final Pattern totalTimePattern = Pattern.compile("tt:(\\d+)");
+    private static final Pattern totalDistancePattern = Pattern.compile("td:(\\d+)");
 
     public SearchRepository() {
         entityManagerFactory = Persistence.createEntityManagerFactory("hibernate");
@@ -81,6 +83,20 @@ public class SearchRepository {
                     int difficulty = Integer.parseInt(difficultyMatcher.group(1));
                     Predicate difficultyPredicate = cb.equal(tourLog.get("difficulty"), difficulty);
                     predicates.add(difficultyPredicate);
+                }
+
+                Matcher totalTimeMatcher = totalTimePattern.matcher(searchText);
+                if (totalTimeMatcher.find()) {
+                    int totalTime = Integer.parseInt(totalTimeMatcher.group(1));
+                    Predicate totalTimePredicate = cb.equal(tourLog.get("totalTime"), totalTime);
+                    predicates.add(totalTimePredicate);
+                }
+
+                Matcher totalDistanceMatcher = totalDistancePattern.matcher(searchText);
+                if (totalDistanceMatcher.find()) {
+                    int totalDistance = Integer.parseInt(totalDistanceMatcher.group(1));
+                    Predicate totalDistancePredicate = cb.equal(tourLog.get("totalDistance"), totalDistance);
+                    predicates.add(totalDistancePredicate);
                 }
 
                 // Try to parse the searchText as a date
