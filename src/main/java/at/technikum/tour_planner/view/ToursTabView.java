@@ -17,7 +17,6 @@ public class ToursTabView implements Initializable {
     private final ToursTabViewModel viewModel;
     private static final Logger logger = Logger.getLogger(ToursTabView.class.getName());
 
-
     @FXML private ListView<Tour> toursList;
 
     public ToursTabView(ToursTabViewModel tourLogOverviewViewModel) {
@@ -25,14 +24,12 @@ public class ToursTabView implements Initializable {
         logger.info("ToursTabView initialized.");
     }
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         toursList.setItems(viewModel.getTours());
         setupListView();
         logger.info("ToursTabView initialized with tour list and setup.");
     }
-
 
     private void setupListView() {
         toursList.setCellFactory(lv -> new TextFieldListCell<>(new StringConverter<>() {

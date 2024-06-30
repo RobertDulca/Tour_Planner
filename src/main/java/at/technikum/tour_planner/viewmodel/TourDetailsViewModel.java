@@ -11,6 +11,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.embed.swing.SwingFXUtils;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -27,7 +28,6 @@ public class TourDetailsViewModel {
     private Tour selectedTour;
     private final ToursTabService tourService;
     private static final Logger logger = Logger.getLogger(TourDetailsViewModel.class.getName());
-
 
     private final StringProperty name = new SimpleStringProperty();
     private final StringProperty description = new SimpleStringProperty();
@@ -77,7 +77,6 @@ public class TourDetailsViewModel {
         }
     }
 
-
     public void showAlert(String message) {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -121,7 +120,6 @@ public class TourDetailsViewModel {
         }
     }
 
-
     public void setSelectedTour(Tour tour) {
         selectedTour = tour;
         isTourSelected.set(tour != null);
@@ -145,7 +143,6 @@ public class TourDetailsViewModel {
         }
     }
 
-
     public Tour getSelectedTour() {
         return selectedTour;
     }
@@ -163,7 +160,6 @@ public class TourDetailsViewModel {
         logger.info("Tour details cleared.");
     }
 
-
     public void deleteSelectedTour() {
         if (selectedTour != null) {
             tourService.deleteTour(selectedTour.getId());
@@ -173,7 +169,6 @@ public class TourDetailsViewModel {
             clearTourSelection();
         }
     }
-
 
     public void clearTourSelection() {
         publisher.publish(Event.TOUR_SELECTED, null);
@@ -194,7 +189,6 @@ public class TourDetailsViewModel {
             e.printStackTrace();
         }
     }
-
 
     private String convertTransportType(String transportType) {     //make it API friendly
         return switch (transportType) {
@@ -233,7 +227,6 @@ public class TourDetailsViewModel {
         }
     }
 
-
     public void fetchAndSetMapImage(Tour tour) throws IOException {
         try {
             BufferedImage mapImage = routeService.fetchMapForTour(tour, 16, 3); // Adjusted zoom level
@@ -248,7 +241,6 @@ public class TourDetailsViewModel {
             throw e;
         }
     }
-
 
     public StringProperty imageProperty() {
         return imageUrl;

@@ -32,7 +32,6 @@ public class MenuBarViewModel {
         logger.info("MenuBarViewModel initialized.");
     }
 
-
     public void generateSummaryReport(File file) throws DocumentException, IOException {
         Document doc = new Document();
         PdfWriter.getInstance(doc, new FileOutputStream(file));
@@ -71,7 +70,6 @@ public class MenuBarViewModel {
         doc.close();
     }
 
-
     public void generateTourReport(Tour selectedTour, File file) throws DocumentException, IOException {
         Document document = new Document();
         PdfWriter.getInstance(document, new FileOutputStream(file));
@@ -109,7 +107,6 @@ public class MenuBarViewModel {
 
         document.close();
     }
-
 
     public void importTourFromCsv(File file) throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
@@ -161,7 +158,6 @@ public class MenuBarViewModel {
             throw e;
         }
     }
-
 
     public void exportTourToCsv(Tour selectedTour, File file) throws IOException {
         try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {

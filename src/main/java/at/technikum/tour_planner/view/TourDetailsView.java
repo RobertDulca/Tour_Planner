@@ -24,17 +24,19 @@ public class TourDetailsView implements Initializable {
     private final TourDetailsViewModel tourDetailsViewModel;
     private static final Logger logger = Logger.getLogger(TourDetailsView.class.getName());
 
-
-    @FXML private TextField tourName, tourDesc, from, to, tourDistance, estimatedTime;
-    @FXML private ComboBox<String> transportType;
-    @FXML private Button addButton, deleteButton, editButton;
-    @FXML private ImageView mapImageView;
+    @FXML
+    private TextField tourName, tourDesc, from, to, tourDistance, estimatedTime;
+    @FXML
+    private ComboBox<String> transportType;
+    @FXML
+    private Button addButton, deleteButton, editButton;
+    @FXML
+    private ImageView mapImageView;
 
     public TourDetailsView(TourDetailsViewModel toursTabViewModel) {
         this.tourDetailsViewModel = toursTabViewModel;
         logger.info("TourDetailsView initialized.");
     }
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -43,7 +45,6 @@ public class TourDetailsView implements Initializable {
         setupButtonBindings();
         logger.info("TourDetailsView initialized with transport types and property bindings.");
     }
-
 
     private void initializeTransportTypeComboBox() {
         transportType.setPromptText("Select Transport");
@@ -90,23 +91,21 @@ public class TourDetailsView implements Initializable {
         }
     }
 
-
     @FXML
     private void onEditTour() {
         try {
             tourDetailsViewModel.saveTourChanges();
-            clearFormFields();
             Tour editedTour = tourDetailsViewModel.getSelectedTour();
             if (editedTour != null) {
                 tourDetailsViewModel.fetchAndSetMapImage(editedTour);
             }
+            clearFormFields();
             logger.info("Tour edited successfully.");
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Failed to update the tour", e);
             tourDetailsViewModel.showAlert("Failed to update the tour: " + e.getMessage());
         }
     }
-
 
     @FXML
     protected void onDeleteTour() {
@@ -115,7 +114,6 @@ public class TourDetailsView implements Initializable {
         tourDetailsViewModel.clearTourSelection();
         logger.info("Tour deleted successfully.");
     }
-
 
     private void clearFormFields() {
         tourName.clear();
@@ -128,5 +126,4 @@ public class TourDetailsView implements Initializable {
         tourDetailsViewModel.imageProperty().set(null);
         logger.info("Form fields cleared.");
     }
-
 }

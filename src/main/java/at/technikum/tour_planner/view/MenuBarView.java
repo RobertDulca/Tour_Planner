@@ -138,7 +138,6 @@ public class MenuBarView implements Initializable {
         }
     }
 
-
     public void setSelectedTour(Tour selectedTour) {
         this.selectedTour = selectedTour;
         exportMenuItem.setDisable(selectedTour == null);
@@ -146,12 +145,10 @@ public class MenuBarView implements Initializable {
         logger.info("Selected tour set to: " + (selectedTour != null ? selectedTour.getName() : "None"));
     }
 
-
     private void onToursUpdated(Object message) {
         summaryMenuItem.setDisable(toursTabViewModel.getTours().isEmpty());
         logger.info("Tours updated. Summary menu item is " + (summaryMenuItem.isDisable() ? "disabled" : "enabled"));
     }
-
 
     private void onTourSelected(Object message) {
         if (message instanceof Tour) {
@@ -163,15 +160,13 @@ public class MenuBarView implements Initializable {
         }
     }
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         exportMenuItem.setDisable(true);
         reportMenuItem.setDisable(true);
         summaryMenuItem.setDisable(toursTabViewModel.getTours().isEmpty());
-        logger.info("MenuBarView initialized. Export, report and summary menu items set to initial state.");
+        logger.info("MenuBarView initialized");
     }
-
 
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -181,6 +176,5 @@ public class MenuBarView implements Initializable {
         alert.showAndWait();
         logger.warning("Alert shown: " + message);
     }
-
 }
 
